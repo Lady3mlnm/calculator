@@ -4,10 +4,13 @@
    Если вы изменили только их, то не стоит делать их commit в репозиторий*/
 
 function test1(){
-  console.log('Function test2 is launched.');
+  console.log('Функция test2 запущена.');
+  var x = prompt('Введите число','2');
+  var y = root2(x);
+  console.log(y);
 }
 
 function test2(){
-  console.log('Function test2 is launched.');
+  console.log('Функция test2 запущена.');
   alert(logarithmE('Абра-Кадабра! Что получится?'));
 }

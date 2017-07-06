@@ -1,0 +1,65 @@
+<!doctype html> <!-- говорим браузеру, что это документ стандарта HTML5 -->
+<html>
+<head>
+  <meta charset='utf-8'> <!-- кодировка страницы, не обращайте внимание -->
+  <title>Изучаем GIT: калькулятор</title> <!-- Название страницы -->
+  <link rel='stylesheet' href='reset.css'> <!-- Подключение внешней таблицы стилей, здесь используется для устранения межбраузерных различий в оформлении -->
+  <style>   /* Внутренняя таблица стилей */
+    input {   /* стиль полей ввода */
+      margin: 10px 0 5px 10px;
+      }
+    input[type='radio'] {   /* стиль радиокнопок */
+      margin: 2px 0 2px 10px;
+      }
+    fieldset {   /* стиль контейнера, в котором располагаются радиокнопки */
+      margin: 10px 0 5px 10px;
+      width: 400px;
+      padding: 5px 11px 5px;
+      border: 1px groove #b1ac85;
+      }
+  </style>
+
+  <script src='operations.js' defer></script> <!-- файл JavaScript, содержащий функции отдельных операций -->
+  <script src='calculator1.js' defer></script> <!-- подключаем файл JavaScript, содержащий основные функции -->
+  <script src='test.js' defer></script> <!-- файл JavaScript для свободного тестирования -->
+</head>
+<body>
+
+<!-- Первое поле ввода -->
+<input type='text' id='idArg1' value='0'>
+
+<!-- Блок, позволяющий выбрать операцию -->
+<fieldset id='radioBox'>
+  <legend>Выберите операцию</legend>  <!-- Заголовок блока -->
+  <input type='radio' name='operation' value='sum' checked> Сложение<br>
+  <input type='radio' name='operation' value='sub'> Вычитание<br>
+  <input type='radio' name='operation' value='mul'> Умножение<br>
+  <input type='radio' name='operation' value='div'> Деление<br>
+  <input type='radio' name='operation' value='module' disabled> Модуль<br>
+  <input type='radio' name='operation' value='power2' disabled> Возведение в квадрат<br>
+  <input type='radio' name='operation' value='powerX' disabled> Возведение в производную степень<br>
+  <input type='radio' name='operation' value='root2'> Квадратный корень<br>
+  <input type='radio' name='operation' value='rootX'> Произвольный корень<br>
+  <input type='radio' name='operation' value='logarithmE'> Натуральный логарифм<br>
+  <input type='radio' name='operation' value='logarithm10' disabled> Десятичный логарифм<br>
+  <input type='radio' name='operation' value='logarithmX' disabled> Произвольный логарифм<br>
+  <input type='radio' name='operation' value='circlePeriphery' disabled> Вычисление окружности по введённому радиусу<br>
+  <input type='radio' name='operation' value='circleSquare'> Вычисление площади круга по введённому радиусу<br>
+  <input type='radio' name='operation' value='gradRad' disabled> Из градусов в радианы<br>
+  <input type='radio' name='operation' value='RadGrad' disabled> Из радиан в градусы<br>
+</fieldset>
+
+<!-- Второе поле ввода -->
+<input type='text' id='idArg2' value='0'>
+
+<!-- Кнопка запуска функции выбора вычислений -->
+<br>
+<input type='button' value='Вычислить' onclick='calculate()'><br>
+
+<!-- Кнопки, позволяющие запускать тестовые функции -->
+<br><br><br>
+<input type='button' value='Тест1' onclick='test1()'>
+<input type='button' value='Тест2' onclick='test2()'>
+
+</body>
+</html>

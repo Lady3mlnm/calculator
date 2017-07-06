@@ -11,11 +11,15 @@ function sub(arg1, arg2) { //Аня
 }
 
 function mul(arg1, arg2) { //Саша
-  return "'mul()' ещё не реализовано";
+  return arg1*arg2;
 }
 
 function div(arg1, arg2) { //Саша
-  return "'div()' ещё не реализовано";
+  if (arg2==0) {
+    alert('Попытка деления на 0');
+    return 'ERROR'; }
+  else
+    return arg1/arg2;
 }
 
 function module(arg1, arg2) { //Ваня
@@ -30,20 +34,33 @@ function powerX(arg1, arg2) { // Яна
   return 'Ещё не реализовано';
 }
 
-function root2(arg1) { // Андрей
-  return 'Ещё не реализовано';
+function root2(a) { // функция квадратного корня
+    var c=rootX(a,2);
+    return c;
 }
 
-function rootX(arg1, arg2) { // Андрей
-  return 'Ещё не реализовано';
+function rootX(a, b) {              // Извлечение из числа a корня степени b
+    if (a<0 && (b%2)==0)            // Проверяем область определения
+        alert ('Нельзя извлечь корень четной степени из отрицательного числа');
+     else { 
+         if (b==0)                  // Проверяем область определения
+             alert ('Нельзя извлечь корень нулевой степени'); 
+         else {
+             var c=Math.pow(a,(1/b));    // Вычисляем корень
+             return c; 
+              }        
+          } 
 }
 
 function logarithmE(x1) {   // Мальвина
-    // выводим сообщение в лог, что функция получила управление - для отладки
-  console.log('Function logarithmE is launched.');
-    // проверяем, что нам передано именно число, иначе выбрасываем сообщение об ошибке
+    //Проверяем, что нам передано именно число,
+    //иначе выводим во всплывающем окне сообщение об ошибке.
+    //Затем делаем проверку ОДЗ.
   if (typeof x1 != 'number') {
     alert('Ошибка! Функция logarithmE получила неверное значение');
+    return 'ERROR'; }
+  else if (x1<=0) {
+    alert('Ошибка! Нельзя взять логарифм от переменной со значением меньшим или равным 0');
     return 'ERROR'; }
   else
     return Math.log(x1);

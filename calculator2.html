@@ -3,33 +3,29 @@
 <head>
   <meta charset='utf-8'>
   <title>Калькулятор: интерфейс 2</title>
-  <link rel='stylesheet' href='reset.css'>
-  <script src='main.js' defer></script>
-  <script src='operations.js' defer></script>
-  <script src='calculator2.js' defer></script>
-  
-  <style>
-    table {
+  <link rel='stylesheet' href='reset.css'> <!-- Подключение внешней таблицы стилей, здесь используется для устранения межбраузерных различий в оформлении -->
+  <style>   /* Внутренняя таблица стилей */
+    table {   /* стиль таблицы калькулятора */
       background-color:#ffbbff;
       margin:10px auto;
       border-width: thin;
       border-style: outset;
       border-spacing: 2px;
-      border-collapse: separate;
+      border-collapse: separate; 
     }
-    td {
+    td {   /* стиль ячеек */
       border-width: thin;
       border-style: inset;
       padding: 1px; 
     }
-    td>button {
+    td>button {   /* стиль кнопок внутри ячеек */
       width: 50px;
       height: 50px;
       font-weight: bold;
       margin: 3px;
     }
-    #inOutField {
-      width: 237px;  /*вследствие точного задания размера потенциально возможны проблемы с выравниванием*/
+    #inOutField {   /* стиль поля ввода */
+      width: 237px;  /*потенциально опасное место: при изменении общего размера таблицы будут кривости с расположением данного поля*/
       border-width: 0;
       font-family: 'Times New Roman', serif;
       border-style: none;
@@ -39,7 +35,7 @@
       text-align:right;
       background-color:#ffffff;
     }
-    #calculatedExpression {
+    #calculatedExpression {   /* стиль поля для вывода вычисляемого выражения */
       position: absolute;
       top: 1px;
       left: 3px;
@@ -47,18 +43,13 @@
       color: grey;
     }
   </style>
-  <script>
-    // При перезагрузке поле ввода калькулятора обнулится.
-    // Нельзя удовлетвориться простым прописание значения в свойстве value,
-    // поскольку при перезагрузке оно сохраняется.
-    function fInitialization() {
-      document.getElementById('inOutField').value='0';
-    }
-  </script>
-</head>
-<body onLoad='fInitialization()'>
 
-<table> 
+  <script src='operations.js' defer></script>
+  <script src='calculator2.js' defer></script>
+</head>
+<body onLoad='fClearField()'> <!-- при перезагрузке показания калькулятора сбрасываются -->
+
+<table> <!-- таблица калькулятора -->
   <td colspan='4' style='padding:0; position:relative'>
     <div id='calculatedExpression'></div>
     <input type='text' id='inOutField' value='0'>
