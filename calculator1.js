@@ -23,6 +23,7 @@ function calculate(){
     case 'sub': result=sub(arg1, arg2); break;
     case 'mul': result=mul(arg1, arg2); break;
     case 'div': result=div(arg1, arg2); break;
+    case 'mod': result=mod(arg1, arg2); break;
     case 'module': result=module(arg1); break;
     case 'power2': result=power2(arg1); break;
     case 'powerX': result=powerX(arg1, arg2); break;

@@ -15,11 +15,16 @@ function sub(arg1, arg2) { //Аня
     return subResult;
 }
 
-function mul(arg1, arg2) { //Саша
+function mul(arg1, arg2) {
   return arg1*arg2;
 }
 
-function div(arg1, arg2) { //Саша
+//Остаток от деления
+function mod(x,y) {
+  return x%y;
+}
+
+function div(arg1, arg2) {
   if (arg2==0) {
     alert('Попытка деления на 0');
     return 'ERROR'; }
@@ -27,16 +32,22 @@ function div(arg1, arg2) { //Саша
     return arg1/arg2;
 }
 
-function module(arg1, arg2) { //Ваня
+function module(arg1, arg2) {
   return 'Ещё не реализовано';
 }
 
-function power2(arg1) { // Яна
+function power2(arg1) {
   return 'Ещё не реализовано';
 }
 
-function powerX(arg1, arg2) { // Яна
-  return 'Ещё не реализовано';
+function powerX(x,y) {
+  if (x==0 && y<=0) {
+    alert('Результат от возведения 0 в неположительную степень неопределён');
+    return 'ERROR'; }
+  if (x<0) {
+    alert('Возведение в степень отрицательного числа часто приводит к комплексным числам и в классической алгебре запрещено.');
+    return 'ERROR'; }
+  return Math.pow(x,y);
 }
 
 function root2(a) { // функция квадратного корня
@@ -70,15 +81,15 @@ function logarithmE(x1) {   // Мальвина
   return Math.log(x1);
 }
 
-function logarithm10(arg1) { // Витя
+function logarithm10(arg1) {
   return 'Ещё не реализовано';
 }
 
-function logarithmX(arg1, arg2) { // Витя
+function logarithmX(arg1, arg2) {
   return 'Ещё не реализовано';
 }
 
-function circlePeriphery(arc1) { // Карина
+function circlePeriphery(arc1) {
   return 'Ещё не реализовано';
 }
 
@@ -87,15 +98,15 @@ function circleSquare(r) {          // функция площади круга,
     return s;                       // вычисление площади круга по формуле      
 }                                   // возврат результата плащади круга
 
-function gradRad(arc1) { // Катя
+function gradRad(arc1) {
   return 'Ещё не реализовано';
 }
 
-function RadGrad(arg1) { // Катя
+function RadGrad(arg1) {
   return 'Ещё не реализовано';
 }
 
-function Factorial(n) { //Мальвина
+function Factorial(n) {
   if (typeof n != 'number') {
     alert('Ошибка! Функция Factorial получила неверное значение');
     return 'ERROR'; }

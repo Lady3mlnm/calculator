@@ -13,7 +13,7 @@ function fInsetChar (ch) {
     //Вначале проверяем некоторые частные случаи и обрабатываем их особо,
     //а иначе добавляем новый символ в конец.
     //Работает, но следует додумать - это не самый оптимальный путь.
-  if (elem.value==='0' && (ch=='+'||ch=='*'||ch=='/')) 
+  if (elem.value==='0' && (ch=='+'||ch=='*'||ch=='/'||ch=='%'||ch=='^')) 
     elem.value = '0'+ch;
   else if (elem.value==='0' || elem.value==='')
     elem.value = (ch==='.')?'0.':ch;     //не пугаться: мудрёный, но быстрый тернарный оператор
@@ -41,7 +41,7 @@ function fDeleteLastCh () {
 function fCalculateExpression() {
   var str = document.getElementById('inOutField').value;
     //Выделяем в выражении операнды и оператор
-  var op = str.match(/[(\s]*([\-.\d]+)[)\s]*([+\-*\/])[(\s]*([\-.\d]+)/);
+  var op = str.match(/[(\s]*([\-.\d]+)[)\s]*([+\-*\/%^])[(\s]*([\-.\d]+)/);
     //Проверяем успешность предыдущей операции
   if(!op) {
     alert('Не удалось разбить выражение на составные части');
@@ -68,6 +68,8 @@ function fCalculateExpression() {
     case '-': result = sub(op[1], op[3]); break;
     case '*': result = mul(op[1], op[3]); break;
     case '/': result = div(op[1], op[3]); break;
+    case '%': result = mod(op[1], op[3]); break;
+    case '^': result = powerX(op[1], op[3]); break;
     default: alert('Неизвестная операция'); return; }
   
     // Вывод результата
