@@ -64,11 +64,10 @@ function logarithmE(x1) {   // Мальвина
   if (typeof x1 != 'number') {
     alert('Ошибка! Функция logarithmE получила неверное значение');
     return 'ERROR'; }
-  else if (x1<=0) {
+  if (x1<=0) {
     alert('Ошибка! Нельзя взять логарифм от переменной со значением меньшим или равным 0');
     return 'ERROR'; }
-  else
-    return Math.log(x1);
+  return Math.log(x1);
 }
 
 function logarithm10(arg1) { // Витя
@@ -94,4 +93,22 @@ function gradRad(arc1) { // Катя
 
 function RadGrad(arg1) { // Катя
   return 'Ещё не реализовано';
+}
+
+function Factorial(n) { //Мальвина
+  if (typeof n != 'number') {
+    alert('Ошибка! Функция Factorial получила неверное значение');
+    return 'ERROR'; }
+  if (n<0) {
+    alert('Ошибка! Попытка взятия факториала от отрицательного числа.');
+    return 'ERROR'; }
+  if (Math.floor(n)-n != 0) {
+    alert('Ошибка! Попытка взятия факториала от дробного числа.');
+    return 'ERROR'; }
+
+  var i,r=1;
+  for (i=1; i<=n; i++)
+    r *= i;
+
+  return r;
 }

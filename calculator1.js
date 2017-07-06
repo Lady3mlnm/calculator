@@ -35,6 +35,7 @@ function calculate(){
     case 'circleSquare': result=circleSquare(arg1); break;
     case 'gradRad': result=gradRad(arg1); break;
     case 'RadGrad': result=RadGrad(arg1); break;
+    case 'Factorial': result=Factorial(arg1); break;
     default: alert('Error! The variable \'operation\' has value '+operation);
   }
 
