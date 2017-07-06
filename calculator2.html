@@ -52,7 +52,7 @@
 <table> <!-- таблица калькулятора -->
   <td colspan='4' style='padding:0; position:relative'>
     <div id='calculatedExpression'></div>
-    <input type='text' id='inOutField' value='0'>
+    <input type='text' id='inOutField' value='0' onkeypress="fKeyPress(event)">
   </td>
   <tr>
     <td><button onclick="fInsetChar('1')">1</button></td>

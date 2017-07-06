@@ -75,3 +75,12 @@ function fCalculateExpression() {
     // Вывод результата
   document.getElementById('inOutField').value = result;
 }
+
+// Обработчик нажатия клавиш, чтобы можно было запускать вычисление с клавиатуры
+// по нажатию на Enter или =
+function fKeyPress(e){
+  if (e.keyCode==13 || e.charCode==61) {
+    e.preventDefault();      //останавливаем дальнейшую обработку нажатия, чтобы '=' не пропечатывалось
+    fCalculateExpression();  //запускаем функцию вычисления
+  }
+}
