@@ -30,12 +30,22 @@ function powerX(arg1, arg2) { // Яна
   return 'Ещё не реализовано';
 }
 
-function root2(arg1) { // Андрей
-  return 'Ещё не реализовано';
+function root2(a) { // функция квадратного корня
+    var c=rootX(a,2);
+    return c;
 }
 
-function rootX(arg1, arg2) { // Андрей
-  return 'Ещё не реализовано';
+function rootX(a, b) {              // Извлечение из числа a корня степени b
+    if (a<0 && (b%2)==0)            // Проверяем область определения
+        alert ('Нельзя извлечь корень четной степени из отрицательного числа');
+     else { 
+         if (b==0)                  // Проверяем область определения
+         alert ('Нельзя извлечь корень нулевой степени') 
+         else {
+             var c=Math.pow(a,(1/b));    // Вычисляем корень
+             return c; 
+              }        
+          }         
 }
 
 function logarithmE(x1) {   // Мальвина
