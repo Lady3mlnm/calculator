@@ -49,7 +49,8 @@ function rootX(a, b) {              // Извлечение из числа a к
              var c=Math.pow(a,(1/b));    // Вычисляем корень
              return c; 
               }        
-          } 
+          }         
+
 }
 
 function logarithmE(x1) {   // Мальвина
