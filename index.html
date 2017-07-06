@@ -6,11 +6,11 @@
   <link rel='stylesheet' href='reset.css'>
 
   <style>
-    #navBar {    /* стиль фона под навигационными клавишами */
+    #navBar {    /* стиль фона под навигационными вкладками */
       background-color: maroon;
       padding-left: 10px;
     }
-    nav>a {      /* стиль вкладок */
+    nav>a {      /* стиль непостредственно вкладок */
       display: inline-block;
       width: 120px;
       text-align: center;
@@ -25,16 +25,16 @@
       border-style: solid solid none;
       background-color: silver;
       border-radius: 10px 10px 0 0; }
-    a.active {    /* изменение стиля в активной вкладке */
+    a.active {    /* В активной вкладке стиль немного другой, чем в пассивных */
       background-color: white; }
   </style>
 
   <script>
-    // Определяем, какой интерфейс будет показываться при загрузке и перезагрузке.
+    // Определяем, какой из интерфейсов калькулятора будет показываться при загрузке и перезагрузке.
     // Нельзя удовлетвориться простым прописание значения в свойстве src тега iframe,
     // поскольку содержимое iframe при перезагрузке сохраняется.
     function fInitialization() {
-      document.getElementsByTagName('iframe')[0].src='calculator.html';
+      document.getElementsByTagName('iframe')[0].src='calculator2.html';
       console.log('Initialization is done');
     }
     // изменяем местоположение стиля "активной вкладки"
@@ -42,7 +42,7 @@
       var arList = document.getElementById('navBar').getElementsByTagName('a');
       for (var i=0; i<arList.length; i++)
         if (arList[i] != elem)
-          arList[i].className = ''
+          arList[i].className = '';
         else
           elem.className = 'active';
     }
@@ -53,12 +53,12 @@
 
 <!-- Панель навигации -->
 <nav id='navBar'>
-  <a href='calculator.html' target='mainFrame' class='active' onclick='changeTab(this);'>Интерфейс 1</a>
-  <a href='calculator2.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 2</a>
+  <a href='calculator1.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 1</a>
+  <a href='calculator2.html' target='mainFrame' class='active' onclick='changeTab(this);'>Интерфейс 2</a>
   <a href='calculator3.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 3</a>
 </nav>
 
-<!-- Плавающий фрейм, внутри которого выводим различные интерфейсы -->
+<!-- Плавающий фрейм, внутри которого выводим другие страницы. В нашем случае это различные интерфейсы. -->
 <iframe name='mainFrame' src='' width='100%' height='600' style='border-style:none; margin:30px 5px'>
   <p>Your browser does not support iframes.</p>
 </iframe>
