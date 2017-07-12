@@ -35,7 +35,7 @@ function splitExpression (exp) {
  * @returns {boolean}
  */
 function isNumber(data) {
-    return /(^[\d]$)|(^[\d]+[.][\d]+$)/.test(data);
+    return /(^[\d]+$)|(^[\d]+[.][\d]+$)/.test(data);
 }
 
 /**
@@ -86,6 +86,8 @@ function reversePolishNotation(exp) {
 
     // Разделяем строку
     let data = splitExpression(exp);
+
+    console.log(data);
 
     for (let i = 0; data[i] !== undefined; i++) {
 
@@ -174,4 +176,3 @@ function calculate(exp) {
 
     return stack.pop();
 }
-
