@@ -181,31 +181,48 @@ function fRefreshDisplay(ch) {
 
 // Удаление последнего символа в поле ввода
 function fDeleteLastCh() {
-  //Срезаем точку
+   //Срезаем точку
   if (String(window.Display)+'.' == document.getElementById('inOutField').value) {
 	fRefreshDisplay('');
 	return;
   }
-  //Когда число не целое
-  NumberPoint = String(window.Display).indexOf(".");
-  if (NumberPoint>-1) {
-	Dlina = String(window.Display).length;
-	window.Display = Number(String(window.Display).substring(0, Dlina-1));
-	if (Math.round(window.Display)==window.Display) {
-		fRefreshDisplay('.');
-	} else {
-		fRefreshDisplay('');
-	}
-	return;
-  }
-	
-	
-  if (window.Display.length<=1) {
-      window.Display = 0;
+  
+  
+   //Когда число не целое
+      NumberPoint = String(window.Display).indexOf(".");
+      if (NumberPoint>-1) {
+	     Dlina = String(window.Display).length;
+	     window.Display = Number(String(window.Display).substring(0, Dlina-1));
+	      if (Math.round(window.Display)==window.Display) {
+		     fRefreshDisplay('.');
+	      } else {
+		   fRefreshDisplay('');
+	      }
+	    return;
+      }
+  
+  
+  if (window.Display > 0) {
+       //Целое положительное
+      if (window.Display.length<=1) {
+          window.Display = 0;
+      } else {
+          window.Display = Math.floor(window.Display/10);
+      }
+      fRefreshDisplay('');
   } else {
-    window.Display = Math.floor(window.Display/10);
+       //Целое отрицательное
+      if (window.Display.length<=1) {
+          window.Display = 0;
+      } else {
+		  if (window.Display/10 != Math.floor(window.Display/10)) {
+              window.Display = Math.floor(window.Display/10) +1;
+	      } else {
+			  window.Display = Math.floor(window.Display/10);
+		  }
+      }
+      fRefreshDisplay(''); 
   }
-  fRefreshDisplay('');
 }
 
 // Считывание значений, определение выполняемой операции,
