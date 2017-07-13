@@ -8,26 +8,44 @@
 
 
 /**
- * Разделение строки на операторы и операнды
- * NOTE: Отрицательные значения должны быть заключены в скобки
- * @param exp
- * @returns {*}
+ * Набор методов для вычисления выражения
  */
-function splitExpression (exp) {
+let calcMethods = {
+    '*': (op2, op1) => (op1 * op2),
+    '/': (op2, op1) => (op1 / op2),
+    '+': (op2, op1) => (op1 + op2),
+    '-': (op2, op1) => (op1 - op2),
+    '^': (op2, op1) => Math.pow(op1, op2)
+};
 
-    let data = [];
 
-    // Преобразование отрицательных значений
-    let junk = exp.replace(/\(-([\d.]+)\)/g, '(0-$1)');
+/**
+ * Вес операции
+ */
+let opWeight = {
+    '^': 4,
+    '*': 3, '/': 3,
+    '+': 2, '-': 2,
+    '(': 1, ')': 1
+};
 
-    // Разделение строки
-    junk.split(/([()+\-*\/^])/)
-        .forEach((item, i, arr) => {
-            if (item !== '') { data.push(item); }
-        });
 
-    return data;
+/**
+ * Право-ассоциированные операторы
+ * @type {string[]}
+ */
+let rightAssociativity = ['^'];
+
+
+/**
+ * Преобразование в число с плавающей точкой
+ * @param data
+ * @returns {Number}
+ */
+function toFloat(data) {
+    return parseFloat(parseFloat(data).toFixed(10));
 }
+
 
 /**
  * Проверка на число
@@ -35,8 +53,9 @@ function splitExpression (exp) {
  * @returns {boolean}
  */
 function isNumber(data) {
-    return /(^[\d]+$)|(^[\d]+[.][\d]+$)/.test(data);
+    return /^[-]?([\d]+|[\d]+\.[\d]+)$/.test(data);
 }
+
 
 /**
  * Проверка на оператор
@@ -44,92 +63,74 @@ function isNumber(data) {
  * @returns {boolean}
  */
 function isOperator(data) {
-    return /^[+\-*\/^]$/.test(data);
+    return Object.keys(calcMethods).indexOf(data) > -1;
 }
 
-/**
- * Вес операции
- * @param value
- * @returns {number}
- */
-function opWeight (value) {
-    switch (value) {
-        case '^': return 4;
-        case '*': case '/': return 3;
-        case '-': case '+': return 2;
-        case '(': case ')': return 1;
-        default: throw 'ERROR: Operator ' + value + ' has no weight';
-    }
-}
-
-/**
- * Проверка на право-ассоциированный оператор
- * @param value
- * @return {*}
- */
-function isRightAssociativity(value) {
-    return ['^'].indexOf(value) > -1;
-}
 
 /**
  * Преобразование выражения в обратную польскую нотацию
- * @param exp
+ * @param data
+ * @param stack
  * @returns {*}
  */
-function reversePolishNotation(exp) {
+function RPN(data, stack) {
 
-    // Стэк
-    let stack = [];
-    stack.last = () => stack[stack.length - 1];
+    // Получение последнего значения из
+    // стека без его удаления
+    stack.last =
+        () => stack[stack.length - 1];
 
-    let output = [];
+    // Если число то переходим в следующему элементу данных
+    if (isNumber(data[0]))
+        return [data[0]].concat(RPN(data.slice(1), stack));
 
-    // Разделяем строку
-    let data = splitExpression(exp);
+    // Если текущий элемент является оператором
+    if (isOperator(data[0])) {
 
-    console.log(data);
+        // Объявляем формулу сравнения в зависимости от
+        // ассоциативности текущей операции
+        let opCompare = rightAssociativity.indexOf(data[0]) > -1 ?
+            () => opWeight[stack.last()] > opWeight[data[0]] :
+            () => opWeight[stack.last()] >= opWeight[data[0]];
 
-    for (let i = 0; data[i] !== undefined; i++) {
+        // Переносим операции из стека с высоким приоритетом
+        if (stack.length > 0 && opCompare())
+            return [stack.pop()].concat(RPN(data, stack));
 
-        if (isNumber(data[i])) {
-            // Число заносим сразу в выходной массив
-            output.push(data[i]);
+        stack.push(data[0]);
+        return RPN(data.slice(1), stack);
+    }
 
-        } else if (isOperator(data[i])) {
+    // Заносим открывающую скобку в стек
+    if (data[0] === '(') {
+        stack.push(data[0]);
+        return RPN(data.slice(1), stack);
+    }
 
-            let opCompare = isRightAssociativity(data[i]) ?
-                () => opWeight(stack.last()) > opWeight(data[i]) :
-                () => opWeight(stack.last()) >= opWeight(data[i]);
+    if (data[0] === ')') {
 
-            // Переносим элементы из стека в выходной массив
-            while (stack.length > 0 && opCompare())
-                output.push(stack.pop());
+        // Если в стеке нет операций
+        if (stack.length < 1)
+            throw 'ERROR: There is no opening bracket on the stack';
 
-            stack.push(data[i]);
+        // Переносим операции из стека пока не
+        // встретим открывающую скобку
+        if (stack.last() === '(') {
+            stack.pop();
+            return RPN(data.slice(1), stack);
 
-        } else if (data[i] === '(') {
-            // Заносим в стек
-            stack.push(data[i]);
-
-        } else if (data[i] === ')') {
-            // Переносим операторы из стека до открывающей скобки
-            let operator;
-            while (stack.length > 0) {
-                operator = stack.pop();
-                if (operator !== '(') output.push(operator); else break;
-            }
-
-        } else throw 'ERROR: Incorrect expression';
+        } else return [stack.pop()].concat(RPN(data, stack));
 
     }
 
-    // Записываем в выходной массив оставшиеся операции
-    while (stack.length > 0) {
-        output.push(stack.pop());
-    }
+    // Остатки операций в стеке
+    if (data.length < 1)
+        return [].concat(stack);
 
-    return output;
+    // Если в выражении есть недопустимое значение
+    throw 'ERROR: Expression not valid';
 }
+
 
 /**
  * Расчёт выражения
@@ -139,40 +140,40 @@ function reversePolishNotation(exp) {
 function calculate(exp) {
 
     let stack = [];
-    stack.pushFloat = value =>
-        stack.push(parseFloat(parseFloat(value).toFixed(10)));
+    stack.pushFloat =
+        value => stack.push(parseFloat(parseFloat(value).toFixed(10)));
 
-    let data = reversePolishNotation(exp);
+    // Если выражение не задано
+    if (!exp) throw "ERROR: Expression is not specified";
+
+    // Преобразуем выражение в обратную польскую нотацию
+    let data = RPN(exp.split(/[\s]+/), []);
 
     data.forEach((item, i, arr) => {
 
         if (isOperator(item)) {
 
-            // Оператор может быть только если в стеке есть 2 значения
+            // Выдаём ошибку если не достаточно операндов
+            // в стеке для выполнения текущей операции
             if (stack.length < 2)
                 throw 'ERROR: No data in the stack for the operation';
 
-            let op2 = stack.pop();
-            let op1 = stack.pop();
-
-            switch (item) {
-                case '*': stack.pushFloat(op1 * op2); break;
-                case '/': stack.pushFloat(op1 / op2); break;
-                case '+': stack.pushFloat(op1 + op2); break;
-                case '-': stack.pushFloat(op1 - op2); break;
-                case '^': stack.pushFloat(Math.pow(op1, op2)); break;
-            }
+            // Запускаем расчёты
+            stack.pushFloat(
+                calcMethods[item](stack.pop(), stack.pop())
+            );
 
         } else if (isNumber(item)) {
-
-            // Число заносим в стек
+            // Заносим числа сразу в стек
             stack.pushFloat(item);
 
         } else throw 'ERROR: Unknown symbols';
+
     });
 
-    // В стеке остались операнды
-    if (stack.length > 1) throw 'ERROR: Few operators in the stack';
+    // Если в стеке остался не один операнд
+    if (stack.length > 1)
+        throw 'ERROR: Few operators in the stack';
 
     return stack.pop();
 }
