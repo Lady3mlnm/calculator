@@ -241,13 +241,39 @@ function calculate(exp) {
 
 /**
  * Форматирование выражения для использования в вычислениях
- * NOTE: Может пригодится для форматирования выражения в формат для вычислений
+ * NOTE: Может пригодится для вызова из приложения
  * @param data
  * @return {*}
  */
 function calculateFormat(data) {
 
-    //TODO: Надо реализовать
+    // Экранирование выражений для использования
+    // в регулярных выражениях
+    let escape =
+        value => value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
-    return data;
+    // Список операторов пригодный для использования
+    // в регулярных выражениях
+    let operators = [];
+    Object.keys(calcMethods).forEach(
+        (item, i, arr) => operators.push(escape(item))
+    );
+
+    // Преобразование операторов
+    data = data.replace(
+        new RegExp('[\\s]*(' + operators.join('|') + ')[\\s]*', 'g'),
+        ' $1 '
+    );
+
+    // Преобразование скобок
+    data = data.replace(/[\s]*([()])[\s]*/g, ' $1 ');
+
+    // Преобразование отрицательных значений
+    data = data.replace(
+        new RegExp('[\\s]*(' + operators.join('|') + '|\\()[\\s]*-[\\s]*([\\d]+)', 'g'),
+        ' $1 -$2'
+    );
+
+    return data.trim();
 }
+
