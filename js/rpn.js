@@ -74,7 +74,7 @@ function isOperator(data) {
  */
 function RPN(data) {
 
-    // Стэк
+    // Стек
     let stack = [];
     stack.last = () => stack[stack.length - 1];
 
