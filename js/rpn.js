@@ -70,19 +70,78 @@ function isOperator(data) {
 /**
  * Преобразование выражения в обратную польскую нотацию
  * @param data
+ * @returns {*}
+ */
+function RPN(data) {
+
+    // Стэк
+    let stack = [];
+    stack.last = () => stack[stack.length - 1];
+
+    let output = [];
+
+    for (let i = 0; data[i] !== undefined; i++) {
+
+        if (isNumber(data[i])) {
+            // Число заносим сразу в выходной массив
+            output.push(data[i]);
+
+        } else if (isOperator(data[i])) {
+
+            // Объявляем формулу сравнения в зависимости от
+            // ассоциативности текущей операции
+            let opCompare = rightAssociativity.indexOf(data[i]) > -1 ?
+                () => opWeight[stack.last()] > opWeight[data[i]] :
+                () => opWeight[stack.last()] >= opWeight[data[i]];
+
+            // Переносим элементы из стека в выходной массив
+            while (stack.length > 0 && opCompare())
+                output.push(stack.pop());
+
+            stack.push(data[i]);
+
+        } else if (data[i] === '(') {
+            // Заносим в стек
+            stack.push(data[i]);
+
+        } else if (data[i] === ')') {
+            // Переносим операторы из стека до открывающей скобки
+            let operator;
+
+            while (stack.length > 0) {
+                operator = stack.pop();
+                if (operator !== '(') output.push(operator); else break;
+            }
+
+        } else throw 'ERROR: Incorrect expression';
+
+    }
+
+    // Записываем в выходной массив оставшиеся операции
+    while (stack.length > 0) {
+        output.push(stack.pop());
+    }
+
+    return output;
+}
+
+
+/**
+ * Преобразование выражения в обратную польскую нотацию
+ * NOTE: Используются рекурсивные вызовы
+ * @param data
  * @param stack
  * @returns {*}
  */
-function RPN(data, stack) {
+function rRPN(data, stack) {
 
     // Получение последнего значения из
     // стека без его удаления
-    stack.last =
-        () => stack[stack.length - 1];
+    stack.last = () => stack[stack.length - 1];
 
     // Если число то переходим в следующему элементу данных
     if (isNumber(data[0]))
-        return [data[0]].concat(RPN(data.slice(1), stack));
+        return [data[0]].concat(rRPN(data.slice(1), stack));
 
     // Если текущий элемент является оператором
     if (isOperator(data[0])) {
@@ -95,16 +154,16 @@ function RPN(data, stack) {
 
         // Переносим операции из стека с высоким приоритетом
         if (stack.length > 0 && opCompare())
-            return [stack.pop()].concat(RPN(data, stack));
+            return [stack.pop()].concat(rRPN(data, stack));
 
         stack.push(data[0]);
-        return RPN(data.slice(1), stack);
+        return rRPN(data.slice(1), stack);
     }
 
     // Заносим открывающую скобку в стек
     if (data[0] === '(') {
         stack.push(data[0]);
-        return RPN(data.slice(1), stack);
+        return rRPN(data.slice(1), stack);
     }
 
     if (data[0] === ')') {
@@ -117,9 +176,9 @@ function RPN(data, stack) {
         // встретим открывающую скобку
         if (stack.last() === '(') {
             stack.pop();
-            return RPN(data.slice(1), stack);
+            return rRPN(data.slice(1), stack);
 
-        } else return [stack.pop()].concat(RPN(data, stack));
+        } else return [stack.pop()].concat(rRPN(data, stack));
 
     }
 
@@ -130,7 +189,6 @@ function RPN(data, stack) {
     // Если в выражении есть недопустимое значение
     throw 'ERROR: Expression not valid';
 }
-
 
 /**
  * Расчёт выражения
@@ -146,8 +204,11 @@ function calculate(exp) {
     // Если выражение не задано
     if (!exp) throw "ERROR: Expression is not specified";
 
-    // Преобразуем выражение в обратную польскую нотацию
-    let data = RPN(exp.split(/[\s]+/), []);
+    // Преобразование выражения в обратную польскую нотацию
+    // let data = rRPN(exp.split(/[\s]+/), []);
+    let data = RPN(exp.split(/[\s]+/));
+
+    console.log(data);
 
     data.forEach((item, i, arr) => {
 
@@ -176,4 +237,17 @@ function calculate(exp) {
         throw 'ERROR: Few operators in the stack';
 
     return stack.pop();
+}
+
+/**
+ * Форматирование выражения для использования в вычислениях
+ * NOTE: Может пригодится для форматирования выражения в формат для вычислений
+ * @param data
+ * @return {*}
+ */
+function calculateFormat(data) {
+
+    //TODO: Надо реализовать
+
+    return data;
 }
