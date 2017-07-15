@@ -274,6 +274,8 @@ function calculateFormat(data) {
         ' $1 -$2'
     );
 
+    data = data.replace(/^[\s]*-[\s]*([\d]+)/, '-$1');
+
     return data.trim();
 }
 
