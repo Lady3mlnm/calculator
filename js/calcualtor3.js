@@ -45,7 +45,7 @@ function equality() {
         display.value = calculate(calculateFormat(display.value));
     } catch (err) {
         console.log(err);
-        alert('Выражение не может быть вычеслено');
+        alert('Выражение не может быть вычислено');
     }
 
 }
