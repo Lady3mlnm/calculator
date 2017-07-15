@@ -10,8 +10,8 @@
     <script type="text/javascript" async
             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
-    <!-- <script src='.js' defer></script> -подключить файл с упраляющими функциями -->
-    <script src='js/operations.js' defer></script>
+    <script type="text/javascript" src="js/rpn.js"></script>
+    <script type="text/javascript" src="js/calcualtor3.js"></script>
 </head>
 <body>
 
@@ -23,54 +23,44 @@
 
     <div id="calculator">
 
-        <div class="calculator-display">
-            <div id="operation">123 /</div>
-            <div id="value">0</div>
-        </div>
-
-        <div class="calculator-convertor">
-            <button name="">$grad \to rad$</button>
-            <button name="">$rad \to grad$</button>
-            <button name="">$P = 2 \pi r$</button>
-            <button name="">$S = \pi r^2$</button>
-        </div>
+        <input id="display" type="text" class="calculator-display">
 
         <div class="calculator-ext">
-            <button name="power2">$n^2$</button>
-            <button name="powerX">$n^x$</button>
-            <button name="root2">$\sqrt{n}$</button>
-            <button name="rootX">$\sqrt[x]{n}$</button>
-            <button name="module">$\left|n\right|$</button>
-            <button name="logarithmE">$\ln{n}$</button>
-            <button name="logarithm10">$\lg{n}$</button>
-            <button name="logarithmX">$\log_{x}{n}$</button>
+            <button id="lbracket">(</button>
+            <button id="rbracket">)</button>
+            <button id="power2">$n^2$</button>
+            <button id="powerX">$n^x$</button>
+            <button id="root2">$\sqrt{n}$</button>
+            <button id="rootX">$\sqrt[x]{n}$</button>
+            <button id="logarithmE">$\ln{n}$</button>
+            <button id="logarithmX">$\log_{x}{n}$</button>
         </div>
 
         <div class="calculator-nums">
-            <button name="one">1</button>
-            <button name="two">2</button>
-            <button name="three">3</button>
-            <button name="four">4</button>
-            <button name="five">5</button>
-            <button name="six">6</button>
-            <button name="seven">7</button>
-            <button name="eight">8</button>
-            <button name="nine">9</button>
-            <button name="zero">0</button>
-            <button name="delimiter">,</button>
+            <button id="one">1</button>
+            <button id="two">2</button>
+            <button id="three">3</button>
+            <button id="four">4</button>
+            <button id="five">5</button>
+            <button id="six">6</button>
+            <button id="seven">7</button>
+            <button id="eight">8</button>
+            <button id="nine">9</button>
+            <button id="zero">0</button>
+            <button id="delimiter">,</button>
         </div>
 
         <div class="calculator-ops">
-            <button name="div">/</button>
-            <button name="mul">*</button>
-            <button name="sub">-</button>
-            <button name="sum">+</button>
+            <button id="div">/</button>
+            <button id="mul">*</button>
+            <button id="sub">-</button>
+            <button id="sum">+</button>
         </div>
 
         <div class="calculator-ops">
-            <button name="backspace">$\leftarrow$</button>
-            <button name="clear">C</button>
-            <button name="calc">=</button>
+            <button id="backspace">$\leftarrow$</button>
+            <button id="clear">C</button>
+            <button id="equality">=</button>
         </div>
 
     </div>
@@ -80,8 +70,6 @@
     </div>
 
 </div>
-
-
 
 </body>
 </html>
