@@ -19,10 +19,6 @@ function mul(arg1, arg2) {
   return arg1*arg2;
 }
 
-//Остаток от деления
-function mod(x,y) {
-  return x%y;
-}
 
 function div(arg1, arg2) {
   if (arg2==0) {
@@ -32,12 +28,18 @@ function div(arg1, arg2) {
     return arg1/arg2;
 }
 
-function module(arg1, arg2) {
-  return 'Ещё не реализовано';
+//Остаток от деления
+function mod(x,y) {
+  return x%y;
 }
 
-function power2(arg1) {
-  return 'Ещё не реализовано';
+//Модуль числа
+function module(x) {
+  return (x<0)?-x:x;
+}
+
+function power2(x) {
+  return x*x;
 }
 
 function powerX(x,y) {
@@ -89,8 +91,12 @@ function logarithmX(arg1, arg2) {
   return 'Ещё не реализовано';
 }
 
-function circlePeriphery(arc1) {
-  return 'Ещё не реализовано';
+//Вычисление окружности по введённому радиусу
+function circlePeriphery(r) {
+  if (r<0) {
+    alert('Ошибка! Введён отрицательный радиус');
+    return 'ERROR'; }
+  return 2*Math.PI*r;
 }
 
 function circleSquare(r) {          // функция площади круга, входящее число - радиус
@@ -98,12 +104,14 @@ function circleSquare(r) {          // функция площади круга,
     return s;                       // вычисление площади круга по формуле      
 }                                   // возврат результата плащади круга
 
-function gradRad(arc1) {
-  return 'Ещё не реализовано';
+//Перевод из градусов в радианы
+function gradRad(grad) {
+  return grad*Math.PI/180;
 }
 
-function RadGrad(arg1) {
-  return 'Ещё не реализовано';
+//Перевод из радиан в градусы
+function RadGrad(rad) {
+  return rad*180/Math.PI;
 }
 
 function Factorial(n) {
