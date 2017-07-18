@@ -3,10 +3,11 @@
 
 // Очистка поля ввода
 function fClearField() {
-  window.Display = 0;
-  window.LastDisplay = 0;
-  window.Act = NaN;
-  window.LastKey = NaN;
+  Display = 0;
+  LastDisplay = 0;
+  Act = NaN;
+  LastKey = NaN;
+  DisplayStr = '';
   document.getElementById('calculatedExpression').innerHTML = '';
   document.getElementById('inOutField').value = '0';
 }
@@ -14,70 +15,48 @@ function fClearField() {
 // Вставка нового символа в конец поля ввода
 function fInsetChar(ch) {
 	if (ch=='±') {
-		if (window.Display==0) {
-			return;
-		} else {
-		   window.Display=-window.Display;
+		if (String(Display) != '0') {
+		   Display=-Display;
+		   DisplayStr = String(Display);
 		   fRefreshDisplay ('');
 		   return;
 		}
 	}
-	
-	
 	if (ch=='0' || ch=='1' || ch=='2' || ch=='3' || ch=='4' || ch=='5' || ch=='6' || ch=='7' || ch=='8' || ch=='9') {
         ch = Number(ch);
 	}
- 
     if (ch=='=') {
 		Equally();
+		DisplayStr ='';
+		return;
 	} 
 	if  (ch=='+' || ch=='-' || ch=='*' || ch=='/' || ch=='^') {
-		if (window.Act != NaN) {
+		if (Act != NaN) {
 			Consider();
+			DisplayStr ='';
 		}
-		window.Act = ch;
-		window.LastDisplay = window.Display;
-		window.LastKey = ch;
+		Act = ch;
+		LastDisplay = Display;
+		LastKey = ch;
+		return;
 	}
-	if (ch==0 || ch==1 || ch==2 || ch==3 || ch==4 || ch==5 || ch==6 || ch==7 || ch==8 || ch==9 || ch==".") {
-		if (window.LastKey=='=' || window.LastKey=='+' || window.LastKey=='-' || window.LastKey=='*' || window.LastKey=='/' || window.LastKey=='^') {
-			window.LastDisplay = window.Display;
-			window.Display=0;  
-			fRefreshDisplay (ch);
-		}
-		if (window.Display == 0 && ch!='.') {
-			if (window.LastKey != '.') {
-				window.Display = ch; 
-				fRefreshDisplay (ch);
-			} else {
-				window.Display = window.Display + ch / 10; 
-				fRefreshDisplay (ch);
-			} 
+	if (ch==0 || ch==1 || ch==2 || ch==3 || ch==4 || ch==5 || ch==6 || ch==7 || ch==8 || ch==9 || ch=='.') {
+		if (DisplayStr =='' && ch=='.') {
+			DisplayStr = '0.';
 		} else {
-			if (ch != '.') {
-				if (window.LastKey != '.') { 
-					if (Math.floor(window.Display) == window.Display) {
-			            window.Display = window.Display * 10 + ch;
-					} else {
-						Dlina = String(window.Display).length; 
-						NumberPoint = String(window.Display).indexOf(".");
-						Kol = Dlina - NumberPoint;
-						Koeff = Math.pow(10, Kol);
-						window.Display = window.Display + ch/Koeff;
-						window.Display = round(window.Display, Kol);
-						fRefreshDisplay (ch);
-					}
-				}	
-				if  (window.LastKey == '.') {
-					window.Display = window.Display + ch / 10; 
-					fRefreshDisplay (ch);
-				}
-			}
-			fRefreshDisplay (ch); 
+			DisplayStr = DisplayStr + String(ch);
 		}
-		window.LastKey=ch;
-	}
-
+		if (LastKey=='=' || LastKey=='+' || LastKey=='-' || LastKey=='*' || LastKey=='/' || LastKey=='^') {
+			LastDisplay = Display;
+		}
+		if (DisplayStr =='') {
+			Display = 0;
+		} else {
+			Display = Number(CheckPoint(DisplayStr)); 
+		}
+		fRefreshDisplay();
+		LastKey=ch;
+	}	
 }
 
 
@@ -85,149 +64,101 @@ function fInsetChar(ch) {
 //Произвести расчет когда нажата кнопка Равно, но вызывается она из другой (главной) функции
 function Equally() {
 	
-	if (window.Act=='+') 
+	if (Act=='+') 
 	{   
-		window.Display = Number(window.Display)+Number(window.LastDisplay);
-		fRefreshDisplay('');
-		window.LastDisplay = 0;
-		window.Act         = NaN;
-		window.LastKey     = '=';
+		Display = Number(Display)+Number(LastDisplay);
+		LastDisplay = 0;
+		Act         = NaN;
+		LastKey     = '=';
 	}	
 	
-	if (window.Act=='-') 
+	if (Act=='-') 
 	{
-		window.Display = window.LastDisplay - window.Display;
-		fRefreshDisplay('');
-		window.LastDisplay=0;
-		window.Act = NaN;
-		window.LastKey='=';
+		Display = LastDisplay - Display;
+		LastDisplay=0;
+		Act = NaN;
+		LastKey='=';
     }	
 	
-	if (window.Act=='*') 
+	if (Act=='*') 
 	{
-		window.Display = window.LastDisplay * window.Display;
-		fRefreshDisplay('');
-		window.LastDisplay=0;
-		window.Act = NaN;
-		window.LastKey='=';
+		Display = LastDisplay * Display;
+		LastDisplay=0;
+		Act = NaN;
+		LastKey='=';
 	}
 	
-	if (window.Act == '/') {
-		if (window.Display != 0) {
-			window.Display = window.LastDisplay / window.Display;
+	if (Act == '/') {
+		if (Display != 0) {
+			Display = LastDisplay / Display;
         } else {
-			window.Display = 0;
+			Display = 0;
         }
-		fRefreshDisplay ('');
-		window.LastDisplay=0;
-		window.Act = NaN;
-		window.LastKey='=';	
+		LastDisplay=0;
+		Act = NaN;
+		LastKey='=';	
     }
 	
-	if (window.Act == '^') {
-		window.Display = Math.pow(window.LastDisplay, window.Display);
-		fRefreshDisplay('');
-		window.LastDisplay=0;
-		window.Act = NaN;
-		window.LastKey='=';
+	if (Act == '^') {
+		Display = Math.pow(LastDisplay, Display);
+		LastDisplay=0;
+		Act = NaN;
+		LastKey='=';
     }
-	
+	DisplayStr = String(Display);
+	fRefreshDisplay();
 }
 
 
 //Функция Произвести вычисление, когда нажата кнопка арифм операции но не кнопка Равно 
 function Consider() {
-	if (window.Act == '+') {
-		window.Display = window.Display + window.LastDisplay;
-		fRefreshDisplay ('');
-		window.LastKey='+';
+	if (Act == '+') {
+		Display = Display + LastDisplay;
+		LastKey='+';
 	}
-	if (window.Act == '-') {
-		window.Display = window.LastDisplay - window.Display;
-		fRefreshDisplay ('');
-		window.LastKey='-';
+	if (Act == '-') {
+		Display = LastDisplay - Display;
+		LastKey='-';
 	}	
-	if (window.Act == '*') {
-		window.Display = window.LastDisplay * window.Display;
-		fRefreshDisplay ('');
-		window.LastKey='*';
+	if (Act == '*') {
+		Display = LastDisplay * Display;
+		LastKey='*';
 	}	
-	if (window.Act == '/') {
-		if (window.Display != 0) {
-			window.Display = window.LastDisplay / window.Display;
+	if (Act == '/') {
+		if (Display != 0) {
+			Display = LastDisplay / Display;
 		} else {
-			window.Display = 0;
+			Display = 0;
 		}
-		fRefreshDisplay('');
-		window.LastKey='/';	
+		LastKey='/';	
 	}
-	if (window.Act == '^') {
-		window.Display = Math.pow(window.LastDisplay, window.Display);
-		fRefreshDisplay('');
-		window.LastKey='^';
+	if (Act == '^') {
+		Display = Math.pow(LastDisplay, Display);
+		LastKey='^';
     }
-	
+	DisplayStr = String(Display);
+	fRefreshDisplay();
 }
 
 
 //Выведем на Дисплей значение переменной Display
-function fRefreshDisplay(ch) {
+function fRefreshDisplay() {
 	elem = document.getElementById('inOutField');
-	elem.value = String(window.Display);
-	if (ch == '.') {
-	    elem.value = String(window.Display) + '.';
-     }
+	elem.value = String(Display);
+	if (DisplayStr == '') {
+	    elem.value = '0';
+    } else {
+		elem.value = DisplayStr; 
+	}
 }
 
 // Удаление последнего символа в поле ввода
 function fDeleteLastCh() {
-   //Срезаем точку
-  if (String(window.Display)+'.' == document.getElementById('inOutField').value) {
-	fRefreshDisplay('');
-	return;
-  }
-  
-  
-   //Когда число не целое
-      NumberPoint = String(window.Display).indexOf(".");
-      if (NumberPoint>-1) {
-	     Dlina = String(window.Display).length;
-	     window.Display = Number(String(window.Display).substring(0, Dlina-1));
-	      if (Math.round(window.Display)==window.Display) {
-		     fRefreshDisplay('.');
-	      } else {
-		   fRefreshDisplay('');
-	      }
-	    return;
-      }
-  
-  
-  if (window.Display > 0) {
-       //Целое положительное
-      if (window.Display.length<=1) {
-          window.Display = 0;
-      } else {
-          window.Display = Math.floor(window.Display/10);
-      }
-      fRefreshDisplay('');
-  } else {
-       //Целое отрицательное
-      if (window.Display.length<=1) {
-          window.Display = 0;
-      } else {
-		  if (window.Display/10 != Math.floor(window.Display/10)) {
-              window.Display = Math.floor(window.Display/10) +1;
-	      } else {
-			  window.Display = Math.floor(window.Display/10);
-		  }
-      }
-      fRefreshDisplay(''); 
-  }
+  DisplayStr = DisplayStr.substring(0, DisplayStr.length-1);
+  Display = Number(CheckPoint(DisplayStr));
+  fRefreshDisplay();
 }
 
-// Считывание значений, определение выполняемой операции,
-// вызов соответствующей вычисляющей функции,
-// вывод результата
 function fCalculateExpression() {
   
 }
@@ -241,8 +172,10 @@ function fKeyPress(e){
   }
 }
 
-function round(value, decimals) {
-
-return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
-
-}
+function CheckPoint(Strok) {
+	//Если последний символ точка обрезаем его
+	if (Strok[Strok.length-1] == '.') {
+		Strok = Strok.substring(0, Strok.length-1);
+	}
+   return Strok;	
+}	
