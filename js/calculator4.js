@@ -14,23 +14,20 @@ function fClearField() {
 
 // Вставка нового символа в конец поля ввода
 function fInsetChar(ch) {
-	if (ch=='±') {
+    if (ch=='±') {
 		if (String(Display) != '0') {
 		   Display=-Display;
 		   DisplayStr = String(Display);
 		   fRefreshDisplay ('');
 		   return;
 		}
-	}
-	if (ch=='0' || ch=='1' || ch=='2' || ch=='3' || ch=='4' || ch=='5' || ch=='6' || ch=='7' || ch=='8' || ch=='9') {
-        ch = Number(ch);
-	}
+    }
     if (ch=='=') {
 		Equally();
 		DisplayStr ='';
 		return;
-	} 
-	if  (ch=='+' || ch=='-' || ch=='*' || ch=='/' || ch=='^') {
+    } 
+    if  (ch=='+' || ch=='-' || ch=='*' || ch=='/' || ch=='^') {
 		if (Act != NaN) {
 			Consider();
 			DisplayStr ='';
@@ -39,8 +36,8 @@ function fInsetChar(ch) {
 		LastDisplay = Display;
 		LastKey = ch;
 		return;
-	}
-	if (ch==0 || ch==1 || ch==2 || ch==3 || ch==4 || ch==5 || ch==6 || ch==7 || ch==8 || ch==9 || ch=='.') {
+    }
+    if (ch==0 || ch==1 || ch==2 || ch==3 || ch==4 || ch==5 || ch==6 || ch==7 || ch==8 || ch==9 || ch=='.') {
 		if (DisplayStr =='' && ch=='.') {
 			DisplayStr = '0.';
 		} else {
@@ -56,7 +53,7 @@ function fInsetChar(ch) {
 		}
 		fRefreshDisplay();
 		LastKey=ch;
-	}	
+    }	
 }
 
 
