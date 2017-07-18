@@ -3,13 +3,13 @@
 
 // Очистка поля ввода
 function fClearField() {
-  Display = 0;
-  LastDisplay = 0;
-  Act = NaN;
-  LastKey = NaN;
-  DisplayStr = '';
-  document.getElementById('calculatedExpression').innerHTML = '';
-  document.getElementById('inOutField').value = '0';
+    Display = 0;
+    LastDisplay = 0;
+    Act = NaN;
+    LastKey = NaN;
+    DisplayStr = '';
+    document.getElementById('calculatedExpression').innerHTML = '';
+    document.getElementById('inOutField').value = '0';
 }
 
 // Вставка нового символа в конец поля ввода
@@ -60,7 +60,6 @@ function fInsetChar(ch) {
 
 //Произвести расчет когда нажата кнопка Равно, но вызывается она из другой (главной) функции
 function Equally() {
-	
 	if (Act=='+') 
 	{   
 		Display = Number(Display)+Number(LastDisplay);
@@ -68,15 +67,13 @@ function Equally() {
 		Act         = NaN;
 		LastKey     = '=';
 	}	
-	
 	if (Act=='-') 
 	{
 		Display = LastDisplay - Display;
 		LastDisplay=0;
 		Act = NaN;
 		LastKey='=';
-    }	
-	
+        }	
 	if (Act=='*') 
 	{
 		Display = LastDisplay * Display;
@@ -84,7 +81,6 @@ function Equally() {
 		Act = NaN;
 		LastKey='=';
 	}
-	
 	if (Act == '/') {
 		if (Display != 0) {
 			Display = LastDisplay / Display;
@@ -94,14 +90,13 @@ function Equally() {
 		LastDisplay=0;
 		Act = NaN;
 		LastKey='=';	
-    }
-	
+        }
 	if (Act == '^') {
 		Display = Math.pow(LastDisplay, Display);
 		LastDisplay=0;
 		Act = NaN;
 		LastKey='=';
-    }
+        }
 	DisplayStr = String(Display);
 	fRefreshDisplay();
 }
@@ -132,7 +127,7 @@ function Consider() {
 	if (Act == '^') {
 		Display = Math.pow(LastDisplay, Display);
 		LastKey='^';
-    }
+        }
 	DisplayStr = String(Display);
 	fRefreshDisplay();
 }
