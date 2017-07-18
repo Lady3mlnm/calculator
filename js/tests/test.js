@@ -12,5 +12,9 @@ function test1(){
 
 function test2(){
   console.log('Функция test2 запущена.');
-  alert(logarithmE('Абра-Кадабра! Что получится?'));
+  var ch = document.getElementById('idArg1').value[0];
+  console.log(ch);
+  /* console.log(ch.match(/[\.0-9]/),'malvina'); */
+  var patt=/[\.0-9]/;
+  console.log(patt.test(ch));
 }

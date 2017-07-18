@@ -41,7 +41,7 @@ function fDeleteLastCh () {
 function fCalculateExpression() {
   var str = document.getElementById('inOutField').value;
     //Выделяем в выражении операнды и оператор
-  var op = str.match(/[(\s]*([\-.\d]+)[)\s]*([+\-*\/%^])[(\s]*([\-.\d]+)/);
+  var op = str.match(/[(\s]*([\-\.\d]+)[)\s]*([+\-*\/%^])[(\s]*([\-\.\d]+)/);
     //Проверяем успешность предыдущей операции
   if(!op) {
     alert('Не удалось разбить выражение на составные части');
