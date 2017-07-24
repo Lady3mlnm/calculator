@@ -10,8 +10,8 @@ let display;
 let calculatorBinds = {
     'one': () => display.value += '1',
     'two': () => display.value += '2',
-    'three': () => display.value += '3',
-    'four': () => display.value += '4',
+    'three': function() { return display.value += '3'; }, //(Более понятная запись сокращений)
+    'four': function() { return display.value += '4'; },
     'five': () => display.value += '5',
     'six': () => display.value += '6',
     'seven': () => display.value += '7',
@@ -52,11 +52,17 @@ function equality() {
 
 
 // Выполнить код после полной загрузки документа
+// (К объекту document привязывается слушатель события "DOMContentLoaded".
+//  После формирования структуры документа тот привязывает к кнопкам
+//  калькулятора соответствующие им функции)
 document.addEventListener("DOMContentLoaded", function(event) {
 
+    // (Привязка объекта к переменной)
     display = document.getElementById('display');
 
     // Привязка функций к кнопкам
+    // (Идентификаторы кнопок и привязываемые к ним функции
+    //  берутся из объекта calculatorBinds)
     Object.keys(calculatorBinds)
         .forEach(function (item, i, arr) {
             document.getElementById(item).onclick = calculatorBinds[item];
