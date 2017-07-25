@@ -42,6 +42,8 @@ let rightAssociativity = ['^'];
  * @param data
  * @returns {Number}
  */
+// (Ремонтируются вещи, вроде 0.1+0.2=0.30000000000000004
+//  периодические возникающие в JS. Я бы увеличила точность до toFixed(15) )
 function toFloat(data) {
     return parseFloat(parseFloat(data).toFixed(10));
 }
@@ -62,6 +64,8 @@ function isNumber(data) {
  * @param data
  * @returns {boolean}
  */
+// (Если переданный в функцию символ есть в объекте операторов calcMethods,
+//  то возвращается true, иначе false)
 function isOperator(data) {
     return Object.keys(calcMethods).indexOf(data) > -1;
 }

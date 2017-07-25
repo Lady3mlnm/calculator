@@ -83,7 +83,7 @@ function logarithmE(x) {   // Мальвина
   if (x<=0) {
     alert('Ошибка! Нельзя взять логарифм от переменной со значением меньшим или равным 0');
     return 'ERROR'; }
-  return Math.log(x1);
+  return Math.log(x);
 }
 
 //Взятие десятичного логарифма
