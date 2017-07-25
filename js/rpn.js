@@ -293,7 +293,7 @@ function calculateFormat(data) {
     data = data.replace(/^[\s]*-[\s]*\(/, '0 - (');
 
     // (И отдельно обрабатываем случаи с выражениями '(-(' )
-    data = data.replace(/\([\s]*-[\s]*\(/g, '0 - (');
+    data = data.replace(/\([\s]*-[\s]*\(/g, '( 0 - (');
 
     // (Метод 'trim' удаляет с концов строки пробелы)
     return data.trim();
