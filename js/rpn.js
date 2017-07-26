@@ -22,6 +22,7 @@ let calcMethods = {
 /**
  * Вес операции
  */
+// (Помещение скобок в этот объект излишне)
 let opWeight = {
     '^': 4,
     '*': 3, '/': 3,
@@ -34,6 +35,8 @@ let opWeight = {
  * Право-ассоциированные операторы
  * @type {string[]}
  */
+ // (Массив с перечнем операций из объекта opWeight, имеющих максимальный приоритет.
+ //  В данный момент таких операций всего одна - '^'. )
 let rightAssociativity = ['^'];
 
 
@@ -55,7 +58,7 @@ function toFloat(data) {
  * @returns {boolean}
  */
 function isNumber(data) {
-    return /^[-]?([\d]+|[\d]+\.[\d]+)$/.test(data);
+    return /^[-]?([\d]+|[\d]+\.|[\d]+\.[\d]+)$/.test(data);
 }
 
 
@@ -78,12 +81,16 @@ function isOperator(data) {
  */
 function RPN(data) {
 
-    // Стек
+    // Стек (используемый для временного хранения операторов)
     let stack = [];
+    // (Прикрепляем к массиву-стеку stack метод last,
+    //  который который возвращает последний элемент этого стека )
     stack.last = () => stack[stack.length - 1];
 
+    // (Основной стек, который возвращается из функции)
     let output = [];
 
+    // (Последовательно рассматриваем каждый элемент полученного массива)
     for (let i = 0; data[i] !== undefined; i++) {
 
         if (isNumber(data[i])) {
@@ -94,18 +101,20 @@ function RPN(data) {
 
             // Объявляем формулу сравнения в зависимости от
             // ассоциативности текущей операции
+            // (перемудрено)
             let opCompare = rightAssociativity.indexOf(data[i]) > -1 ?
                 () => opWeight[stack.last()] > opWeight[data[i]] :
                 () => opWeight[stack.last()] >= opWeight[data[i]];
 
-            // Переносим элементы из стека в выходной массив
+            // Переносим элементы из временного стека в выходной
             while (stack.length > 0 && opCompare())
                 output.push(stack.pop());
-
+            
+            // Помещаем текущий элемент на хранение во временный стек
             stack.push(data[i]);
 
         } else if (data[i] === '(') {
-            // Заносим в стек
+            // Заносим '(' в стек
             stack.push(data[i]);
 
         } else if (data[i] === ')') {
@@ -114,7 +123,10 @@ function RPN(data) {
 
             while (stack.length > 0) {
                 operator = stack.pop();
-                if (operator !== '(') output.push(operator); else break;
+                if (operator !== '(')
+                    output.push(operator);
+                else
+                    break;
             }
 
         } else throw 'ERROR: Incorrect expression';
@@ -143,7 +155,7 @@ function rRPN(data, stack) {
     // стека без его удаления
     stack.last = () => stack[stack.length - 1];
 
-    // Если число то переходим в следующему элементу данных
+    // Если число, то переходим в следующему элементу данных
     if (isNumber(data[0]))
         return [data[0]].concat(rRPN(data.slice(1), stack));
 
@@ -202,18 +214,29 @@ function rRPN(data, stack) {
 function calculate(exp) {
 
     let stack = [];
+    // (Прикрепляем к массиву-стеку stack метод pushFloat,
+    //  который получает строку, переводит её в число,
+    //  чуть округляет то для избавления от ошибок вычисления
+    //  и помещает в конец массива-стека stack )
     stack.pushFloat =
         value => stack.push(parseFloat(parseFloat(value).toFixed(10)));
 
     // Если выражение не задано
+    // (то генерируем ошибку с пояснительным текстом)
     if (!exp) throw "ERROR: Expression is not specified";
 
     // Преобразование выражения в обратную польскую нотацию
     // let data = rRPN(exp.split(/[\s]+/), []);
     let data = RPN(exp.split(/[\s]+/));
 
+    // (Выводим в лог получившуюся польскую запись)
     console.log(data);
 
+    // (идём по массиву data,
+    //  в случае обнаружения числа заносим его в массив-стек stack,
+    //  в случае обнаружения оператора изымаем из стека два последних числа,
+    //  производим с ними операцию, прописанную в объекте calcMethods и
+    //  помещаем результат в конец стека stack )
     data.forEach((item, i, arr) => {
 
         if (isOperator(item)) {
@@ -225,11 +248,14 @@ function calculate(exp) {
 
             // Запускаем расчёты
             stack.pushFloat(
-                calcMethods[item](stack.pop(), stack.pop())
+                calcMethods[item](parseFloat(stack.pop()), parseFloat(stack.pop()))
             );
 
         } else if (isNumber(item)) {
             // Заносим числа сразу в стек
+            // (Целесообразнее использовать прямой метод stack.push,
+            //  т.к. арифметической операции нет,
+            //  следовательно, ошибки округления возникнуть не может)
             stack.pushFloat(item);
 
         } else throw 'ERROR: Unknown symbols';
@@ -237,6 +263,7 @@ function calculate(exp) {
     });
 
     // Если в стеке остался не один операнд
+    // (то генерируем ошибку с пояснительным текстом)
     if (stack.length > 1)
         throw 'ERROR: Few operators in the stack';
 
@@ -294,6 +321,10 @@ function calculateFormat(data) {
 
     // (И отдельно обрабатываем случаи с выражениями '(-(' )
     data = data.replace(/\([\s]*-[\s]*\(/g, '( 0 - (');
+    
+    // (Если при записи дробных чисел использованы запятые,
+    //  то они интерпретируются как точки )
+    data = data.replace(/,/g, '.');
 
     // (Метод 'trim' удаляет с концов строки пробелы)
     return data.trim();
