@@ -12,7 +12,7 @@
     }
     nav>a {      /* стиль непостредственно вкладок */
       display: inline-block;
-      width: 120px;
+      width: 140px;
       text-align: center;
       font-size: 1.25em;
       text-decoration: none;
@@ -34,7 +34,7 @@
     // Нельзя удовлетвориться простым прописание значения в свойстве src тега iframe,
     // поскольку содержимое iframe при перезагрузке сохраняется.
     function fInitialization() {
-      document.getElementsByTagName('iframe')[0].src='calculator2.html';
+      document.getElementsByTagName('iframe')[0].src='calculator3.html';
       console.log('Initialization is done');
     }
     // изменяем местоположение стиля "активной вкладки"
@@ -54,8 +54,9 @@
 <!-- Панель навигации -->
 <nav id='navBar'>
   <a href='calculator1.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 1</a>
-  <a href='calculator2.html' target='mainFrame' class='active' onclick='changeTab(this);'>Интерфейс 2</a>
-  <a href='calculator3.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 3</a>
+  <a href='calculator2.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 2</a>
+  <a href='calculator3.html' target='mainFrame' title="калькулятор Нэнси" onclick='changeTab(this);' class='active'>Интерфейс 3</a>
+  <a href='calculator3-m.html' target='mainFrame' title="модификация калькулятора Нэнси" onclick='changeTab(this);'>Интерфейс 3m</a>
   <a href='calculator4.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 4</a>
 </nav>
 

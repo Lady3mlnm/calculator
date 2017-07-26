@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор: интерфейс 2</title>
+    <link rel="stylesheet" href="css/calculator3-m.css">
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [ ['$','$'] ]}});
+    </script>
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/javascript" src="js/rpn-m.js" defer></script>
+    <script type="text/javascript" src="js/calculator3-m.js" defer></script>
+    <script type="text/javascript" src="js/tests/rpn.test.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+
+    <div id="header">
+        <h1>Калькулятор</h1>
+    </div>
+
+    <div id="calculator">
+
+        <input id="display" type="text" class="calculator-display">
+
+        <div class="calculator-ext">
+            <button id="lbracket">(</button>
+            <button id="rbracket">)</button>
+            <button id="power2">$n^2$</button>
+            <button id="powerX">$n^x$</button>
+            <button id="root2">$\sqrt{n}$</button>
+            <button id="rootX">$\sqrt[x]{n}$</button>
+            <button id="logarithmE">$\ln{n}$</button>
+            <button id="logarithmX">$\log_{x}{n}$</button>
+        </div>
+
+        <div class="calculator-nums">
+            <button id="one">1</button>
+            <button id="two">2</button>
+            <button id="three">3</button>
+            <button id="four">4</button>
+            <button id="five">5</button>
+            <button id="six">6</button>
+            <button id="seven">7</button>
+            <button id="eight">8</button>
+            <button id="nine">9</button>
+            <button id="zero">0</button>
+            <button id="delimiter">.</button>
+        </div>
+
+        <div class="calculator-ops">
+            <button id="div">/</button>
+            <button id="mul">*</button>
+            <button id="sub">-</button>
+            <button id="sum">+</button>
+        </div>
+
+        <div class="calculator-ops">
+            <button id="backspace">$\leftarrow$</button>
+            <button id="clear">C</button>
+            <button id="equality">=</button>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        Copyright &copy; 2017
+    </div>
+
+</div>
+
+</body>
+</html>
