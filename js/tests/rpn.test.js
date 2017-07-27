@@ -19,6 +19,7 @@ console.log(calculate(calculateFormat("5*3/2")),' vs 7.5');
 console.log(calculate(calculateFormat("13+11+5*3/2-7")),' vs 24.5');
 console.log(calculate(calculateFormat("13.+11.+5*3/2,-7,+1.")),' vs 25.5');
 console.log(calculate(calculateFormat(".3+.2+,8*.45/.12/,9-.5--,9")),' vs 4.2333333333333333');
+console.log(calculate(calculateFormat("a_ )'-,5+6.6'sd( _")),' vs 6.1');
 
 console.groupEnd();
 console.log("Testing done");
