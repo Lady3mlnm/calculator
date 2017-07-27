@@ -30,6 +30,15 @@ let opWeight = {
 
 
 /**
+ * Право-ассоциированные операторы
+ * @type {string[]}
+ */
+ // (Массив с перечнем операций из объекта opWeight, имеющих максимальный приоритет.
+ //  В данный момент таких операций всего одна - '^'. )
+let rightAssociativity = ['^'];
+
+
+/**
  * Преобразование в число с плавающей точкой
  * @param data
  * @returns {Number}
@@ -88,10 +97,20 @@ function RPN(data) {
             output.push(data[i]);
 
         } else if (isOperator(t)) {
-            // Переносим элементы из стека в выходной массив
-            while (stack.length > 0 && opWeight[stack.last()] >= opWeight[t] )
+
+            // Объявляем формулу сравнения в зависимости от
+            // ассоциативности текущей операции
+            // (перемудрено)
+            let opCompare = (rightAssociativity.indexOf(data[i]) > -1) ?
+                function() { return opWeight[stack.last()] > opWeight[data[i]] } :
+                function() { return opWeight[stack.last()] >= opWeight[data[i]] };
+
+            // Переносим элементы из временного стека в выходной
+            while (stack.length > 0 && opCompare())
                 output.push(stack.pop());
-            stack.push(t);
+            
+            // Помещаем текущий элемент на хранение во временный стек
+            stack.push(data[i]);
 
         } else if (t === '(') {
             // Заносим в стек
@@ -163,11 +182,11 @@ console.info(data);
                 throw 'ERROR: No data in the stack for the operation';
 
             // Запускаем расчёты
-            stack.pushFloat( calcMethods[item](parseFloat(stack.pop()), parseFloat(stack.pop())) );
+            stack.pushFloat( calcMethods[item](stack.pop(), stack.pop()) );
 
         } else if (isNumber(item)) {
             // Заносим числа сразу в стек
-            stack.push(item);
+            stack.pushFloat(item);
 
         } else throw 'ERROR: Unknown symbols'; }
 
@@ -186,6 +205,14 @@ console.info(data);
  * @return {*}
  */
 function calculateFormat(data) {
+    // Если при записи дробных чисел использованы запятые,
+    // то они интерпретируются как точки )
+    data = data.replace(/,/g, '.');
+
+    // Если пользователь решил ввёл числа вроде '.3' или '-.2',
+    // то перед точкой вставляется '0'
+    data = data.replace(/^\./,'0.');
+    data = data.replace(/([^\d])(\.[\d])/g, '$10$2');
 
     // Составляем строку из операций, которые будут обрабатываться.
     // Перечень операций берём из объекта calcMethods
@@ -216,10 +243,6 @@ function calculateFormat(data) {
 
     // И отдельно обрабатываем случаи с выражениями '(-('
     data = data.replace(/\([\s]*-[\s]*\(/g, '( 0 - (');
-
-    // (Если при записи дробных чисел использованы запятые,
-    //  то они интерпретируются как точки )
-    data = data.replace(/,/g, '.');
 
     // Метод 'trim' удаляет с концов строки пробелы
     return data.trim();

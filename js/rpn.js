@@ -248,14 +248,11 @@ console.log(exp);
 
             // Запускаем расчёты
             stack.pushFloat(
-                calcMethods[item](parseFloat(stack.pop()), parseFloat(stack.pop()))
+                calcMethods[item](stack.pop(), stack.pop())
             );
 
         } else if (isNumber(item)) {
             // Заносим числа сразу в стек
-            // (Целесообразнее использовать прямой метод stack.push,
-            //  т.к. арифметической операции нет,
-            //  следовательно, ошибки округления возникнуть не может)
             stack.pushFloat(item);
 
         } else throw 'ERROR: Unknown symbols';
@@ -277,6 +274,14 @@ console.log(exp);
  * @return {*}
  */
 function calculateFormat(data) {
+    // (Если при записи дробных чисел использованы запятые,
+    //  то они интерпретируются как точки )
+    data = data.replace(/,/g, '.');
+
+    // (Если пользователь решил ввёл числа вроде '.3' или '-.2',
+    //  то перед точкой вставляется '0' )
+    data = data.replace(/^\./,'0.');
+    data = data.replace(/([^\d])(\.[\d])/g, '$10$2');
 
     // Экранирование выражений для использования
     // в регулярных выражениях
@@ -324,10 +329,6 @@ function calculateFormat(data) {
     // (И отдельно обрабатываем случаи с выражениями '(-(' )
     data = data.replace(/\([\s]*-[\s]*\(/g, '( 0 - (');
     
-    // (Если при записи дробных чисел использованы запятые,
-    //  то они интерпретируются как точки )
-    data = data.replace(/,/g, '.');
-
     // (Метод 'trim' удаляет с концов строки пробелы)
     return data.trim();
 }
