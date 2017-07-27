@@ -54,20 +54,26 @@ function equality() {
 }
 
 
-// Выполнить код после полной загрузки документа
-// (К объекту document привязывается слушатель события "DOMContentLoaded".
-//  После формирования структуры документа тот привязывает к кнопкам
-//  калькулятора соответствующие им функции)
+
+// К объекту document привязываем слушатель события "DOMContentLoaded".
+// После формирования структуры документа тот запускает функцию,
+// выполняющую ряд действий
 document.addEventListener("DOMContentLoaded", function(event) {
 
-    // (Привязка объектов к переменным)
+    // Привязываем объекты к переменным
     display = document.getElementById('display');
     logWindow = document.getElementById('logWindow');
 
+    // Передаём фокус на поле ввода калькулятора
+    display.focus();
+
+    // Формируем метод, позволяющий выводить сообщения в лог-окно.
+    // Количество параметров может быть любым,
+    // каждый выводится в отдельной строке
     logWindow.out = function() {
 
         // Выводим полученные функцией аргументы,
-        // берём их из свойства arguments.
+        // беря их из свойства arguments.
         // Благодаря этому приёму мы можем динамически определить число переданных параметров
         for (let i=0; i<arguments.length; i++)
             logWindow.innerHTML += Array.isArray(arguments[i]) ? '<br>'+arguments[i].join(' &nbsp;') : '<br>'+arguments[i];
@@ -76,9 +82,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
         logWindow.scrollTop = logWindow.scrollHeight - logWindow.clientHeight;
     }
 
-    // Привязка функций к кнопкам
-    // (Идентификаторы кнопок и привязываемые к ним функции
-    //  берутся из объекта calculatorBinds)
+    // Привязываем функции к кнопкам.
+    // Идентификаторы кнопок и соответствующие им функции
+    // берутся из объекта calculatorBinds
     Object.keys(calculatorBinds)
         .forEach(function (item, i, arr) {
             document.getElementById(item).onclick = calculatorBinds[item];
