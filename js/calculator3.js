@@ -6,6 +6,8 @@
 // Экран вывода информации
 let display;
 
+// Вывод информации в лог-окно
+let logWindow;
 
 let calculatorBinds = {
     'one': () => display.value += '1',
@@ -44,7 +46,8 @@ function equality() {
     try {
         display.value = calculate(calculateFormat(display.value));
     } catch (err) {
-        console.log(err);
+        logWindow.out('<span style="color: red">'+err+'</span>');
+        console.error(err);
         alert('Выражение не может быть вычислено');
     }
 
@@ -57,8 +60,21 @@ function equality() {
 //  калькулятора соответствующие им функции)
 document.addEventListener("DOMContentLoaded", function(event) {
 
-    // (Привязка объекта к переменной)
+    // (Привязка объектов к переменным)
     display = document.getElementById('display');
+    logWindow = document.getElementById('logWindow');
+
+    logWindow.out = function() {
+
+        // Выводим полученные функцией аргументы,
+        // берём их из свойства arguments.
+        // Благодаря этому приёму мы можем динамически определить число переданных параметров
+        for (let i=0; i<arguments.length; i++)
+            logWindow.innerHTML += Array.isArray(arguments[i]) ? '<br>'+arguments[i].join(' &nbsp;') : '<br>'+arguments[i];
+
+        // Перематываем окно вниз
+        logWindow.scrollTop = logWindow.scrollHeight - logWindow.clientHeight;
+    }
 
     // Привязка функций к кнопкам
     // (Идентификаторы кнопок и привязываемые к ним функции

@@ -224,13 +224,16 @@ function calculate(exp) {
     // Если выражение не задано
     // (то генерируем ошибку с пояснительным текстом)
     if (!exp) throw "ERROR: Expression is not specified";
-console.log(exp);
+
+    // (Выводим в лог-окно отформатированную строку)
+    logWindow.out('','Воспринятое выражение:',exp);
+
     // Преобразование выражения в обратную польскую нотацию
     // let data = rRPN(exp.split(/[\s]+/), []);
     let data = RPN(exp.split(/[\s]+/));
 
-    // (Выводим в лог получившуюся польскую запись)
-    console.log(data);
+    // (Выводим в лог-окно получившуюся обратную польскую запись)
+    logWindow.out('Обратная польская запись:',data);
 
     // (идём по массиву data,
     //  в случае обнаружения числа заносим его в массив-стек stack,
@@ -264,6 +267,8 @@ console.log(exp);
     if (stack.length > 1)
         throw 'ERROR: Few operators in the stack';
 
+    // (Выводим в лог-окно ответ)
+    logWindow.out('Ответ: &nbsp;'+stack[0]);
     return stack.pop();
 }
 
@@ -338,7 +343,10 @@ function calculateFormat(data) {
 
     // (И отдельно обрабатываем случаи с выражениями '(-(' )
     data = data.replace(/\([\s]*-[\s]*\(/g, '( 0 - (');
-    
+
+    // (Там, где 2 или более пробелов, схлопываем их)
+    data = data.replace(/[\s]{2,}/g, ' ');
+
     // (Метод 'trim' удаляет с концов строки пробелы)
     return data.trim();
 }

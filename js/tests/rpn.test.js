@@ -5,6 +5,8 @@
 // Для вычисления эталонных значений использовался калькулятор https://www.calculator-pro.ru/
 // Обращу внимание, что тестовые числа лучше выводить как строки, а не как числа,
 // поскольку даже при выводе в консоль имеет место округление
+
+document.addEventListener("DOMContentLoaded", function(event) {
 console.group("Test block");
 
 console.log(calculate("1"),' vs 1');
@@ -23,3 +25,4 @@ console.log(calculate(calculateFormat("a_ )'-,5+6.6'sd( _")),' vs 6.1');
 
 console.groupEnd();
 console.log("Testing done");
+});

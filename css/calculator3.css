@@ -112,3 +112,28 @@ body {
     height: 102px;
 }
 
+#logWindowHeader {
+    margin: 30px 0 3px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: dimgray;
+}
+
+#logWindow {
+    width: 428px;
+    height: 184px;
+    border: solid 1px silver;
+    background-color: whitesmoke;
+    border-radius: 3px;
+    padding: 0 3px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: dimgray;
+    overflow-y: auto;
+}
+
+#calculator .calculator-ext button[disabled] {
+    background: lightgrey;
+    border: solid 1px darkgray;
+    color: grey;
+}
