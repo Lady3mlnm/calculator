@@ -108,12 +108,19 @@ display.focus();
  * Задаём функцию сохранения содержимого окна ввода в память
  */
 function fMemoryState() {
-    sessionStorage.memory = display.value;
+    
+    let selStart = display.selectionStart;
+    let selEnd = display.selectionEnd;
+    
+    sessionStorage.memory = selStart == selEnd ? display.value : display.value.slice(selStart,selEnd);
+     
     document.getElementById('memoryRead').title = sessionStorage.memory;
     if (sessionStorage.memory != '')
-        logWindow.out('<br><span style="color: blue">'+sessionStorage.memory+' &nbsp;сохранено в памяти</span>');
+        logWindow.out('<br><span style="color: blue">память &nbsp;&larr;&nbsp; '+sessionStorage.memory+'</span>');
     else
         logWindow.out('<br><span style="color: blue">Очистка памяти</span>');
+    
+    display.focus();
 }
 
 
@@ -123,7 +130,7 @@ function fMemoryState() {
 function fMemoryRead() {
     if (sessionStorage.memory !== undefined && sessionStorage.memory !== '') {
         displayInput(sessionStorage.memory);
-        logWindow.out('<br><span style="color: blue">'+sessionStorage.memory+' &nbsp;помещено в окно ввода</span>');
+        logWindow.out('<br><span style="color: blue">'+sessionStorage.memory+' &nbsp;&rarr;&nbsp; дисплей</span>');
     } else 
         logWindow.out('<br><span style="color: blue">Память пуста</span>');
 }
