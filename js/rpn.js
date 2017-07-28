@@ -46,9 +46,9 @@ let rightAssociativity = ['^'];
  * @returns {Number}
  */
 // (Ремонтируются вещи, вроде 0.1+0.2=0.30000000000000004
-//  периодические возникающие в JS. Я бы увеличила точность до toFixed(15) )
+//  периодические возникающие в JS )
 function toFloat(data) {
-    return parseFloat(parseFloat(data).toFixed(10));
+    return parseFloat(parseFloat(data).toFixed(15));
 }
 
 
@@ -219,7 +219,7 @@ function calculate(exp) {
     //  чуть округляет то для избавления от ошибок вычисления
     //  и помещает в конец массива-стека stack )
     stack.pushFloat =
-        value => stack.push(parseFloat(parseFloat(value).toFixed(10)));
+        value => stack.push(parseFloat(parseFloat(value).toFixed(15)));
 
     // Если выражение не задано
     // (то генерируем ошибку с пояснительным текстом)
@@ -266,6 +266,11 @@ function calculate(exp) {
     // (то генерируем ошибку с пояснительным текстом)
     if (stack.length > 1)
         throw 'ERROR: Few operators in the stack';
+
+    // Округляем ответ до меньшей точности.
+    // Если этого не сделать, то, к примеру, 
+    // вычисление кубического корня из 1000 вернёт 9.999999999999975
+    stack[0] = parseFloat(stack[0].toFixed(12));
 
     // (Выводим в лог-окно ответ)
     logWindow.out('Ответ: &nbsp;'+stack[0]);
