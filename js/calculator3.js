@@ -5,6 +5,7 @@
 
 // Экран вывода информации
 let display = document.getElementById('display');
+display.value = '';
 
 // Вывод информации в лог-окно
 let logWindow = document.getElementById('logWindow');
@@ -14,27 +15,27 @@ if (sessionStorage.memory)
     document.getElementById('memoryRead').title = sessionStorage.memory;
 
 let calculatorBinds = {
-    'one': () => display.value += '1',
-    'two': () => display.value += '2',
-    'three': function() { return display.value += '3'; }, //(Более понятная запись сокращений)
-    'four': function() { return display.value += '4'; },
-    'five': () => display.value += '5',
-    'six': () => display.value += '6',
-    'seven': () => display.value += '7',
-    'eight': () => display.value += '8',
-    'nine': () => display.value += '9',
-    'zero': () => display.value += '0',
-    'delimiter': () => display.value += '.',
-    'backspace': () => display.value = display.value.slice(0, -1),
+    'one': () => displayInput('1'),
+    'two': () => displayInput('2'),
+    'three': () => displayInput('3'),
+    'four': () => displayInput('4'),
+    'five': () => displayInput('5'),
+    'six': () => displayInput('6'),
+    'seven': () => displayInput('7'),
+    'eight': () => displayInput('8'),
+    'nine': () => displayInput('9'),
+    'zero': () => displayInput('0'),
+    'delimiter': () => displayInput('.'),
+    'backspace': () => displayDelete(),
     'clear': () => display.value = '',
-    'div': () => display.value += '/',
-    'mul': () => display.value += '*',
-    'sub': () => display.value += '-',
-    'sum': () => display.value += '+',
-    'lbracket': () => display.value += '(',
-    'rbracket': () => display.value += ')',
-    'power2': () => display.value += '^2',
-    'powerX': () => display.value += '^',
+    'div': () => displayInput('/'),
+    'mul': () => displayInput('*'),
+    'sub': () => displayInput('-'),
+    'sum': () => displayInput('+'),
+    'lbracket': () => displayInput('('),
+    'rbracket': () => displayInput(')'),
+    'power2': () => displayInput('^2'),
+    'powerX': () => displayInput('^'),
     'root2': () => alert("Not implemented"),
     'rootX': () => alert("Not implemented"),
     'memoryState': fMemoryState,
@@ -50,6 +51,7 @@ function equality() {
 
     try {
         display.value = calculate(calculateFormat(display.value));
+        display.select();
         display.focus();
     } catch (err) {
         logWindow.out('<span style="color: red">'+err+'</span>');
@@ -120,8 +122,42 @@ function fMemoryState() {
  */
 function fMemoryRead() {
     if (sessionStorage.memory !== undefined && sessionStorage.memory !== '') {
-        display.value += sessionStorage.memory;
+        displayInput(sessionStorage.memory);
         logWindow.out('<br><span style="color: blue">'+sessionStorage.memory+' &nbsp;помещено в окно ввода</span>');
     } else 
         logWindow.out('<br><span style="color: blue">Память пуста</span>');
+}
+
+
+/**
+ * Задаём функцию ввода нового символа в окно ввода
+ */
+function displayInput(newCh) {
+
+    let str = display.value;
+    let selStart = display.selectionStart;
+    display.value = str.slice(0,selStart)+newCh+str.slice(display.selectionEnd,str.length);
+    display.selectionEnd = selStart+newCh.length;
+    display.focus(); 
+}
+
+
+/**
+ * Задаём функцию удаления части окна ввода
+ */
+function displayDelete() {
+
+    let str = display.value;
+    let selStart = display.selectionStart;
+    let selEnd = display.selectionEnd;
+    
+    if (selEnd > 0 && selStart == selEnd) {
+        display.value = str.slice(0,selStart-1)+str.slice(display.selectionEnd,str.length);
+        display.selectionEnd = selStart-1;
+    } else {
+        display.value = str.slice(0,selStart)+str.slice(selEnd,str.length);
+        display.selectionEnd = selStart;
+    }
+
+    display.focus();  
 }
