@@ -4,10 +4,14 @@
  */
 
 // Экран вывода информации
-let display;
+let display = document.getElementById('display');
 
 // Вывод информации в лог-окно
-let logWindow;
+let logWindow = document.getElementById('logWindow');
+
+// Если в sessionStorage.memory сохранено значение, то помещаем его во всплывающую посказку
+if (sessionStorage.memory)
+    document.getElementById('memoryRead').title = sessionStorage.memory;
 
 let calculatorBinds = {
     'one': () => display.value += '1',
@@ -33,10 +37,11 @@ let calculatorBinds = {
     'powerX': () => display.value += '^',
     'root2': () => alert("Not implemented"),
     'rootX': () => alert("Not implemented"),
-    'logarithmE': () => alert("Not implemented"),
-    'logarithmX': () => alert("Not implemented"),
+    'memoryState': fMemoryState,
+    'memoryRead': fMemoryRead,
     'equality' : equality,
 };
+
 
 /**
  * Действие по нажатию кнопки "равно"
@@ -45,6 +50,7 @@ function equality() {
 
     try {
         display.value = calculate(calculateFormat(display.value));
+        display.focus();
     } catch (err) {
         logWindow.out('<span style="color: red">'+err+'</span>');
         console.error(err);
@@ -54,41 +60,54 @@ function equality() {
 }
 
 
+// Прикрепление к кнопкам функций-обработчиков,
+// прописанных нами в объекте calculatorBinds.
+// Обращаю внимание, что в отличие от Нэнсиного кода,
+// этот выполняется уже после загрузки всего документа
+for (let t in calculatorBinds) 
+    document.getElementById(t).addEventListener('click', calculatorBinds[t]);
 
-// К объекту document привязываем слушатель события "DOMContentLoaded".
-// После формирования структуры документа тот запускает функцию,
-// выполняющую ряд действий
-document.addEventListener("DOMContentLoaded", function(event) {
 
-    // Привязываем объекты к переменным
-    display = document.getElementById('display');
-    logWindow = document.getElementById('logWindow');
+// Формируем метод, позволяющий выводить сообщения в лог-окно.
+// Количество параметров может быть любым,
+// каждый выводится в отдельной строке
+logWindow.out = function() {
 
-    // Передаём фокус на поле ввода калькулятора
-    display.focus();
+    // Выводим полученные функцией аргументы,
+    // беря их из свойства arguments.
+    // Благодаря этому приёму мы можем динамически определить число переданных параметров
+    for (let i=0; i<arguments.length; i++)
+        logWindow.innerHTML += Array.isArray(arguments[i]) ? '<br>'+arguments[i].join(' &nbsp;') : '<br>'+arguments[i];
 
-    // Формируем метод, позволяющий выводить сообщения в лог-окно.
-    // Количество параметров может быть любым,
-    // каждый выводится в отдельной строке
-    logWindow.out = function() {
+    // Перематываем окно вниз
+    logWindow.scrollTop = logWindow.scrollHeight - logWindow.clientHeight;
+}
 
-        // Выводим полученные функцией аргументы,
-        // беря их из свойства arguments.
-        // Благодаря этому приёму мы можем динамически определить число переданных параметров
-        for (let i=0; i<arguments.length; i++)
-            logWindow.innerHTML += Array.isArray(arguments[i]) ? '<br>'+arguments[i].join(' &nbsp;') : '<br>'+arguments[i];
 
-        // Перематываем окно вниз
-        logWindow.scrollTop = logWindow.scrollHeight - logWindow.clientHeight;
-    }
+// Передаём фокус на поле ввода калькулятора
+display.focus();
 
-    // Привязываем функции к кнопкам.
-    // Идентификаторы кнопок и соответствующие им функции
-    // берутся из объекта calculatorBinds
-    Object.keys(calculatorBinds)
-        .forEach(function (item, i, arr) {
-            document.getElementById(item).onclick = calculatorBinds[item];
-        }
-    );
 
-});
+/**
+ * Задаём функцию сохранения содержимого окна ввода в память
+ */
+function fMemoryState() {
+    sessionStorage.memory = display.value;
+    document.getElementById('memoryRead').title = sessionStorage.memory;
+    if (sessionStorage.memory != '')
+        logWindow.out('<br><span style="color: blue">'+sessionStorage.memory+' &nbsp;сохранено в памяти</span>');
+    else
+        logWindow.out('<br><span style="color: blue">Очистка памяти</span>');
+}
+
+
+/**
+ * Задаём функцию помещения содержимого памяти в окно ввода
+ */
+function fMemoryRead() {
+    if (sessionStorage.memory !== undefined && sessionStorage.memory !== '') {
+        display.value += sessionStorage.memory;
+        logWindow.out('<br><span style="color: blue">'+sessionStorage.memory+' &nbsp;помещено в окно ввода</span>');
+    } else 
+        logWindow.out('<br><span style="color: blue">Память пуста</span>');
+}

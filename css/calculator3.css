@@ -132,6 +132,18 @@ body {
     overflow-y: auto;
 }
 
+button#memoryState, button#memoryRead {
+    border: solid 1px #79ceff; //
+    background: #79ceff;
+    background: linear-gradient(to top, #79ceff, #c0e0ff);
+}
+
+button#memoryState:hover, button#memoryRead:hover {
+    background: #075983;
+    background: linear-gradient(to top, #075983, #077dba);
+    color: white;
+}
+
 #calculator .calculator-ext button[disabled] {
     background: lightgrey;
     border: solid 1px darkgray;

@@ -10,9 +10,9 @@
     <script type="text/javascript" async
             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
-    <script type="text/javascript" src="js/rpn.js"></script>
-    <script type="text/javascript" src="js/calculator3.js"></script>
-    <!-- <script type="text/javascript" src="js/tests/rpn.test.js"></script> -->
+    <script type="text/javascript" src="js/rpn.js" defer></script>
+    <script type="text/javascript" src="js/calculator3.js" defer></script>
+    <!-- <script type="text/javascript" src="js/tests/rpn.test.js" defer></script> -->
 </head>
 <body>
 
@@ -33,8 +33,10 @@
             <button id="powerX">$n^x$</button>
             <button id="root2" disabled>$\sqrt{n}$</button>
             <button id="rootX" disabled>$\sqrt[x]{n}$</button>
-            <button id="logarithmE" disabled>$\ln{n}$</button>
-            <button id="logarithmX" disabled>$\log_{x}{n}$</button>
+            <button id="memoryState">MS</button>
+            <button id="memoryRead">MR</button>
+            <!-- <button id="logarithmE" disabled>$\ln{n}$</button> -->
+            <!-- <button id="logarithmX" disabled>$\log_{x}{n}$</button> -->
         </div>
 
         <div class="calculator-nums">
