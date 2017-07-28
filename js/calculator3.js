@@ -68,6 +68,20 @@ for (let t in calculatorBinds)
     document.getElementById(t).addEventListener('click', calculatorBinds[t]);
 
 
+// Добавляем к полю ввода обработчик нажатия клавиш
+display.addEventListener('keypress', function(e) {
+    
+  if (e.keyCode==13 || e.charCode==61) {
+      
+    //останавливаем дальнейшую обработку нажатия, чтобы '=' не пропечатывалось
+    e.preventDefault();
+    
+    //запускаем функцию вычисления
+    equality();
+  }
+});
+
+
 // Формируем метод, позволяющий выводить сообщения в лог-окно.
 // Количество параметров может быть любым,
 // каждый выводится в отдельной строке
