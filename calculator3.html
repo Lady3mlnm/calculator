@@ -10,6 +10,7 @@
     <script type="text/javascript" async
             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
+    <script type="text/javascript" src="js/operations3.js" defer></script>
     <script type="text/javascript" src="js/rpn.js" defer></script>
     <script type="text/javascript" src="js/calculator3.js" defer></script>
     <!-- <script type="text/javascript" src="js/tests/rpn.test.js" defer></script> -->
@@ -31,12 +32,10 @@
             <button id="rbracket">)</button>
             <button id="power2">$n^2$</button>
             <button id="powerX">$n^x$</button>
-            <button id="root2" disabled>$\sqrt{n}$</button>
-            <button id="rootX" disabled>$\sqrt[x]{n}$</button>
+            <button id="root2">$\sqrt{n}$</button>
+            <button id="root3">$\sqrt[3]{n}$</button>
             <button id="memoryState">MS</button>
             <button id="memoryRead">MR</button>
-            <!-- <button id="logarithmE" disabled>$\ln{n}$</button> -->
-            <!-- <button id="logarithmX" disabled>$\log_{x}{n}$</button> -->
         </div>
 
         <div class="calculator-nums">
@@ -72,8 +71,36 @@
         Copyright &copy; 2017
     </div>
 
-    <h3 id="logWindowHeader">Лог операций:</h3>
-    <div id="logWindow" readonly></div>
+<br>
+<button id="sin">$\sin$</button>
+<button id="cos">$\cos$</button>
+<button id="tg">$tg$</button>
+<button id="arcsin">$\arcsin$</button>
+<button id="arccos">$\arccos$</button>
+<button id="arctg">$arctg$</button>
+<button id="logarithm2">$\log_{2}$</button>
+<button id="logarithmE">$\ln$</button>
+<button id="logarithm10">$\lg$</button>
+<button id="factorial">$!$</button>
+<button id="pi">$\pi$</button>
+<button id="euler">$e$</button>
+
+<br>
+<label for='unitRad'><input type='radio' name='unit' id='unitRad' value='rad'> $rad$</label>
+<label for='unitGrad'><input type='radio' name='unit' id='unitGrad' value='grad' checked> $grad$</label>
+<br>
+<input type='checkbox' id='tfNote' value='notesContainer'><label for='tfNote'>Заметки</label>
+<input type='checkbox' id='tfLog' value='logContainer' checked><label for='tfLog'>Лог</label>
+
+    <div id='notesContainer'>
+        <h3>Заметки:</h3>
+        <textarea id='noteWindow'></textarea>
+    </div>
+    <div id='logContainer'>
+        <h3>Лог операций:</h3>
+        <div id='logWindow'></div>
+    </div>
+
 </div>
 
 </body>

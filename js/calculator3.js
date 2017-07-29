@@ -3,16 +3,14 @@
  * Date: 12.07.2017
  */
 
+"use strict";
+
+
 // Экран вывода информации
-let display = document.getElementById('display');
-display.value = '';
+let display;
 
-// Вывод информации в лог-окно
-let logWindow = document.getElementById('logWindow');
-
-// Если в sessionStorage.memory сохранено значение, то помещаем его во всплывающую посказку
-if (sessionStorage.memory)
-    document.getElementById('memoryRead').title = sessionStorage.memory;
+// Лог-окно
+let logWindow;
 
 let calculatorBinds = {
     'one': () => displayInput('1'),
@@ -36,11 +34,24 @@ let calculatorBinds = {
     'rbracket': () => displayInput(')'),
     'power2': () => displayInput('^2'),
     'powerX': () => displayInput('^'),
-    'root2': () => alert("Not implemented"),
-    'rootX': () => alert("Not implemented"),
+    'root2': () => displayInput('^0.5'),
+    'root3': () => displayInput('^(1/3)'),
     'memoryState': fMemoryState,
     'memoryRead': fMemoryRead,
     'equality' : equality,
+
+    'sin': () => displayInput('sin '),
+    'cos': () => displayInput('cos '),
+    'tg': () => displayInput('tg '),
+    'arcsin': () => displayInput('arcsin '),
+    'arccos': () => displayInput('arccos '),
+    'arctg': () => displayInput('arctg '),
+    'logarithm2': () => displayInput('log2 '),
+    'logarithmE': () => displayInput('ln '),
+    'logarithm10': () => displayInput('lg '),
+    'factorial': () => displayInput('!'),
+    'pi': () => displayInput('pi'),
+    'euler': () => displayInput('e'),
 };
 
 
@@ -54,40 +65,101 @@ function equality() {
         display.select();
         display.focus();
     } catch (err) {
-        logWindow.out('<span style="color: red">'+err+'</span>');
+        logWindowOut('<span style="color: red">'+err+'</span>');
         console.error(err);
         alert('Выражение не может быть вычислено');
     }
 
 }
 
+// Анонимная самовызывающаяся функция, выполняющаяся при запуске системы
+(function() {
 
-// Прикрепление к кнопкам функций-обработчиков,
-// прописанных нами в объекте calculatorBinds.
-// Обращаю внимание, что в отличие от Нэнсиного кода,
-// этот выполняется уже после загрузки всего документа
-for (let t in calculatorBinds) 
-    document.getElementById(t).addEventListener('click', calculatorBinds[t]);
+    // Привязываем объекты к переменным
+    display = document.getElementById('display');
+    logWindow = document.getElementById('logWindow');
+
+    // Очищаем дисплей
+    // (поскольку при перезагрузке его содержимое сохраняется)
+    display.value = '';
+
+    // Если в sessionStorage.memory сохранено значение, то помещаем его во всплывающую посказку
+    if (sessionStorage.memory)
+        document.getElementById('memoryRead').title = sessionStorage.memory;
+
+    // Если с прошлого сеанса сохранились какие-то заметки,
+    // то загружаем их в поле заметок
+    // и помещаем значок на переключателе
+    if (localStorage.calculatorNote) {
+        document.getElementById('noteWindow').value = localStorage.calculatorNote;
+        document.getElementById('tfNote').checked = true;
+    }
+
+    // Делаем поле заметок и лог видимыми или невидимыми в зависимости от положения
+    // соответствующих переключателей
+    changeField(document.getElementById('tfNote').value, document.getElementById('tfNote').checked);
+    changeField(document.getElementById('tfLog').value, document.getElementById('tfLog').checked);
+
+    // Прикрепление к кнопкам функций-обработчиков,
+    // прописанных нами в объекте calculatorBinds.
+    // Обращаю внимание, что в отличие от Нэнсиного кода,
+    // этот выполняется уже после загрузки всего документа
+    for (let t in calculatorBinds) 
+        document.getElementById(t).addEventListener('click', calculatorBinds[t]);
+
+    // Добавляем к полю ввода обработчик нажатия клавиш
+    display.addEventListener('keypress', function(e) {
+        if (e.keyCode==13 || e.charCode==61) {
+            //останавливаем дальнейшую обработку нажатия, чтобы '=' не пропечатывалось
+            e.preventDefault();
+            //запускаем функцию вычисления
+            equality(); }
+    });
+
+    // Прикрепляем к переключателям слушатели их срабатывания
+    document.getElementById('unitRad').addEventListener('change',function(){
+        changeUnit(this.value) });
+    document.getElementById('unitGrad').addEventListener('change',function(){
+        changeUnit(this.value) });
+    document.getElementById('tfNote').addEventListener('change',function(){
+        changeField(this.value, this.checked) });
+    document.getElementById('tfLog').addEventListener('change',function(){
+        changeField(this.value, this.checked) });
+
+    // Прикрепляем к объекту windows событие,
+    // которое в момент выгрузки сохранит содержание поле заметок или
+    // уничтожит в памяти ранее имевшиеся там записи
+    window.addEventListener('beforeunload', function() {
+        if (document.getElementById('noteWindow').value.trim() !== '')
+            localStorage.calculatorNote = document.getElementById('noteWindow').value;
+        else if (localStorage.calculatorNote)
+            localStorage.removeItem('calculatorNote');
+    });
+
+    // Передаём фокус на поле ввода калькулятора
+    display.focus();
+
+})();
 
 
-// Добавляем к полю ввода обработчик нажатия клавиш
-display.addEventListener('keypress', function(e) {
-    
-  if (e.keyCode==13 || e.charCode==61) {
-      
-    //останавливаем дальнейшую обработку нажатия, чтобы '=' не пропечатывалось
-    e.preventDefault();
-    
-    //запускаем функцию вычисления
-    equality();
-  }
-});
+function changeUnit(arg) {
+    let str = display.value.trim();
+    if (isNumber(str))
+        display.value = arg == 'rad' ?
+            gradRad(parseFloat(str)) :
+            radGrad(parseFloat(str));
+}
+
+
+function changeField(elem, state) {
+    document.getElementById(elem).style.display = state ? 'block' : 'none';
+}
 
 
 // Формируем метод, позволяющий выводить сообщения в лог-окно.
 // Количество параметров может быть любым,
 // каждый выводится в отдельной строке
-logWindow.out = function() {
+function logWindowOut() {
 
     // Выводим полученные функцией аргументы,
     // беря их из свойства arguments.
@@ -100,12 +172,8 @@ logWindow.out = function() {
 }
 
 
-// Передаём фокус на поле ввода калькулятора
-display.focus();
-
-
 /**
- * Задаём функцию сохранения содержимого окна ввода в память
+ * Функция сохранения содержимого окна ввода в память
  */
 function fMemoryState() {
     
@@ -116,23 +184,23 @@ function fMemoryState() {
      
     document.getElementById('memoryRead').title = sessionStorage.memory;
     if (sessionStorage.memory != '')
-        logWindow.out('<br><span style="color: blue">память &nbsp;&larr;&nbsp; '+sessionStorage.memory+'</span>');
+        logWindowOut('<br><span style="color: blue">память &nbsp;&larr;&nbsp; '+sessionStorage.memory+'</span>');
     else
-        logWindow.out('<br><span style="color: blue">Очистка памяти</span>');
+        logWindowOut('<br><span style="color: blue">Очистка памяти</span>');
     
     display.focus();
 }
 
 
 /**
- * Задаём функцию помещения содержимого памяти в окно ввода
+ * Функция помещения содержимого памяти на экран
  */
 function fMemoryRead() {
     if (sessionStorage.memory !== undefined && sessionStorage.memory !== '') {
         displayInput(sessionStorage.memory);
-        logWindow.out('<br><span style="color: blue">'+sessionStorage.memory+' &nbsp;&rarr;&nbsp; дисплей</span>');
+        logWindowOut('<br><span style="color: blue">'+sessionStorage.memory+' &nbsp;&rarr;&nbsp; дисплей</span>');
     } else 
-        logWindow.out('<br><span style="color: blue">Память пуста</span>');
+        logWindowOut('<br><span style="color: blue">Память пуста</span>');
 }
 
 

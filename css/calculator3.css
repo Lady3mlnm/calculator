@@ -8,10 +8,11 @@ body {
 }
 
 .container {
-    position: absolute;
+    /*position: absolute;
     left: 50%;
     top: 10px;
-    margin-left: -208px;
+    margin-left: -208px;*/
+    margin: 10px auto;
     width: 436px;
 }
 
@@ -112,25 +113,52 @@ body {
     height: 102px;
 }
 
-#logWindowHeader {
-    margin: 30px 0 3px 0;
+#logContainer > h3, #notesContainer > h3 {
+    margin: 20px 0 3px 0;
     font-family: Arial, sans-serif;
     font-size: 14px;
     color: dimgray;
 }
 
-#logWindow {
+#logWindow, #noteWindow {
     width: 428px;
-    height: 184px;
     border: solid 1px silver;
-    background-color: whitesmoke;
     border-radius: 3px;
     padding: 0 3px;
     font-family: Arial, sans-serif;
     font-size: 14px;
     color: dimgray;
     overflow-y: auto;
+    resize: vertical;
 }
+
+#logWindow {
+    background-color: whitesmoke;
+    height: 184px;
+}
+
+#noteWindow {
+    background-color: white;
+    height: 84px;
+}
+
+/* #noteWindow { */
+    /* background-color: whitesmoke; */
+/* } */
+
+
+/* #noteWindow, #noteWindow2 { */
+    /* width: 428px; */
+    /* height: 184px; */
+    /* border: solid 1px silver; */
+    /* background-color: whitesmoke; */
+    /* border-radius: 3px; */
+    /* padding: 0 3px; */
+    /* font-family: Arial, sans-serif; */
+    /* font-size: 14px; */
+    /* color: dimgray; */
+    /* overflow-y: auto; */
+/* } */
 
 button#memoryState, button#memoryRead {
     border: solid 1px #79ceff; //
@@ -144,8 +172,11 @@ button#memoryState:hover, button#memoryRead:hover {
     color: white;
 }
 
+
+/*
 #calculator .calculator-ext button[disabled] {
     background: lightgrey;
     border: solid 1px darkgray;
     color: grey;
 }
+*/

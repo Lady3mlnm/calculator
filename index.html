@@ -15,7 +15,7 @@
     }
     nav>a {      /* стиль непостредственно вкладок */
       display: inline-block;
-      width: 140px;
+      min-width: 80px;
       text-align: center;
       font-size: 1.25em;
       text-decoration: none;
@@ -56,10 +56,10 @@
 
 <!-- Панель навигации -->
 <nav id='navBar'>
-  <a href='calculator1.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 1</a>
-  <a href='calculator2.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 2</a>
-  <a href='calculator3.html' target='mainFrame' title="калькулятор Нэнси" onclick='changeTab(this);' class='active'>Интерфейс 3</a>
-  <a href='calculator3-m.html' target='mainFrame' title="модификация калькулятора Нэнси" onclick='changeTab(this);'>Интерфейс 3m</a>
+  <a href='calculator1.html' target='mainFrame' onclick='changeTab(this);'># 1</a>
+  <a href='calculator2.html' target='mainFrame' onclick='changeTab(this);'># 2</a>
+  <a href='calculator3.html' target='mainFrame' onclick='changeTab(this);' class='active'>Интерфейс 3</a>
+  <a href='calculator3-m.html' target='mainFrame' onclick='changeTab(this);'># 3m</a>
   <a href='calculator4.html' target='mainFrame' onclick='changeTab(this);'>Интерфейс 4</a>
 </nav>
 
