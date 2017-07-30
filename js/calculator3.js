@@ -52,6 +52,7 @@ let calculatorBinds = {
     'factorial': () => displayInput('!'),
     'pi': () => displayInput('pi'),
     'euler': () => displayInput('e'),
+    'abs': () => displayInput('abs '),
 };
 
 
