@@ -27,5 +27,5 @@ console.log(calculate(calculateFormat("v(4-1)!!")),' vs 26.8328157299974764');
 console.groupEnd();
 console.log("Testing done");
 
-// console.log(calculate(calculateFormat("1+23!+-3.15!+4")),' vs ?');
-// console.info(calculateFormat('1+2!+3!+4'));
+// display.value = '888+123+999';
+// display.selectionEnd = 6;

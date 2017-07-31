@@ -12,6 +12,10 @@ let display;
 // Лог-окно
 let logWindow;
 
+// Массив операторов c экранированными символами.
+// Используется далее в регулярных выражениях
+let shieldedOperators = [];
+
 let calculatorBinds = {
     'one': () => displayInput('1'),
     'two': () => displayInput('2'),
@@ -53,7 +57,44 @@ let calculatorBinds = {
     'pi': () => displayInput('pi'),
     'euler': () => displayInput('e'),
     'abs': () => displayInput('abs '),
+    'plusMinus': fPlusMinus,
 };
+
+
+/**
+ * Изменение знака числа, которого касается каретка
+ */
+function fPlusMinus() {
+
+    let selEnd = display.selectionEnd;
+    let str1 = display.value.slice(0,selEnd);
+    let str2 = display.value.slice(selEnd, display.value.length);
+        
+    let numberStart = str1.search(/[0-9\.,]+$/);
+
+    if (numberStart == -1 && /[0-9\.,]/.test(str2[0]))
+        numberStart = str1.length;
+
+    if (numberStart == -1) {
+        logWindowOut('<br><span style="color: blue">Каретка не на цифре, операция смены знака не может быть применена</span>');
+        display.focus();
+        return; }
+        
+    // Смена знака.
+    // Вначале отдельно обрабатывается случай, когда изменяется отрицательное число,
+    // стоящее в начале строки
+    let newRegExp = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)(\\d*[\\.,]?\\d*)$','');
+    if (/^\s*-\s*[0-9\.,]*$/.test(str1))
+        str1 = str1.replace(/^\s*-\s*([0-9\.,]*)$/, '$1');
+    else if (newRegExp.test(str1))
+        str1 = str1.replace(newRegExp, '$1$2$4');
+    else
+        str1 = str1.replace((/([0-9\.,]*)$/), '-$1');
+
+    display.value = str1+str2;
+    display.selectionEnd = str1.length;
+    display.focus();
+}
 
 
 /**
@@ -137,6 +178,19 @@ function equality() {
             localStorage.removeItem('calculatorNote');
     });
 
+    // Заполняем массив операторов, экранируя командные символы
+    // Информация черпается из объектов calcMethods2 и calcMethods1.
+    // На первом шаге образуется переменная, содержащая в себе функцию,
+    // экранирующую операторы
+    let escape =
+        value => value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    Object.keys(calcMethods2).forEach(
+        (item, i, arr) => shieldedOperators.push(escape(item))
+    );
+    Object.keys(calcMethods1).forEach(
+        (item, i, arr) => shieldedOperators.push(escape(item))
+    );
+    
     // Передаём фокус на поле ввода калькулятора
     display.focus();
 

@@ -12,7 +12,7 @@
 let calcMethods2 = {
     '*': (op2, op1) => op1 * op2,
     '/': (op2, op1) => div(op1,op2),
-    '+': (op2, op1) => op1 + op2,
+    '+': (op2, op1) => op1 + op2,    // function(op2, op1) { return op1 + op2 }
     '-': (op2, op1) => op1 - op2,
     '^': (op2, op1) => powerX(op1, op2)
 };
@@ -31,13 +31,13 @@ let calcMethods1 = {
     '!': factorial,
     'abs': (op) => op<0 ? -op : op
 };
-    // '+': function(op2, op1) { return op1 + op2 },
-    // '-': function(op2, op1) { return op1 - op2 },
+
 
 let calcConstants = {
     'pi': Math.PI,
     'e': Math.E,
 };
+
 
 /**
  * Вес операции
@@ -200,12 +200,13 @@ function calculate(exp) {
 
     // Выводим в лог-окно принятую строку
     logWindowOut('','Воспринятое выражение:',exp);
-    
+
+    // Если в выражении есть факториалы, то перемещаем их вперёд числа
     exp = exp.replace(
         new RegExp('(-?\\d+\\.?\\d*)\\s*(!+)', 'g'),
         '$2 $1'
     );
-console.log(exp);
+
     // Преобразование выражения в обратную польскую нотацию
     let data =  RPN(exp.split(/[\s]+/));
 
@@ -279,28 +280,6 @@ console.log(exp);
  */
 function calculateFormat(data) {
 
-    // Экранирование выражений для использования
-    // в регулярных выражениях
-    // На первом шаге образуется переменная, содержащая в себе функцию,
-    // экранирующую операторы
-    let escape =
-        value => value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-
-    // Список операторов пригодный для использования
-    // в регулярных выражениях
-    // Список операторов берётся из объекта calcMethods,
-    // на выходе получается массив [ "\*", "\/", "\+", "\-", "\^", ... ]
-    let operators = [];
-    Object.keys(calcMethods2).forEach(
-        (item, i, arr) => operators.push(escape(item))
-    );
-    Object.keys(calcMethods1).forEach(
-        (item, i, arr) => operators.push(escape(item))
-    );
-    Object.keys(calcConstants).forEach(
-        (item, i, arr) => operators.push(escape(item))
-    );
-    
     // Если при записи дробных чисел использованы запятые,
     // то они интерпретируются как точки )
     data = data.replace(/,/g, '.');
@@ -316,14 +295,8 @@ function calculateFormat(data) {
     // который мог быть прихвачен при копировании (такого как кавычки).
     // Умышленно исключаем из очистки символы мат.операций,
     // поскольку лучше выдать ошибку, чем вычислить неполностью скопированный пример.
-    data = data.replace(
-        new RegExp('^[^0-9a-z\\.\\(\\+\\-\\*\\/\\^\\!]+', 'g'),
-        ''
-    );
-    data = data.replace(
-        new RegExp('[^0-9a-z\\)\\+\\-\\*\\/^\\^\\!]+$', 'g'),
-        ''
-    );
+    data = data.replace(/^[^0-9a-z\.\(\+\-\*\/\^\!]+/, '');
+    data = data.replace(/[^0-9a-z\)\+\-\*\/\^\!]+$/, '');
 
     // Если пользователь решил ввёл числа в виде '.3' или '-.2',
     // то перед точкой вставляется '0'
@@ -335,7 +308,7 @@ function calculateFormat(data) {
     // ('Некрасивость' этой команды в том, что пробелы между последовательно 
     //  найденными символами суммируются.)
     data = data.replace(
-        new RegExp('[\\s]*(' + operators.join('|')+'|\\(|\\))[\\s]*', 'g'),
+        new RegExp('[\\s]*(' + shieldedOperators.join('|')+'|\\(|\\))[\\s]*', 'g'),
         ' $1 '
     );
 
@@ -343,7 +316,7 @@ function calculateFormat(data) {
     // В случае отрицательного значения знак пробела между самим числом и его минусом удаляется.
     // Не обрабатывается только случай, когда отрицательное число стоит в самом начале.)
     data = data.replace(
-        new RegExp('[\\s]*(' + operators.join('|') + '|\\()[\\s]*-[\\s]*([\\d]+)', 'g'),
+        new RegExp('[\\s]*(' + shieldedOperators.join('|') + '|\\()[\\s]*-[\\s]*([\\d]+)', 'g'),
         ' $1 -$2'
     );
 
