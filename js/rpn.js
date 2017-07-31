@@ -18,17 +18,17 @@ let calcMethods2 = {
 };
 
 let calcMethods1 = {
-    'arcsin': '',
-    'arccos': '',
-    'arctg': '',
-    'sin': '',
-    'cos': '',
-    'tg': '',
-    'v': (op) => root2(op),
-    'ln': (op) => logarithmE(op),
-    'lg': (op) => logarithm10(op),
-    'log2': (op) => logarithm2(op),
-    '!': (op) => factorial(op),
+    'arcsin': (op) => fArcsin(op,document.getElementById('unitGrad').checked),
+    'arccos': (op) => fArccos(op,document.getElementById('unitGrad').checked),
+    'arctg': (op) => fArctg(op,document.getElementById('unitGrad').checked),
+    'sin': (op) => fSin(op,document.getElementById('unitGrad').checked),
+    'cos': (op) => fCos(op,document.getElementById('unitGrad').checked),
+    'tg': (op) => fTg(op,document.getElementById('unitGrad').checked),
+    'v': root2,
+    'ln': logarithmE,
+    'lg': logarithm10,
+    'log2': logarithm2,
+    '!': factorial,
     'abs': (op) => op<0 ? -op : op
 };
     // '+': function(op2, op1) { return op1 + op2 },
@@ -313,13 +313,15 @@ function calculateFormat(data) {
     data = data.replace(/log10/g, 'lg');
     
     // Очистка концов выражения от наиболее распространённого мусора,
-    // который мог быть прихвачен при копировании (такого как кавычки)
+    // который мог быть прихвачен при копировании (такого как кавычки).
+    // Умышленно исключаем из очистки символы мат.операций,
+    // поскольку лучше выдать ошибку, чем вычислить неполностью скопированный пример.
     data = data.replace(
-        new RegExp('^[^-\\da-z\\.\\(]+', 'g'),
+        new RegExp('^[^0-9a-z\\.\\(\\+\\-\\*\\/\\^\\!]+', 'g'),
         ''
     );
     data = data.replace(
-        new RegExp('[^\\da-z\\)!]+$', 'g'),
+        new RegExp('[^0-9a-z\\)\\+\\-\\*\\/^\\^\\!]+$', 'g'),
         ''
     );
 
