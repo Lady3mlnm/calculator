@@ -70,12 +70,12 @@ function fPlusMinus() {
     let str1 = display.value.slice(0,selEnd);
     let str2 = display.value.slice(selEnd, display.value.length);
         
-    let numberStart = str1.search(/[0-9\.,]+$/);
-
-    if (numberStart == -1 && /[0-9\.,]/.test(str2[0]))
-        numberStart = str1.length;
-
-    if (numberStart == -1) {
+    // Определяем, соприкасается ли каретка с цифрой.
+    // Если нет, то завершаем функцию.
+    let inNumber = /[0-9\.,ep]$|pi$/.test(str1);
+    if (!inNumber)
+        inNumber = /^[0-9\.,e]|^pi/.test(str2);
+    if (!inNumber) {
         logWindowOut('<br><span style="color: blue">Каретка не на цифре, операция смены знака не может быть применена</span>');
         display.focus();
         return; }
@@ -83,13 +83,16 @@ function fPlusMinus() {
     // Смена знака.
     // Вначале отдельно обрабатывается случай, когда изменяется отрицательное число,
     // стоящее в начале строки
-    let newRegExp = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)(\\d*[\\.,]?\\d*)$','');
-    if (/^\s*-\s*[0-9\.,]*$/.test(str1))
-        str1 = str1.replace(/^\s*-\s*([0-9\.,]*)$/, '$1');
+    let newRegExp = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)(\\d*[\\.,ep]?\\d*)$','');
+    let newRegExpPi = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)pi$','');
+    if (/^\s*-\s*[0-9\.,ep]*$/.test(str1) || /^\s*-\s*pi$/.test(str1))
+        str1 = str1.replace(/^\s*-\s*([0-9\.,ep]*|pi)$/, '$1');
     else if (newRegExp.test(str1))
         str1 = str1.replace(newRegExp, '$1$2$4');
+    else if (newRegExpPi.test(str1))                      // случай с pi приходится разбирать отдельно
+        str1 = str1.replace(newRegExpPi, '$1$2pi');
     else
-        str1 = str1.replace((/([0-9\.,]*)$/), '-$1');
+        str1 = str1.replace((/([0-9\.,ep]*|pi)$/), '-$1');
 
     display.value = str1+str2;
     display.selectionEnd = str1.length;
@@ -113,6 +116,7 @@ function equality() {
     }
 
 }
+
 
 // Анонимная самовызывающаяся функция, выполняющаяся при запуске системы
 (function() {
