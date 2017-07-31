@@ -52,11 +52,11 @@ function logarithm10(x) {
 function logarithm2(x) {
     if (x<=0)
         throw 'Недопустимая мат.операция: взятие логарифма от неположительного числа';
-    return Math.log(x)/Math.LN10;
+    return Math.log(x)/Math.LN2;
 }
 
 // Взятие факториала
-function Factorial(n) {
+function factorial(n) {
     if (n<0)
         throw 'Недопустимая мат.операция: взятие факториала от отрицательного числа';
     if (!Number.isInteger(n))

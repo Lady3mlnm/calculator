@@ -9,26 +9,41 @@
 /**
  * Набор методов для вычисления выражения
  */
-let calcMethods = {
+let calcMethods2 = {
     '*': (op2, op1) => op1 * op2,
     '/': (op2, op1) => div(op1,op2),
-    '+': function(op2, op1) { return op1 + op2 },  //(Более понятная запись сокращений)
-    '-': function(op2, op1) { return op1 - op2 },
-    '^': (op2, op1) => powerX(op1, op2),
-    // 'v': (op) => Math.sqrt(op),
-    // 'ln': (op) => Math.log(op),
-    // 'lg': (op) => Math.log(op)/Math.LN10,
-    // 'log2': (op) => Math.log(op)/Math.LN2,
-    // 'pi': (op) => Math.PI,
-    // 'e': (op) => Math.E
+    '+': (op2, op1) => op1 + op2,
+    '-': (op2, op1) => op1 - op2,
+    '^': (op2, op1) => powerX(op1, op2)
 };
 
+let calcMethods1 = {
+    'arcsin': '',
+    'arccos': '',
+    'arctg': '',
+    'sin': '',
+    'cos': '',
+    'tg': '',
+    'v': (op) => root2(op),
+    'ln': (op) => logarithmE(op),
+    'lg': (op) => logarithm10(op),
+    'log2': (op) => logarithm2(op),
+    '!': (op) => factorial(op),
+    'abs': (op) => op<0 ? -op : op
+};
+    // '+': function(op2, op1) { return op1 + op2 },
+    // '-': function(op2, op1) { return op1 - op2 },
+
+let calcConstants = {
+    'pi': Math.PI,
+    'e': Math.E,
+};
 
 /**
  * Вес операции
  */
-// (Помещение скобок в этот объект излишне)
 let opWeight = {
+    'arcsin': 10, 'arccos': 10, 'arctg': 10, 'sin': 10, 'cos': 10, 'tg': 10, 'v': 10, 'ln': 10, 'lg': 10, 'log2': 10, 'abs': 10, '!': 10,
     '^': 4,
     '*': 3, '/': 3,
     '+': 2, '-': 2,
@@ -40,9 +55,9 @@ let opWeight = {
  * Право-ассоциированные операторы
  * @type {string[]}
  */
- // (Массив с перечнем операций из объекта opWeight, имеющих максимальный приоритет.
- //  В данный момент таких операций всего одна - '^'. )
-let rightAssociativity = ['^'];
+// Список операций, имеющих правую ассоциативность.
+// В данный момент таких операций всего одна - '^'.
+let rightAssociativity = ['^', 'arcsin', 'arccos', 'arctg', 'sin', 'cos', 'tg', 'v', 'ln', 'lg', 'log2', 'abs', '!'];
 
 
 /**
@@ -50,8 +65,8 @@ let rightAssociativity = ['^'];
  * @param data
  * @returns {Number}
  */
-// (Ремонтируются вещи, вроде 0.1+0.2=0.30000000000000004
-//  периодические возникающие в JS )
+// Ремонтируются вещи, вроде 0.1+0.2=0.30000000000000004,
+// периодические возникающие в JS
 function toFloat(data) {
     return parseFloat(parseFloat(data).toFixed(15));
 }
@@ -63,7 +78,17 @@ function toFloat(data) {
  * @returns {boolean}
  */
 function isNumber(data) {
-    return /^[-]?([\d]+|[\d]+\.|[\d]+\.[\d]+)$/.test(data);
+    return /^-?\d+.?\d*$/.test(data);
+}
+
+
+/**
+ * Проверка на предписанную мат.константу
+ * @param data
+ * @returns {boolean}
+ */
+function isConstant(data) {
+    return Object.keys(calcConstants).indexOf(data) > -1;
 }
 
 
@@ -72,12 +97,15 @@ function isNumber(data) {
  * @param data
  * @returns {boolean}
  */
-// (Если переданный в функцию символ есть в объекте операторов calcMethods,
-//  то возвращается true, иначе false)
-function isOperator(data) {
-    return Object.keys(calcMethods).indexOf(data) > -1;
+// Если переданный в функцию символ есть в объекте операторов calcMethods,
+// то возвращается true, иначе false
+function isOperator2(data) {
+    return Object.keys(calcMethods2).indexOf(data) > -1;
 }
 
+function isOperator1(data) {
+    return Object.keys(calcMethods1).indexOf(data) > -1;
+}
 
 /**
  * Преобразование выражения в обратную польскую нотацию
@@ -86,43 +114,47 @@ function isOperator(data) {
  */
 function RPN(data) {
 
-    // Стек (используемый для временного хранения операторов)
+    // Стек, используемый для временного хранения операторов.
+    // К нему сразу же прикрепляем метод наш last,
+    // который возвращает последний элемент стека
     let stack = [];
-    // (Прикрепляем к массиву-стеку stack метод last,
-    //  который который возвращает последний элемент этого стека )
     stack.last = () => stack[stack.length - 1];
 
-    // (Основной стек, который возвращается из функции)
+    // Основной стек, который возвращается из функции RPN
     let output = [];
 
-    // (Последовательно рассматриваем каждый элемент полученного массива)
+    // Текущие элемент массива
+    let t;
+    
+    // Последовательно рассматриваем каждый элемент полученного массива
     for (let i = 0; data[i] !== undefined; i++) {
+        
+        t = data[i];
 
-        if (isNumber(data[i])) {
+        if (isNumber(t) || Object.keys(calcConstants).indexOf(t) > -1) {
             // Число заносим сразу в выходной массив
-            output.push(data[i]);
+            output.push(t);
 
-        } else if (isOperator(data[i])) {
+        } else if (isOperator2(t) || isOperator1(t)) {
 
             // Объявляем формулу сравнения в зависимости от
             // ассоциативности текущей операции
-            // (перемудрено)
-            let opCompare = rightAssociativity.indexOf(data[i]) > -1 ?
-                () => opWeight[stack.last()] > opWeight[data[i]] :
-                () => opWeight[stack.last()] >= opWeight[data[i]];
+            let opCompare = rightAssociativity.indexOf(t) > -1 ?
+                () => opWeight[stack.last()] > opWeight[t] :
+                () => opWeight[stack.last()] >= opWeight[t];
 
             // Переносим элементы из временного стека в выходной
             while (stack.length > 0 && opCompare())
                 output.push(stack.pop());
             
             // Помещаем текущий элемент на хранение во временный стек
-            stack.push(data[i]);
+            stack.push(t);
 
-        } else if (data[i] === '(') {
+        } else if (t === '(') {
             // Заносим '(' в стек
-            stack.push(data[i]);
+            stack.push(t);
 
-        } else if (data[i] === ')') {
+        } else if (t === ')') {
             // Переносим операторы из стека до открывающей скобки
             let operator;
 
@@ -148,72 +180,6 @@ function RPN(data) {
 
 
 /**
- * Преобразование выражения в обратную польскую нотацию
- * NOTE: Используются рекурсивные вызовы
- * @param data
- * @param stack
- * @returns {*}
- */
- /*
-function rRPN(data, stack) {
-
-    // Получение последнего значения из
-    // стека без его удаления
-    stack.last = () => stack[stack.length - 1];
-
-    // Если число, то переходим в следующему элементу данных
-    if (isNumber(data[0]))
-        return [data[0]].concat(rRPN(data.slice(1), stack));
-
-    // Если текущий элемент является оператором
-    if (isOperator(data[0])) {
-
-        // Объявляем формулу сравнения в зависимости от
-        // ассоциативности текущей операции
-        let opCompare = rightAssociativity.indexOf(data[0]) > -1 ?
-            () => opWeight[stack.last()] > opWeight[data[0]] :
-            () => opWeight[stack.last()] >= opWeight[data[0]];
-
-        // Переносим операции из стека с высоким приоритетом
-        if (stack.length > 0 && opCompare())
-            return [stack.pop()].concat(rRPN(data, stack));
-
-        stack.push(data[0]);
-        return rRPN(data.slice(1), stack);
-    }
-
-    // Заносим открывающую скобку в стек
-    if (data[0] === '(') {
-        stack.push(data[0]);
-        return rRPN(data.slice(1), stack);
-    }
-
-    if (data[0] === ')') {
-
-        // Если в стеке нет операций
-        if (stack.length < 1)
-            throw 'ERROR: There is no opening bracket on the stack';
-
-        // Переносим операции из стека пока не
-        // встретим открывающую скобку
-        if (stack.last() === '(') {
-            stack.pop();
-            return rRPN(data.slice(1), stack);
-
-        } else return [stack.pop()].concat(rRPN(data, stack));
-
-    }
-
-    // Остатки операций в стеке
-    if (data.length < 1)
-        return [].concat(stack);
-
-    // Если в выражении есть недопустимое значение
-    throw 'ERROR: Expression not valid';
-}
-*/
-
-/**
  * Расчёт выражения
  * @param exp
  * @returns {float}
@@ -221,35 +187,59 @@ function rRPN(data, stack) {
 function calculate(exp) {
 
     let stack = [];
-    // (Прикрепляем к массиву-стеку stack метод pushFloat,
-    //  который получает строку, переводит её в число,
-    //  чуть округляет то для избавления от ошибок вычисления
-    //  и помещает в конец массива-стека stack )
+    // Прикрепляем к массиву-стеку stack метод pushFloat,
+    // который получает строку, переводит её в число,
+    // чуть округляет его для избавления от ошибок вычисления
+    // и помещает в конец массива-стека stack )
     stack.pushFloat =
         value => stack.push(parseFloat(parseFloat(value).toFixed(15)));
 
     // Если выражение не задано
-    // (то генерируем ошибку с пояснительным текстом)
+    // то генерируем ошибку с пояснительным текстом
     if (!exp) throw "ERROR: Expression is not specified";
 
-    // (Выводим в лог-окно отформатированную строку)
+    // Выводим в лог-окно принятую строку
     logWindowOut('','Воспринятое выражение:',exp);
-
+    
+    exp = exp.replace(
+        new RegExp('(-?\\d+\\.?\\d*)\\s*(!+)', 'g'),
+        '$2 $1'
+    );
+console.log(exp);
     // Преобразование выражения в обратную польскую нотацию
-    // let data = rRPN(exp.split(/[\s]+/), []);
-    let data = RPN(exp.split(/[\s]+/));
+    let data =  RPN(exp.split(/[\s]+/));
 
-    // (Выводим в лог-окно получившуюся обратную польскую запись)
+    // Выводим в лог-окно получившуюся обратную польскую запись
     logWindowOut('Обратная польская запись:',data);
-
-    // (идём по массиву data,
-    //  в случае обнаружения числа заносим его в массив-стек stack,
-    //  в случае обнаружения оператора изымаем из стека два последних числа,
-    //  производим с ними операцию, прописанную в объекте calcMethods и
-    //  помещаем результат в конец стека stack )
+//return 'Done';
+    // Идём по массиву data.
+    // В случае обнаружения числа заносим его в массив-стек stack.
+    // В случае обнаружения оператора изымаем из стека два последних числа,
+    // производим с ними операцию, прописанную в объекте calcMethods и
+    // помещаем результат в конец стека stack 
     data.forEach((item, i, arr) => {
 
-        if (isOperator(item)) {
+        if (isNumber(item))
+            // Заносим числа сразу в стек
+            stack.pushFloat(item);
+            
+        else if (isConstant(item))
+            //
+            stack.push(calcConstants[item]);
+
+        else if (isOperator1(item)) {
+
+            // Выдаём ошибку если не достаточно операндов
+            // в стеке для выполнения текущей операции
+            if (stack.length < 1)
+                throw 'ERROR: No data in the stack for the operation';
+
+            // Запускаем расчёты
+            stack.pushFloat(
+                calcMethods1[item](stack.pop())
+            );
+            
+        } else if (isOperator2(item)) {
 
             // Выдаём ошибку если не достаточно операндов
             // в стеке для выполнения текущей операции
@@ -258,19 +248,15 @@ function calculate(exp) {
 
             // Запускаем расчёты
             stack.pushFloat(
-                calcMethods[item](stack.pop(), stack.pop())
+                calcMethods2[item](stack.pop(), stack.pop())
             );
-
-        } else if (isNumber(item)) {
-            // Заносим числа сразу в стек
-            stack.pushFloat(item);
 
         } else throw 'ERROR: Unknown symbols';
 
     });
 
-    // Если в стеке остался не один операнд
-    // (то генерируем ошибку с пояснительным текстом)
+    // Если в стеке остался не один операнд,
+    // то генерируем ошибку с пояснительным текстом
     if (stack.length > 1)
         throw 'ERROR: Few operators in the stack';
 
@@ -279,10 +265,11 @@ function calculate(exp) {
     // вычисление кубического корня из 1000 вернёт 9.999999999999975
     stack[0] = parseFloat(stack[0].toFixed(12));
 
-    // (Выводим в лог-окно ответ)
+    // Выводим в лог-окно ответ
     logWindowOut('Ответ: &nbsp;'+stack[0]);
     return stack.pop();
 }
+
 
 /**
  * Форматирование выражения для использования в вычислениях
@@ -304,26 +291,35 @@ function calculateFormat(data) {
     // Список операторов берётся из объекта calcMethods,
     // на выходе получается массив [ "\*", "\/", "\+", "\-", "\^", ... ]
     let operators = [];
-    Object.keys(calcMethods).forEach(
+    Object.keys(calcMethods2).forEach(
         (item, i, arr) => operators.push(escape(item))
     );
-
+    Object.keys(calcMethods1).forEach(
+        (item, i, arr) => operators.push(escape(item))
+    );
+    Object.keys(calcConstants).forEach(
+        (item, i, arr) => operators.push(escape(item))
+    );
+    
     // Если при записи дробных чисел использованы запятые,
     // то они интерпретируются как точки )
     data = data.replace(/,/g, '.');
     
     // Перевод символов строки в нижний регистр
     data = data.toLowerCase();
-
-    // Если перед началом вычисляемого выражения или после него есть неразрешённые
-    // для мат.операций символы (к примеру, прихватились кавычки при копировании
-    // примера), то они удаляются
+    
+    // Замена 'tan'->'tg', 'log10'->'lg'
+    data = data.replace(/tan/g, 'tg');
+    data = data.replace(/log10/g, 'lg');
+    
+    // Очистка концов выражения от наиболее распространённого мусора,
+    // который мог быть прихвачен при копировании (такого как кавычки)
     data = data.replace(
-        new RegExp('^[^' + operators.join('|')+'|\\(|\\.|\\d]+', 'g'),
+        new RegExp('^[^-\\da-z\\.\\(]+', 'g'),
         ''
     );
     data = data.replace(
-        new RegExp('[^\\)|\\.|\\d]+$', 'g'),
+        new RegExp('[^\\da-z\\)!]+$', 'g'),
         ''
     );
 
@@ -364,4 +360,3 @@ function calculateFormat(data) {
     // Метод 'trim' удаляет пробелы с концов строки
     return data.trim();
 }
-

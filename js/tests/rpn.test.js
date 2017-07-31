@@ -20,7 +20,12 @@ console.log(calculate(calculateFormat("5*3/2")),' vs 7.5');
 console.log(calculate(calculateFormat("13+11+5*3/2-7")),' vs 24.5');
 console.log(calculate(calculateFormat("13.+11.+5*3/2,-7,+1.")),' vs 25.5');
 console.log(calculate(calculateFormat(".3+.2+,8*.45/.12/,9-.5--,9")),' vs 4.2333333333333333');
-console.log(calculate(calculateFormat("a_ )'-,5+6.6'sd( _")),' vs 6.1');
+console.log(calculate(calculateFormat("_ )'-,5+6.6'( _")),' vs 6.1');
+console.log(calculate(calculateFormat("pi")),' vs pi');
+console.log(calculate(calculateFormat("v(4-1)!!")),' vs 26.8328157299974764');
 
 console.groupEnd();
 console.log("Testing done");
+
+// console.log(calculate(calculateFormat("1+23!+-3.15!+4")),' vs ?');
+// console.info(calculateFormat('1+2!+3!+4'));
