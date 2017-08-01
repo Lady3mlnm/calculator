@@ -1,13 +1,13 @@
 /**
- * Created by Nancy Vasilyeva <gothness@ymail.com>
- * Date: 12.07.2017
+ * Created by group "TechhnoFractal" http://technofractal.org/
+ * Date: 2017 Jule-August
  */
 
 "use strict";
 
 
 /**
- * Набор методов для вычисления выражения
+ * Наборы методов и констант для вычисления выражения
  */
 let calcMethods2 = {
     '*': (op2, op1) => op1 * op2,
@@ -18,24 +18,25 @@ let calcMethods2 = {
 };
 
 let calcMethods1 = {
-    'arcsin': (op) => fArcsin(op,document.getElementById('unitGrad').checked),
-    'arccos': (op) => fArccos(op,document.getElementById('unitGrad').checked),
-    'arctg': (op) => fArctg(op,document.getElementById('unitGrad').checked),
-    'sin': (op) => fSin(op,document.getElementById('unitGrad').checked),
-    'cos': (op) => fCos(op,document.getElementById('unitGrad').checked),
-    'tg': (op) => fTg(op,document.getElementById('unitGrad').checked),
     'v': root2,
     'ln': logarithmE,
     'lg': logarithm10,
     'log2': logarithm2,
     '!': factorial,
-    'abs': (op) => op<0 ? -op : op
+    'abs': (op) => op<0 ? -op : op,
+    'sin': (op) => fSin(op,document.getElementById('unitGrad').checked),
+    'cos': (op) => fCos(op,document.getElementById('unitGrad').checked),
+    'tg': (op) => fTg(op,document.getElementById('unitGrad').checked),
+    'arcsin': (op) => fArcsin(op,document.getElementById('unitGrad').checked),
+    'arccos': (op) => fArccos(op,document.getElementById('unitGrad').checked),
+    'arctg': (op) => fArctg(op,document.getElementById('unitGrad').checked)
 };
-
 
 let calcConstants = {
     'pi': Math.PI,
     'e': Math.E,
+    '-pi': -Math.PI,
+    '-e': -Math.E
 };
 
 
@@ -43,7 +44,8 @@ let calcConstants = {
  * Вес операции
  */
 let opWeight = {
-    'arcsin': 10, 'arccos': 10, 'arctg': 10, 'sin': 10, 'cos': 10, 'tg': 10, 'v': 10, 'ln': 10, 'lg': 10, 'log2': 10, 'abs': 10, '!': 10,
+    'v': 10, 'ln': 10, 'lg': 10, 'log2': 10, '!': 10, 'abs': 10,
+    'sin': 10, 'cos': 10, 'tg': 10, 'arcsin': 10, 'arccos': 10, 'arctg': 10,
     '^': 4,
     '*': 3, '/': 3,
     '+': 2, '-': 2,
@@ -93,11 +95,11 @@ function isConstant(data) {
 
 
 /**
- * Проверка на оператор
+ * Проверки на операторы
  * @param data
  * @returns {boolean}
  */
-// Если переданный в функцию символ есть в объекте операторов calcMethods,
+// Если переданный в функцию символ есть в объекте операторов calcMethods2,
 // то возвращается true, иначе false
 function isOperator2(data) {
     return Object.keys(calcMethods2).indexOf(data) > -1;
@@ -106,6 +108,7 @@ function isOperator2(data) {
 function isOperator1(data) {
     return Object.keys(calcMethods1).indexOf(data) > -1;
 }
+
 
 /**
  * Преобразование выражения в обратную польскую нотацию
@@ -166,14 +169,13 @@ function RPN(data) {
                     break;
             }
 
-        } else throw 'ERROR: Incorrect expression';
+        } else throw 'ОШИБКА: нераспознанное выражение '+t+'\nРекомендуется изучить лог операций';
 
     }
 
     // Записываем в выходной массив оставшиеся операции
-    while (stack.length > 0) {
+    while (stack.length > 0)
         output.push(stack.pop());
-    }
 
     return output;
 }
@@ -196,10 +198,7 @@ function calculate(exp) {
 
     // Если выражение не задано
     // то генерируем ошибку с пояснительным текстом
-    if (!exp) throw "ERROR: Expression is not specified";
-
-    // Выводим в лог-окно принятую строку
-    logWindowOut('','Воспринятое выражение:',exp);
+    if (!exp) throw "ОШИБКА: выражение не задано";
 
     // Если в выражении есть факториалы, то перемещаем их вперёд числа
     exp = exp.replace(
@@ -212,7 +211,7 @@ function calculate(exp) {
 
     // Выводим в лог-окно получившуюся обратную польскую запись
     logWindowOut('Обратная польская запись:',data);
-//return 'Done';
+
     // Идём по массиву data.
     // В случае обнаружения числа заносим его в массив-стек stack.
     // В случае обнаружения оператора изымаем из стека два последних числа,
@@ -225,15 +224,15 @@ function calculate(exp) {
             stack.pushFloat(item);
             
         else if (isConstant(item))
-            //
+            // Вместо мат.константы заносим в стек её значение
             stack.push(calcConstants[item]);
 
         else if (isOperator1(item)) {
 
-            // Выдаём ошибку если не достаточно операндов
+            // Выдаём ошибку если недостаточно операндов
             // в стеке для выполнения текущей операции
             if (stack.length < 1)
-                throw 'ERROR: No data in the stack for the operation';
+                throw 'ОШИБКА: предполагается пропуск числа или лишний оператор';
 
             // Запускаем расчёты
             stack.pushFloat(
@@ -245,21 +244,23 @@ function calculate(exp) {
             // Выдаём ошибку если не достаточно операндов
             // в стеке для выполнения текущей операции
             if (stack.length < 2)
-                throw 'ERROR: No data in the stack for the operation';
+                throw 'ОШИБКА: предполагается пропуск числа или лишний оператор';
 
             // Запускаем расчёты
             stack.pushFloat(
                 calcMethods2[item](stack.pop(), stack.pop())
             );
 
-        } else throw 'ERROR: Unknown symbols';
+        // Это исключение никогда не должно сработать, поскольку все символы
+        // уже профильтрованы в функции RPN, но лучше перестраховаться
+        } else throw 'ОШИБКА: нераспознанное выражение '+item+' в функции calculate';
 
     });
 
     // Если в стеке остался не один операнд,
     // то генерируем ошибку с пояснительным текстом
     if (stack.length > 1)
-        throw 'ERROR: Few operators in the stack';
+        throw 'ОШИБКА: предполагается наличие лишнего числа или или пропуск оператора';
 
     // Округляем ответ до меньшей точности.
     // Если этого не сделать, то, к примеру, 
@@ -301,37 +302,47 @@ function calculateFormat(data) {
     // Если пользователь решил ввёл числа в виде '.3' или '-.2',
     // то перед точкой вставляется '0'
     data = data.replace(/^\./,'0.');
-    data = data.replace(/([^\d])(\.[\d])/g, '$10$2');
+    data = data.replace(/([\D])(\.\d)/g, '$10$2');
 
     // Преобразование операторов и скобок
     // Вокруг знаков операторов и скобок размещаем ровно один пробел
     // ('Некрасивость' этой команды в том, что пробелы между последовательно 
     //  найденными символами суммируются.)
     data = data.replace(
-        new RegExp('[\\s]*(' + shieldedOperators.join('|')+'|\\(|\\))[\\s]*', 'g'),
+        new RegExp('\\s*(' + shieldedOperators.join('|')+'|\\(|\\))\\s*', 'g'),
         ' $1 '
     );
 
-    // Преобразование отрицательных значений
-    // В случае отрицательного значения знак пробела между самим числом и его минусом удаляется.
-    // Не обрабатывается только случай, когда отрицательное число стоит в самом начале.)
+    // Там, где получилось 2 и более пробелов, схлопываем их.
+    // И сразу же удаляем пробелы с концов строки
+    data = data.replace(/\s{2,}/g, ' ').trim();
+    
+    // Отфильтровка случаев, когда знак минус является признаком отрицательности числа,
+    // а не символом мат.операции.
+    // Вначале обрабатываем случай, когда отрицательное значение стоит в самом начале выражения
+    // В том числе учитываем существование мат.констант
+    data = data.replace(/^-\s?(\d+|pi|e)/, '-$1');
+    
+    // Общий случай, когда отрицательное число в середине выражения
     data = data.replace(
-        new RegExp('[\\s]*(' + shieldedOperators.join('|') + '|\\()[\\s]*-[\\s]*([\\d]+)', 'g'),
-        ' $1 -$2'
+        new RegExp('(' + shieldedOperators.join('|') + '|\\()\\s?-\\s?(\\d+|pi|e)', 'g'),
+        '$1 -$2'
     );
 
-    // Дорабатываем ранее упомянутое исключение
-    data = data.replace(/^[\s]*-[\s]*([\d]+)/, '-$1');
+    // Обрабатываем случай, когда выражение начинается с '-(', '-sin' и т.п.
+    data = data.replace(
+        new RegExp('^-\\s?(' + shieldedOperators.join('|')+'|\\()'),
+        '0 - $1'
+    );
+    
+    // Обрабатываем случаи с выражениями '(-(', '(-sin' и т.п.
+    data = data.replace(
+        new RegExp('\\(\\s?-\\s?(' + shieldedOperators.join('|')+'|\\()', 'g'),
+        '( 0 - $1'
+    );
 
-    // Отдельно обрабатываем случай, когда выражение начинается с '-('
-    data = data.replace(/^[\s]*-[\s]*\(/, '0 - (');
-
-    // Отдельно обрабатываем случаи с выражениями '(-('
-    data = data.replace(/\([\s]*-[\s]*\(/g, '( 0 - (');
-
-    // Там, где получилось 2 и более пробелов, схлопываем их
-    data = data.replace(/[\s]{2,}/g, ' ');
-
-    // Метод 'trim' удаляет пробелы с концов строки
-    return data.trim();
+    // Выводим в лог-окно получившуюся отформатированную строку
+    logWindowOut('','Воспринятое выражение:',data);
+    
+    return data;
 }

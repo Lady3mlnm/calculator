@@ -1,6 +1,6 @@
 /**
- * Created by Nancy Vasilyeva <gothness@ymail.com>
- * Date: 12.07.2017
+ * Created by group "TechhnoFractal" http://technofractal.org/
+ * Date: 2017 Jule-August
  */
 
 "use strict";
@@ -43,7 +43,6 @@ let calculatorBinds = {
     'memoryState': fMemoryState,
     'memoryRead': fMemoryRead,
     'equality' : equality,
-
     'sin': () => displayInput('sin '),
     'cos': () => displayInput('cos '),
     'tg': () => displayInput('tg '),
@@ -72,24 +71,23 @@ function fPlusMinus() {
         
     // Определяем, соприкасается ли каретка с цифрой.
     // Если нет, то завершаем функцию.
-    let inNumber = /[0-9\.,ep]$|pi$/.test(str1);
-    if (!inNumber)
-        inNumber = /^[0-9\.,e]|^pi/.test(str2);
-    if (!inNumber) {
+    if (!/[0-9\.,ep]$/.test(str1) && !/pi$/.test(str1) && !/^[0-9\.,e]/.test(str2) && !/^pi/.test(str2)) {
         logWindowOut('<br><span style="color: blue">Каретка не на цифре, операция смены знака не может быть применена</span>');
         display.focus();
         return; }
-        
+
     // Смена знака.
     // Вначале отдельно обрабатывается случай, когда изменяется отрицательное число,
     // стоящее в начале строки
     let newRegExp = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)(\\d*[\\.,ep]?\\d*)$','');
     let newRegExpPi = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)pi$','');
-    if (/^\s*-\s*[0-9\.,ep]*$/.test(str1) || /^\s*-\s*pi$/.test(str1))
-        str1 = str1.replace(/^\s*-\s*([0-9\.,ep]*|pi)$/, '$1');
+    if (/^\s*-\s*[0-9\.,ep]*$/.test(str1))
+        str1 = str1.replace(/^\s*-\s*([0-9\.,ep]*)$/, '$1');
+    else if (/^\s*-\s*pi$/.test(str1))
+        str1 = str1.replace(/^\s*-\s*pi$/, 'pi');      // случаи с pi приходится разбирать отдельно
     else if (newRegExp.test(str1))
         str1 = str1.replace(newRegExp, '$1$2$4');
-    else if (newRegExpPi.test(str1))                      // случай с pi приходится разбирать отдельно
+    else if (newRegExpPi.test(str1))                      
         str1 = str1.replace(newRegExpPi, '$1$2pi');
     else
         str1 = str1.replace((/([0-9\.,ep]*|pi)$/), '-$1');
@@ -112,15 +110,20 @@ function equality() {
     } catch (err) {
         logWindowOut('<span style="color: red">'+err+'</span>');
         console.error(err);
-        alert('Выражение не может быть вычислено');
+        alert('Выражение не может быть вычислено.\n\n'+err);
     }
 
 }
 
 
-// Анонимная самовызывающаяся функция, выполняющаяся при запуске системы
+/**
+ * Анонимная самовызывающаяся функция, выполняющаяся при запуске системы
+ */
 (function() {
-
+    
+    // Вспомогательная переменная, используемая в различных циклах
+    let i;
+    
     // Привязываем объекты к переменным
     display = document.getElementById('display');
     logWindow = document.getElementById('logWindow');
@@ -150,8 +153,8 @@ function equality() {
     // прописанных нами в объекте calculatorBinds.
     // Обращаю внимание, что в отличие от Нэнсиного кода,
     // этот выполняется уже после загрузки всего документа
-    for (let t in calculatorBinds) 
-        document.getElementById(t).addEventListener('click', calculatorBinds[t]);
+    for (i in calculatorBinds) 
+        document.getElementById(i).addEventListener('click', calculatorBinds[i]);
 
     // Добавляем к полю ввода обработчик нажатия клавиш
     display.addEventListener('keypress', function(e) {
@@ -188,19 +191,20 @@ function equality() {
     // экранирующую операторы
     let escape =
         value => value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    Object.keys(calcMethods2).forEach(
-        (item, i, arr) => shieldedOperators.push(escape(item))
-    );
-    Object.keys(calcMethods1).forEach(
-        (item, i, arr) => shieldedOperators.push(escape(item))
-    );
-    
+    for (i in calcMethods2)
+        shieldedOperators.push(escape(i))
+    for (i in calcMethods1)
+        shieldedOperators.push(escape(i))
+
     // Передаём фокус на поле ввода калькулятора
     display.focus();
 
 })();
 
 
+/**
+ * Изменение системы исчисления градусы <-> радианы
+ */
 function changeUnit(arg) {
     let str = display.value.trim();
     if (isNumber(str))
@@ -210,14 +214,19 @@ function changeUnit(arg) {
 }
 
 
+/**
+ * Включение-отключение полей заметок и лога
+ */
 function changeField(elem, state) {
     document.getElementById(elem).style.display = state ? 'block' : 'none';
 }
 
 
-// Формируем метод, позволяющий выводить сообщения в лог-окно.
-// Количество параметров может быть любым,
-// каждый выводится в отдельной строке
+/**
+ * Формируем метод, позволяющий выводить сообщения в лог-окно.
+ * Количество параметров может быть любым,
+ * каждый выводится в отдельной строке
+ */
 function logWindowOut() {
 
     // Выводим полученные функцией аргументы,

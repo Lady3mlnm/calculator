@@ -5,6 +5,10 @@
  * let data = rRPN(exp.split(/[\s]+/), []);
  */
 
+ /**
+ * Created by Nancy Vasilyeva <gothness@ymail.com>
+ * Date: 12.07.2017
+ */
 
 /**
  * Преобразование выражения в обратную польскую нотацию
