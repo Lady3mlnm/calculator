@@ -298,3 +298,15 @@ button#memoryState:hover, button#memoryRead:hover {
     background: linear-gradient(to top, #075983, #077dba);
     color: white;
 }
+
+button#backspace, button#clear {
+    border: solid 1px #79ceff;
+    background: #ffce79;
+    background: linear-gradient(to top, #ffce79, #ffe0c0);
+}
+
+button#backspace:hover, button#clear:hover {
+    background: #a0522d;
+    background: linear-gradient(to top, #a0522d, #cd853f);
+    color: white;
+}
