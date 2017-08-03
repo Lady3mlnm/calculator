@@ -35,11 +35,10 @@ body {
 #calculator {
     padding: 10px;
     background-color: #ffe6fb;
-    height: 310px;
 }
 
 #footer {
-    padding: 5px;
+    padding: 5px 12px 5px 0;
     background: #830759;
     background: linear-gradient(to top, #830759, #ba077d);
     color: white;
@@ -49,7 +48,8 @@ body {
     border-radius: 0 0 5px 5px;
 }
 
-#calculator button {
+#calculator button,
+.calculator-trig label {
     margin: 1px;
     height: 50px;
     width: 50px;
@@ -60,7 +60,8 @@ body {
     font-weight: bold;
 }
 
-#calculator button:hover {
+#calculator button:hover,
+.calculator-trig label:hover {
     background: #830759;
     background: linear-gradient(to top, #830759, #ba077d);
     color: white;
@@ -119,29 +120,160 @@ body {
     font-size: 14px;
     color: dimgray;
 }
+body .container #calculator .calculator-trig {
+    width: 246px;
+    float: left;
+    margin-top:10px;
+    margin-right: 10px;
+}
+
+#calculator .calculator-trig label {
+    display: block;
+    float: left;
+    width: 78px;
+    height: 48px;
+    text-align: center;
+    line-height: 48px;
+}
+
+#unitRad, #unitGrad {
+    display: none;
+}
+
+input:checked+.check
+  {
+    display: block;
+    height: 48px;
+    width: 58px;
+    margin: -1px;
+    padding-left: 20px;
+    border: solid 1px #ff79ce;
+    border-radius: 5px;
+    background: #830759;
+    background: linear-gradient(to top, #830759, #ba077d);
+    color: white;
+}
+
+.check {
+    position: relative;
+}
+
+input:checked+.check::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 14px;
+    width: 2px;
+    height: 10px;
+    background-color: white;
+    transform: rotate(-45deg);
+}
+
+input:checked+.check::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 23px;
+    width: 2px;
+    height: 16px;
+    background-color: white;
+    transform: rotate(45deg);
+}
+
+
+#calculator .calculator-trig button {
+    width: 80px ;
+}
+.calculator-abs-fact-e {
+    margin-right: 2px;
+}
+.calculator-abs-fact-e,
+.calculator-logarithm {
+    width: 77px;
+    float: left;
+    margin-top: 10px;
+}
+
+#calculator .calculator-logarithm button,
+#calculator .calculator-abs-fact-e button{
+    width: 77px;
+}
+
+.filds {
+    margin-top: 6px;
+    width: 416px;
+    float: left;
+}
+
+.notes-fild, .log-fild{
+    border: 1px solid #FFD6F1;
+    border-radius: 5px;
+    margin: 6px 0 6px 0;
+    padding: 6px 6px 6px 6px;
+    background-color: #FFD6F1;
+}
 
 #logWindow, #noteWindow {
-    width: 428px;
-    border: solid 1px silver;
+    max-width: 394px;
+    border: solid 1px #fff5fd;
     border-radius: 3px;
     padding: 0 3px;
     font-family: Arial, sans-serif;
     font-size: 14px;
-    color: dimgray;
+    color: #830759;
     overflow-y: auto;
     resize: vertical;
 }
 
 #logWindow {
-    background-color: whitesmoke;
+    background-color:  #fff5fd;
     height: 184px;
 }
 
 #noteWindow {
-    background-color: white;
+    background-color:  #fff5fd;
     height: 84px;
+    width: 406px;
 }
 
+#tfNote, #tfLog {
+    display: none;
+}
+
+.filds label {
+    display: block;
+    height: 50px;
+    width: 400px;
+    text-align: center;
+    line-height: 48px;
+    border: solid 1px #ff79ce;
+    border-radius: 5px;
+    background: #ff79ce;
+    background: linear-gradient(to top, #ff79ce, #ffc0e0);
+    font-weight: bold;
+    color: #830759;
+}
+input:checked+.check-fild {
+    display: block;
+    border: solid 1px #fff5fd;
+    border-radius: 5px;
+    background: #FFD6F1;
+    background: linear-gradient(to top, #FFD6F1, #FFE6FB);
+    color: #830759;
+}
+#notesContainer h3, #logContainer h3 {
+    margin-top: 10px;
+    margin-left: 6px;
+    margin-bottom: 10px;
+    font-weight: lighter;
+    font-size: 12px;
+    color: #830759;
+}
+.clearfix {
+    clear: both;
+    height: 0px;
+    background: #e74c3c;
+}
 /* #noteWindow { */
     /* background-color: whitesmoke; */
 /* } */
