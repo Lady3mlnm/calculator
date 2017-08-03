@@ -1,3 +1,8 @@
+/**
+ * Created by group "TechhnoFractal" http://technofractal.org/
+ * Date: 2017 Jule-August
+ */
+
 "use strict";
 
 
@@ -52,19 +57,61 @@ function logarithm10(x) {
 function logarithm2(x) {
     if (x<=0)
         throw 'Недопустимая мат.операция: взятие логарифма от неположительного числа';
-    return Math.log(x)/Math.LN10;
+    return Math.log(x)/Math.LN2;
 }
 
 // Взятие факториала
-function Factorial(n) {
+function factorial(n) {
     if (n<0)
         throw 'Недопустимая мат.операция: взятие факториала от отрицательного числа';
     if (!Number.isInteger(n))
-    throw 'Недопустимая мат.операция: взятие факториала от дробного числа';
+        throw 'Недопустимая мат.операция: взятие факториала от дробного числа';
 
     let r=1;
         for (let i=1; i<=n; i++)
     r *= i;
 
     return r;
+}
+
+// Синус
+function fSin(angle, isGrad) {
+    if (isGrad)
+        angle = gradRad(angle);
+    return Math.sin(angle);
+}
+
+// Косинус
+function fCos(angle, isGrad) {
+    if (isGrad)
+        angle = gradRad(angle);
+    return Math.cos(angle);
+}
+
+// Тангенс
+function fTg(angle, isGrad) {
+    if (isGrad)
+        angle = gradRad(angle);
+    if (!toFloat(fCos(angle,false)))
+        throw 'Недопустимая мат.операция: попадание тангенса на асимтоту';
+    return Math.tan(angle);
+}
+
+// Арксинус
+function fArcsin(x, isGrad) {
+    if (x<-1 || x>1)
+        throw 'Недопустимая мат.операция: взятие арксинуса от числа, выходящего за границы [-1,1]';
+    return isGrad ? radGrad(Math.asin(x)) : Math.asin(x);
+}
+
+// Арккосинус
+function fArccos(x, isGrad) {
+    if (x<-1 || x>1)
+        throw 'Недопустимая мат.операция: взятие арккосинуса от числа, выходящего за границы [-1,1]';
+    return isGrad ? radGrad(Math.acos(x)) : Math.acos(x);
+}
+
+// Арктангенс
+function fArctg(x, isGrad) {
+    return isGrad ? radGrad(Math.atan(x)) : Math.atan(x);
 }

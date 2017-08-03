@@ -106,9 +106,9 @@ body {
     width: 52px;
 }
 
-#calculator .calculator-nums #zero {
-    width: 102px;
-}
+/* #calculator .calculator-nums #zero { */
+    /* width: 102px; */
+/* } */
 
 #calculator .calculator-ops #equality {
     height: 102px;

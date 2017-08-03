@@ -1,10 +1,11 @@
 /**
- * Created by Nancy Vasilyeva <gothness@ymail.com>
- * Date: 12.07.2017
+ * Created by group "TechhnoFractal" http://technofractal.org/
+ * Date: 2017 Jule-August
  */
+
 // Для вычисления эталонных значений использовался калькулятор https://www.calculator-pro.ru/
-// Обращу внимание, что тестовые числа лучше выводить как строки, а не как числа,
-// поскольку даже при выводе в консоль имеет место округление
+// Тестовые числа выводятся как строки, а не как числа,
+// поскольку при выводе в консоль имеет место округление
 
 console.group("Test block");
 
@@ -20,7 +21,11 @@ console.log(calculate(calculateFormat("5*3/2")),' vs 7.5');
 console.log(calculate(calculateFormat("13+11+5*3/2-7")),' vs 24.5');
 console.log(calculate(calculateFormat("13.+11.+5*3/2,-7,+1.")),' vs 25.5');
 console.log(calculate(calculateFormat(".3+.2+,8*.45/.12/,9-.5--,9")),' vs 4.2333333333333333');
-console.log(calculate(calculateFormat("a_ )'-,5+6.6'sd( _")),' vs 6.1');
+console.log(calculate(calculateFormat("_ )'-,5+6.6'( _")),' vs 6.1');
+console.log(calculate(calculateFormat("pi")),' vs pi');
+console.log(calculate(calculateFormat("v(4-1)!!")),' vs 26.8328157299974764');
+console.log(calculate(calculateFormat("-pi+ve")),' vs -1.4928713829...');
+console.log(calculate(calculateFormat("-lg17.8-(-v,98-.9)")),' vs 0.6395294913522725');
 
 console.groupEnd();
 console.log("Testing done");

@@ -21,7 +21,6 @@
 
   <script src='js/operations.js' defer></script> <!-- файл JavaScript, содержащий функции отдельных операций -->
   <script src='js/calculator1.js' defer></script> <!-- подключаем файл JavaScript, содержащий основные функции -->
-  <script src='js/tests/test.js' defer></script> <!-- файл JavaScript для свободного тестирования -->
 </head>
 <body>
 
@@ -59,10 +58,24 @@
 <br>
 <input type='button' value='Вычислить' onclick='calculate()'><br>
 
-<!-- Кнопки, позволяющие запускать тестовые функции -->
+<!-- Кнопки, позволяющие запускать функции для экспериментов -->
 <br><br><br>
 <input type='button' value='Тест1' onclick='test1()'>
 <input type='button' value='Тест2' onclick='test2()'>
+
+
+<script>
+// Функции для экспериментов
+function test1(){
+  console.log('Функция test1 запущена.');
+  
+}
+
+function test2(){
+  console.log('Функция test2 запущена.');
+
+}
+</script>
 
 </body>
 </html>
