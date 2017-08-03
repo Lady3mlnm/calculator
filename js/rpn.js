@@ -80,7 +80,7 @@ function toFloat(data) {
  * @returns {boolean}
  */
 function isNumber(data) {
-    return /^-?\d+.?\d*$/.test(data);
+    return /^-?\d+\.?\d*$/.test(data);
 }
 
 

@@ -3,15 +3,10 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     font-size: 14px;
-    /* background: #ffd7f5; */
     color: black;
 }
 
 .container {
-    /*position: absolute;
-    left: 50%;
-    top: 10px;
-    margin-left: -208px;*/
     margin: 10px auto;
     width: 436px;
 }
@@ -237,15 +232,15 @@ input:checked+.check::after {
 }
 
 #tfNote, #tfLog {
-    display: none;
+    display: none;         
 }
 
 .filds label {
     display: block;
-    height: 50px;
+    height: 30px;
     width: 400px;
     text-align: center;
-    line-height: 48px;
+    line-height: 30px;
     border: solid 1px #ff79ce;
     border-radius: 5px;
     background: #ff79ce;
@@ -261,6 +256,23 @@ input:checked+.check-fild {
     background: linear-gradient(to top, #FFD6F1, #FFE6FB);
     color: #830759;
 }
+
+input+.check-fild::before {
+    content: '↓ '
+}
+
+input:checked+.check-fild::before {
+    content: '  '
+}
+
+input+.check-fild::after {
+    content: ' ↓'
+}
+
+input:checked+.check-fild::after {
+    content: '  '
+}
+
 #notesContainer h3, #logContainer h3 {
     margin-top: 10px;
     margin-left: 6px;
@@ -274,23 +286,6 @@ input:checked+.check-fild {
     height: 0px;
     background: #e74c3c;
 }
-/* #noteWindow { */
-    /* background-color: whitesmoke; */
-/* } */
-
-
-/* #noteWindow, #noteWindow2 { */
-    /* width: 428px; */
-    /* height: 184px; */
-    /* border: solid 1px silver; */
-    /* background-color: whitesmoke; */
-    /* border-radius: 3px; */
-    /* padding: 0 3px; */
-    /* font-family: Arial, sans-serif; */
-    /* font-size: 14px; */
-    /* color: dimgray; */
-    /* overflow-y: auto; */
-/* } */
 
 button#memoryState, button#memoryRead {
     border: solid 1px #79ceff; //
@@ -303,12 +298,3 @@ button#memoryState:hover, button#memoryRead:hover {
     background: linear-gradient(to top, #075983, #077dba);
     color: white;
 }
-
-
-/*
-#calculator .calculator-ext button[disabled] {
-    background: lightgrey;
-    border: solid 1px darkgray;
-    color: grey;
-}
-*/

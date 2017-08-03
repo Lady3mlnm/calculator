@@ -211,6 +211,9 @@ function changeUnit(arg) {
         display.value = arg == 'rad' ?
             gradRad(parseFloat(str)) :
             radGrad(parseFloat(str));
+    
+    // Возвращаем фонус на дисплей
+    display.focus();
 }
 
 
@@ -219,6 +222,7 @@ function changeUnit(arg) {
  */
 function changeField(elem, state) {
     document.getElementById(elem).style.display = state ? 'block' : 'none';
+    display.focus();
 }
 
 
