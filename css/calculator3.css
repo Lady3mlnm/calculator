@@ -319,8 +319,8 @@ button#memoryState:hover, button#memoryRead:hover {
     background: linear-gradient(to top, #075983, #077dba);
     color: white;
 }
-<<<<<<< HEAD
-=======
+
+
 
 /*button#backspace, button#clear {
     border: solid 1px #79ceff;
@@ -333,4 +333,4 @@ button#backspace:hover, button#clear:hover {
     background: linear-gradient(to top, #a0522d, #cd853f);
     color: white;
 }*/
->>>>>>> 382fb01b3c4ae64eb7278261abee8591934a733a
+
