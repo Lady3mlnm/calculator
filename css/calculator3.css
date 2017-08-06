@@ -196,14 +196,14 @@ input:checked+.check::after {
 
 .filds {
     margin-top: 6px;
-    width: 416px;
+    width: 413px;
     float: left;
 }
 
 .notes-fild, .log-fild{
     border: 1px solid #FFD6F1;
     border-radius: 5px;
-    margin: 6px 0 6px 0;
+    margin: 6px 0 6px 1px;
     padding: 6px 6px 6px 6px;
     background-color: #FFD6F1;
 }
@@ -212,6 +212,8 @@ input:checked+.check::after {
     max-width: 394px;
     border: solid 1px #fff5fd;
     border-radius: 3px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
     padding: 0 3px;
     font-family: Arial, sans-serif;
     font-size: 14px;
@@ -228,17 +230,17 @@ input:checked+.check::after {
 #noteWindow {
     background-color:  #fff5fd;
     height: 84px;
-    width: 406px;
+    width: 390px;
 }
 
 #tfNote, #tfLog {
-    display: none;         
+    display: none;
 }
 
 .filds label {
+  position: relative;
     display: block;
     height: 30px;
-    width: 400px;
     text-align: center;
     line-height: 30px;
     border: solid 1px #ff79ce;
@@ -251,26 +253,27 @@ input:checked+.check::after {
 input:checked+.check-fild {
     display: block;
     border: solid 1px #fff5fd;
-    border-radius: 5px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
     background: #FFD6F1;
     background: linear-gradient(to top, #FFD6F1, #FFE6FB);
     color: #830759;
 }
 
-input+.check-fild::before {
-    content: '↓ '
-}
-
-input:checked+.check-fild::before {
-    content: '  '
-}
-
 input+.check-fild::after {
-    content: ' ↓'
+  position: absolute;
+  content: '';
+  /*autoHeight*/
+  top: 9px;
+  left: 236px;
+  border: 3px solid #830759;
+  border-top: 3px solid transparent;
+  border-left: 3px solid transparent;
+  transform: rotate(45deg);
 }
 
 input:checked+.check-fild::after {
-    content: '  '
+    display: none;
 }
 
 #notesContainer h3, #logContainer h3 {
@@ -285,6 +288,24 @@ input:checked+.check-fild::after {
     clear: both;
     height: 0px;
     background: #e74c3c;
+}
+/*---------Зеленые-------*/
+button#backspace, button#clear {
+    background: linear-gradient(to top, #73dccf, #9cfff3);
+    border-color: #73dccf;
+}
+button#backspace:hover, button#clear:hover {
+    background: linear-gradient(to top, #008b7a, #33bbaa);
+    border-color: #008b7a;
+}
+/*---------Сиреневые-------*/
+button#backspace, button#clear {
+    background: linear-gradient(to top, #cb81f3, #e5b5ff);
+    border-color: #cb81f3;
+}
+button#backspace:hover, button#clear:hover {
+    background: linear-gradient(to top, #9226cc, #ce74ff);
+    border-color: #9226cc;
 }
 
 button#memoryState, button#memoryRead {
