@@ -317,6 +317,7 @@ button#memoryState:hover, button#memoryRead:hover {
     background: linear-gradient(to top, #075983, #077dba);
     color: white;
 }
+
 /*---------Сине-сиреневые-------*/
 button#backspace, button#clear {
     background: linear-gradient(to top, #8381f3, #d0dcff);
