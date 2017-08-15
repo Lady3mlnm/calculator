@@ -43,8 +43,7 @@ body {
     border-radius: 0 0 5px 5px;
 }
 
-#calculator button,
-.calculator-trig label {
+#calculator button {
     margin: 1px;
     height: 50px;
     width: 50px;
@@ -123,59 +122,82 @@ body .container #calculator .calculator-trig {
 }
 
 #calculator .calculator-trig label {
+    position: relative;
     display: block;
     float: left;
-    width: 78px;
-    height: 48px;
+    width: 80px;
+    height: 49px;
+    margin:2px;
     text-align: center;
     line-height: 48px;
+    background: #ffc8ed;
+    border-color: #ffc8ed;
+    color: white;
 }
-
+#calculator .calculator-trig label input:checked+.check {
+    color: #b7087d;
+}
 #unitRad, #unitGrad {
     display: none;
 }
-
-input:checked+.check
-  {
-    display: block;
-    height: 48px;
-    width: 58px;
-    margin: -1px;
-    padding-left: 20px;
-    border: solid 1px #ff79ce;
-    border-radius: 5px;
-    background: #830759;
-    background: linear-gradient(to top, #830759, #ba077d);
-    color: white;
+#calculator .calculator-trig label:first-of-type {
+    border-radius: 5px 0 0 5px;
+    margin-right: 0;
+    padding-right: 10px;
+    width: 70px;
+}
+#calculator .calculator-trig label:last-of-type {
+    border-radius: 0 5px 5px 0 ;
+    margin-left: 0;
+    padding-left: 10px;
+    width: 70px;
 }
 
-.check {
-    position: relative;
+/*----radiobutton_3---*/
+#calculator .calculator-trig label {
+    background: #ffe6fb;
+    border-color: #ffe6fb;
+    color: #fe94d6;
 }
-
-input:checked+.check::before {
+#unitGrad+.check::before {
     content: '';
     position: absolute;
-    top: 22px;
-    left: 14px;
-    width: 2px;
-    height: 10px;
-    background-color: white;
-    transform: rotate(-45deg);
+    top: 15px;
+    left: -3px;
+    width: 23px;
+    height: 20px;
+    background-color: #fe94d6;
+    border-radius: 0 10px 10px 0;
+    box-shadow: inset -1px 1px 1px 0 rgba(121, 23, 89, 0.5);/*тень сдвинута в лево, чтобы не была видна левая граница*/
 }
-
-input:checked+.check::after {
+#unitRad+.check::before {/*элемент добавлен для увеличения кликабельной области*/
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 57px;
+    width: 43px;
+    height: 20px;
+    background-color: #fe94d6;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 1px rgba(121, 23, 89, 0.5);
+}
+#unitGrad+.check::after {
     content: '';
     position: absolute;
     top: 16px;
-    left: 23px;
-    width: 2px;
-    height: 16px;
-    background-color: white;
-    transform: rotate(45deg);
+    left: -22px;
+    width: 21px;
+    height: 18px;
+    background-color: #89085F;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 6px rgb(199, 140, 180);
+    transition: .2s ease-out;
 }
-
-
+#unitGrad:checked+.check::after{
+    left: -2px;
+    transition: .2s ease-out;
+}
+/*---end radiobutton_3 ---*/
 #calculator .calculator-trig button {
     width: 80px ;
 }
@@ -231,6 +253,7 @@ input:checked+.check::after {
     background-color:  #fff5fd;
     height: 84px;
     width: 390px;
+    margin-bottom: -2px;
 }
 
 #tfNote, #tfLog {
@@ -261,51 +284,26 @@ input:checked+.check-fild {
 }
 
 input+.check-fild::after {
-  position: absolute;
-  content: '';
-  /*autoHeight*/
-  top: 9px;
-  left: 236px;
-  border: 3px solid #830759;
-  border-top: 3px solid transparent;
-  border-left: 3px solid transparent;
-  transform: rotate(45deg);
+    position: absolute;
+    content: '';
+    top: 9px;
+    left: 236px;
+    border: 3px solid #830759;
+    border-top: 3px solid transparent;
+    border-left: 3px solid transparent;
+    transform: rotate(45deg);
 }
-
+#tfLog+.check-fild::after {
+    left: 221px;
+}
 input:checked+.check-fild::after {
     display: none;
 }
 
-#notesContainer h3, #logContainer h3 {
-    margin-top: 10px;
-    margin-left: 6px;
-    margin-bottom: 10px;
-    font-weight: lighter;
-    font-size: 12px;
-    color: #830759;
-}
 .clearfix {
     clear: both;
     height: 0px;
     background: #e74c3c;
-}
-/*---------Зеленые-------*/
-button#backspace, button#clear {
-    background: linear-gradient(to top, #73dccf, #9cfff3);
-    border-color: #73dccf;
-}
-button#backspace:hover, button#clear:hover {
-    background: linear-gradient(to top, #008b7a, #33bbaa);
-    border-color: #008b7a;
-}
-/*---------Сиреневые-------*/
-button#backspace, button#clear {
-    background: linear-gradient(to top, #cb81f3, #e5b5ff);
-    border-color: #cb81f3;
-}
-button#backspace:hover, button#clear:hover {
-    background: linear-gradient(to top, #9226cc, #ce74ff);
-    border-color: #9226cc;
 }
 
 button#memoryState, button#memoryRead {
@@ -319,18 +317,12 @@ button#memoryState:hover, button#memoryRead:hover {
     background: linear-gradient(to top, #075983, #077dba);
     color: white;
 }
-<<<<<<< HEAD
-=======
-
-/*button#backspace, button#clear {
-    border: solid 1px #79ceff;
-    background: #ffce79;
-    background: linear-gradient(to top, #ffce79, #ffe0c0);
+/*---------Сине-сиреневые-------*/
+button#backspace, button#clear {
+    background: linear-gradient(to top, #8381f3, #d0dcff);
+    border-color: #8381f3;
 }
-
 button#backspace:hover, button#clear:hover {
-    background: #a0522d;
-    background: linear-gradient(to top, #a0522d, #cd853f);
-    color: white;
-}*/
->>>>>>> 382fb01b3c4ae64eb7278261abee8591934a733a
+    background: linear-gradient(to top, #37148e, #7476ff);
+    border-color: #37148e;
+}
