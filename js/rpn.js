@@ -41,6 +41,12 @@ let calcConstants = {
 
 
 /**
+ * Хранилище последней операции
+ */
+let lastOperationStore = [];
+
+
+/**
  * Вес операции
  */
 let opWeight = {
@@ -95,6 +101,14 @@ function isConstant(data) {
 
 
 /**
+ * Одновременно проверяем на число и константу
+ */
+function isNumberOrConstant(data) {
+    return isNumber(data) || isConstant(data);
+}
+
+
+/**
  * Проверки на операторы
  * @param data
  * @returns {boolean}
@@ -128,10 +142,10 @@ function RPN(data) {
 
     // Текущие элемент массива
     let t;
-    
+
     // Последовательно рассматриваем каждый элемент полученного массива
     for (let i = 0; data[i] !== undefined; i++) {
-        
+
         t = data[i];
 
         if (isNumber(t) || Object.keys(calcConstants).indexOf(t) > -1) {
@@ -149,7 +163,7 @@ function RPN(data) {
             // Переносим элементы из временного стека в выходной
             while (stack.length > 0 && opCompare())
                 output.push(stack.pop());
-            
+
             // Помещаем текущий элемент на хранение во временный стек
             stack.push(t);
 
@@ -209,20 +223,44 @@ function calculate(exp) {
     // Преобразование выражения в обратную польскую нотацию
     let data =  RPN(exp.split(/[\s]+/));
 
-    // Выводим в лог-окно получившуюся обратную польскую запись
-    logWindowOut('Обратная польская запись:',data);
+    // Если выражение состоит из одного числа и у нас есть запомненная операция, то применяем её.
+    // Иначе если введена лишь одна простая операция, то запоминаем её.
+    // Иначе удаляем из памяти запомненную операцию, чтобы не путала
+    if (data.length == 1 && isNumberOrConstant(data[0]) && lastOperationStore.length > 0) {
+
+        logWindowOut('Повторение последней операции:');
+        if (lastOperationStore.length==2)
+            logWindowOut(data[0]+' '+lastOperationStore[1]+' '+lastOperationStore[0])
+        else if (lastOperationStore[0]=='!')
+            logWindowOut(data[0]+' !')
+        else
+            logWindowOut(lastOperationStore[0]+' '+data[0]);
+        data = data.concat(lastOperationStore);
+
+    } else {
+
+        if (data.length == 2 && isOperator1(data[1]) && isNumberOrConstant(data[0])) {
+            lastOperationStore = [data[1]];
+        } else if (data.length == 3 && isOperator2(data[2]) && isNumberOrConstant(data[1]) && isNumberOrConstant(data[0])) {
+            lastOperationStore = [data[1],data[2]];
+        } else
+        lastOperationStore = [];
+
+        // Выводим в лог-окно получившуюся обратную польскую запись
+        logWindowOut('Обратная польская запись:',data);
+    }
 
     // Идём по массиву data.
     // В случае обнаружения числа заносим его в массив-стек stack.
     // В случае обнаружения оператора изымаем из стека два последних числа,
     // производим с ними операцию, прописанную в объекте calcMethods и
-    // помещаем результат в конец стека stack 
+    // помещаем результат в конец стека stack
     data.forEach((item, i, arr) => {
 
         if (isNumber(item))
             // Заносим числа сразу в стек
             stack.pushFloat(item);
-            
+
         else if (isConstant(item))
             // Вместо мат.константы заносим в стек её значение
             stack.push(calcConstants[item]);
@@ -238,7 +276,7 @@ function calculate(exp) {
             stack.pushFloat(
                 calcMethods1[item](stack.pop())
             );
-            
+
         } else if (isOperator2(item)) {
 
             // Выдаём ошибку если не достаточно операндов
@@ -263,7 +301,7 @@ function calculate(exp) {
         throw 'ОШИБКА: предполагается наличие лишнего числа или или пропуск оператора';
 
     // Округляем ответ до меньшей точности.
-    // Если этого не сделать, то, к примеру, 
+    // Если этого не сделать, то, к примеру,
     // вычисление кубического корня из 1000 вернёт 9.999999999999975
     stack[0] = parseFloat(stack[0].toFixed(12));
 
@@ -284,14 +322,14 @@ function calculateFormat(data) {
     // Если при записи дробных чисел использованы запятые,
     // то они интерпретируются как точки )
     data = data.replace(/,/g, '.');
-    
+
     // Перевод символов строки в нижний регистр
     data = data.toLowerCase();
-    
+
     // Замена 'tan'->'tg', 'log10'->'lg'
     data = data.replace(/tan/g, 'tg');
     data = data.replace(/log10/g, 'lg');
-    
+
     // Очистка концов выражения от наиболее распространённого мусора,
     // который мог быть прихвачен при копировании (такого как кавычки).
     // Умышленно исключаем из очистки символы мат.операций,
@@ -306,7 +344,7 @@ function calculateFormat(data) {
 
     // Преобразование операторов и скобок
     // Вокруг знаков операторов и скобок размещаем ровно один пробел
-    // ('Некрасивость' этой команды в том, что пробелы между последовательно 
+    // ('Некрасивость' этой команды в том, что пробелы между последовательно
     //  найденными символами суммируются.)
     data = data.replace(
         new RegExp('\\s*(' + shieldedOperators.join('|')+'|\\(|\\))\\s*', 'g'),
@@ -316,13 +354,13 @@ function calculateFormat(data) {
     // Там, где получилось 2 и более пробелов, схлопываем их.
     // И сразу же удаляем пробелы с концов строки
     data = data.replace(/\s{2,}/g, ' ').trim();
-    
+
     // Отфильтровка случаев, когда знак минус является признаком отрицательности числа,
     // а не символом мат.операции.
     // Вначале обрабатываем случай, когда отрицательное значение стоит в самом начале выражения
     // В том числе учитываем существование мат.констант
     data = data.replace(/^-\s?(\d+|pi|e)/, '-$1');
-    
+
     // Общий случай, когда отрицательное число в середине выражения
     data = data.replace(
         new RegExp('(' + shieldedOperators.join('|') + '|\\()\\s?-\\s?(\\d+|pi|e)', 'g'),
@@ -334,7 +372,7 @@ function calculateFormat(data) {
         new RegExp('^-\\s?(' + shieldedOperators.join('|')+'|\\()'),
         '0 - $1'
     );
-    
+
     // Обрабатываем случаи с выражениями '(-(', '(-sin' и т.п.
     data = data.replace(
         new RegExp('\\(\\s?-\\s?(' + shieldedOperators.join('|')+'|\\()', 'g'),
@@ -343,6 +381,6 @@ function calculateFormat(data) {
 
     // Выводим в лог-окно получившуюся отформатированную строку
     logWindowOut('','Воспринятое выражение:',data);
-    
+
     return data;
 }
