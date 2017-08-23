@@ -67,9 +67,9 @@ body {
 
 #calculator .calculator-display {
     margin: 20px 2px;
-    padding: 10px;
+    padding: 7px 10px 8px;
     width: 390px;
-    height: 25px;
+    height: 30px;
     background-color: #ffd6f1;
     color: #830759;
     font-size: 24px;
