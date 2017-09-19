@@ -1,21 +1,17 @@
 <NotepadPlus>
     <Project name="calculator">
         <File name="calculator3.html" />
-        <File name="calculator3-m.html" />
         <File name="index.html" />
         <Folder name="js">
             <File name="js\calculator3.js" />
-            <File name="js\calculator3-m.js" />
             <File name="js\operations3.js" />
             <File name="js\rpn.js" />
-            <File name="js\rpn-m.js" />
             <Folder name="tests">
                 <File name="js\tests\rpn.test.js" />
             </Folder>
         </Folder>
         <Folder name="css">
             <File name="css\calculator3.css" />
-            <File name="css\calculator3-m.css" />
         </Folder>
     </Project>
 </NotepadPlus>

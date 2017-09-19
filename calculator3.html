@@ -7,8 +7,7 @@
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
             jax: ["input/TeX","output/CommonHTML"],
-            extensions: ["tex2jax.js"],
-            tex2jax: {inlineMath: [ ['$','$'] ]}
+            extensions: ["tex2jax.js"]
         });
     </script>
     <script type="text/javascript" async
@@ -34,10 +33,10 @@
         <div class="calculator-ext">
             <button id="lbracket">(</button>
             <button id="rbracket">)</button>
-            <button id="power2">$n^2$</button>
-            <button id="powerX">$n^x$</button>
-            <button id="root2">$\sqrt{n}$</button>
-            <button id="root3">$\sqrt[3]{n}$</button>
+            <button id="power2">\(n^2\)</button>
+            <button id="powerX">\(n^x\)</button>
+            <button id="root2">\(\sqrt{n}\)</button>
+            <button id="root3">\(\sqrt[3]{n}\)</button>
             <button id="memoryState">MS</button>
             <button id="memoryRead">MR</button>
         </div>
@@ -53,7 +52,7 @@
             <button id="eight">8</button>
             <button id="nine">9</button>
             <button id="zero">0</button>
-            <button id="plusMinus" title='смена знака числа'>$\pm$</button>
+            <button id="plusMinus" title='смена знака числа'>\(\pm\)</button>
             <button id="delimiter">.</button>
         </div>
 
@@ -65,30 +64,30 @@
         </div>
 
         <div class="calculator-ops">
-            <button id="backspace">$\leftarrow$</button>
+            <button id="backspace">\(\leftarrow\)</button>
             <button id="clear">C</button>
             <button id="equality">=</button>
         </div>
         <div class="calculator-trig">
-            <button id="sin">$\sin$</button>
-            <button id="cos">$\cos$</button>
-            <button id="tg">$tg$</button>
-            <button id="arcsin">$\arcsin$</button>
-            <button id="arccos">$\arccos$</button>
-            <button id="arctg">$arctg$</button>
-            <label for='unitRad'><input type='radio' name='unit' id='unitRad' value='rad'><span class="check"> $rad$</span></label>
-            <label for='unitGrad'><input type='radio' name='unit' id='unitGrad' value='grad' checked><span class="check"> $grad$<span></label>
-            <button id="pi">$\pi$</button>
+            <button id="sin">\(\sin\)</button>
+            <button id="cos">\(\cos\)</button>
+            <button id="tg">\(tg\)</button>
+            <button id="arcsin">\(\arcsin\)</button>
+            <button id="arccos">\(\arccos\)</button>
+            <button id="arctg">\(arctg\)</button>
+            <label for='unitRad'><input type='radio' name='unit' id='unitRad' value='rad'><span class="check">\(rad\)</span></label>
+            <label for='unitGrad'><input type='radio' name='unit' id='unitGrad' value='grad' checked><span class="check">\(grad\)<span></label>
+            <button id="pi">\(\pi\)</button>
         </div>
         <div class="calculator-abs-fact-e">
-            <button id="abs" title='модуль числа'>$abs$</button>
-            <button id="factorial" title='Факториал'>$!$</button>
-            <button id="euler" title='число Эйлера'>$e$</button>
+            <button id="abs" title='модуль числа'>\(abs\)</button>
+            <button id="factorial" title='Факториал'>\(!\)</button>
+            <button id="euler" title='число Эйлера'>\(e\)</button>
         </div>
         <div class="calculator-logarithm">
-            <button id="logarithm2" title='логарифм по основания 2'>$\log_{2}$</button>
-            <button id="logarithmE" title='натуральный логарифм'>$\ln$</button>
-            <button id="logarithm10" title='десятичный логарифм'>$\lg$</button>
+            <button id="logarithm2" title='логарифм по основания 2'>\(\log_{2}\)</button>
+            <button id="logarithmE" title='натуральный логарифм'>\(\ln\)</button>
+            <button id="logarithm10" title='десятичный логарифм'>\(\lg\)</button>
         </div>
 
         <div class="filds">

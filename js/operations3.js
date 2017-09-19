@@ -27,7 +27,7 @@ function div(x, y) {
 function powerX(x,y) {
     if (x==0 && y<=0)
         throw 'Недопустимая мат.операция: результат от возведения 0 в неположительную степень неопределён';
-    if (x<0 && !Number.isInteger(y))
+    if (x<0 && y!=Math.floor(y))
         throw 'Недопустимая мат.операция: отрицательное основание при дробной степени';
     return Math.pow(x,y);
 }
@@ -64,7 +64,7 @@ function logarithm2(x) {
 function factorial(n) {
     if (n<0)
         throw 'Недопустимая мат.операция: взятие факториала от отрицательного числа';
-    if (!Number.isInteger(n))
+    if (n!=Math.floor(n))
         throw 'Недопустимая мат.операция: взятие факториала от дробного числа';
 
     let r=1;
