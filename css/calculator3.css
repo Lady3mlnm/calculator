@@ -55,7 +55,7 @@ body {
 }
 
 #calculator button:hover,
-.calculator-trig label:hover {
+#calculator-trig label:hover {
     background: #830759;
     background: linear-gradient(to top, #830759, #ba077d);
     color: white;
@@ -79,12 +79,12 @@ body {
     border-radius: 5px;
 }
 
-#calculator .calculator-ext {
+#calculator-ext {
     float: left;
     width: 134px;
 }
 
-#calculator .calculator-ext button {
+#calculator-ext button {
     height: 50px;
     width: 65px;
 }
@@ -100,10 +100,6 @@ body {
     width: 52px;
 }
 
-/* #calculator .calculator-nums #zero { */
-    /* width: 102px; */
-/* } */
-
 #calculator .calculator-ops #equality {
     height: 102px;
 }
@@ -114,14 +110,14 @@ body {
     font-size: 14px;
     color: dimgray;
 }
-body .container #calculator .calculator-trig {
+#calculator-trig {
     width: 246px;
     float: left;
     margin-top:10px;
     margin-right: 10px;
 }
 
-#calculator .calculator-trig label {
+#calculator-trig label {
     position: relative;
     display: block;
     float: left;
@@ -134,19 +130,19 @@ body .container #calculator .calculator-trig {
     border-color: #ffc8ed;
     color: white;
 }
-#calculator .calculator-trig label input:checked+.check {
+#calculator-trig label input:checked+.check {
     color: #b7087d;
 }
 #unitRad, #unitGrad {
     display: none;
 }
-#calculator .calculator-trig label:first-of-type {
+#calculator-trig label:first-of-type {
     border-radius: 5px 0 0 5px;
     margin-right: 0;
     padding-right: 10px;
     width: 70px;
 }
-#calculator .calculator-trig label:last-of-type {
+#calculator-trig label:last-of-type {
     border-radius: 0 5px 5px 0 ;
     margin-left: 0;
     padding-left: 10px;
@@ -154,7 +150,7 @@ body .container #calculator .calculator-trig {
 }
 
 /*----radiobutton_3---*/
-#calculator .calculator-trig label {
+#calculator-trig label {
     background: #ffe6fb;
     border-color: #ffe6fb;
     color: #fe94d6;
@@ -198,31 +194,28 @@ body .container #calculator .calculator-trig {
     transition: .2s ease-out;
 }
 /*---end radiobutton_3 ---*/
-#calculator .calculator-trig button {
+#calculator-trig button {
     width: 80px ;
 }
-.calculator-abs-fact-e {
-    margin-right: 2px;
-}
-.calculator-abs-fact-e,
-.calculator-logarithm {
-    width: 77px;
+
+#calculator-logarithm {
+    width: 158px;
     float: left;
     margin-top: 10px;
+    margin-right: 2px;
 }
 
-#calculator .calculator-logarithm button,
-#calculator .calculator-abs-fact-e button{
+#calculator-logarithm button {
     width: 77px;
 }
 
-.filds {
+#fields {
     margin-top: 6px;
     width: 413px;
     float: left;
 }
 
-.notes-fild, .log-fild{
+.notes-field, .log-field{
     border: 1px solid #FFD6F1;
     border-radius: 5px;
     margin: 6px 0 6px 1px;
@@ -260,7 +253,7 @@ body .container #calculator .calculator-trig {
     display: none;
 }
 
-.filds label {
+#fields label {
   position: relative;
     display: block;
     height: 30px;
@@ -273,7 +266,7 @@ body .container #calculator .calculator-trig {
     font-weight: bold;
     color: #830759;
 }
-input:checked+.check-fild {
+input:checked+.check-field {
     display: block;
     border: solid 1px #fff5fd;
     border-bottom-right-radius: 0;
@@ -283,7 +276,7 @@ input:checked+.check-fild {
     color: #830759;
 }
 
-input+.check-fild::after {
+input+.check-field::after {
     position: absolute;
     content: '';
     top: 9px;
@@ -293,10 +286,10 @@ input+.check-fild::after {
     border-left: 3px solid transparent;
     transform: rotate(45deg);
 }
-#tfLog+.check-fild::after {
+#tfLog+.check-field::after {
     left: 221px;
 }
-input:checked+.check-fild::after {
+input:checked+.check-field::after {
     display: none;
 }
 

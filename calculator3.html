@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="css/calculator3.css">
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
-            jax: ["input/TeX","output/CommonHTML"],
-            extensions: ["tex2jax.js"]
+            jax: ["input/MathML", "output/CommonHTML"],
+            extensions: ["mml2jax.js"]
         });
     </script>
     <script type="text/javascript" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
     </script>
     <script type="text/javascript" src="js/operations3.js" defer></script>
     <script type="text/javascript" src="js/rpn.js" defer></script>
@@ -30,13 +30,13 @@
 
         <input id="display" type="text" class="calculator-display">
 
-        <div class="calculator-ext">
-            <button id="lbracket">(</button>
-            <button id="rbracket">)</button>
-            <button id="power2">\(n^2\)</button>
-            <button id="powerX">\(n^x\)</button>
-            <button id="root2">\(\sqrt{n}\)</button>
-            <button id="root3">\(\sqrt[3]{n}\)</button>
+        <div id="calculator-ext">
+            <button id="lbracket"><math><mo>(</mo></math></button>
+            <button id="rbracket"><math><mo>)</mo></math></button>
+            <button id="power2"><math><msup><mi style="color:grey">n</mi><mn>2</mn></msup></math></button>
+            <button id="powerX"><math><msup><mi style="color:grey">n</mi><mi>x</mi></msup></math></button>
+            <button id="root2"><math><msqrt><mi style="color:transparent">n</mi></msqrt></math></button>
+            <button id="root3"><math><mroot><mi style="color:transparent">n</mi><mn>3</mn></mroot></math></button>
             <button id="memoryState">MS</button>
             <button id="memoryRead">MR</button>
         </div>
@@ -52,7 +52,7 @@
             <button id="eight">8</button>
             <button id="nine">9</button>
             <button id="zero">0</button>
-            <button id="plusMinus" title='смена знака числа'>\(\pm\)</button>
+            <button id="plusMinus" title='смена знака числа'><math><mo>&PlusMinus;</mo></math></button>
             <button id="delimiter">.</button>
         </div>
 
@@ -64,41 +64,38 @@
         </div>
 
         <div class="calculator-ops">
-            <button id="backspace">\(\leftarrow\)</button>
+            <button id="backspace"><math><mtext>&LeftArrow;</mtext></math></button>
             <button id="clear">C</button>
             <button id="equality">=</button>
         </div>
-        <div class="calculator-trig">
-            <button id="sin">\(\sin\)</button>
-            <button id="cos">\(\cos\)</button>
-            <button id="tg">\(tg\)</button>
-            <button id="arcsin">\(\arcsin\)</button>
-            <button id="arccos">\(\arccos\)</button>
-            <button id="arctg">\(arctg\)</button>
-            <label for='unitRad'><input type='radio' name='unit' id='unitRad' value='rad'><span class="check">\(rad\)</span></label>
-            <label for='unitGrad'><input type='radio' name='unit' id='unitGrad' value='grad' checked><span class="check">\(grad\)<span></label>
-            <button id="pi">\(\pi\)</button>
+        <div id="calculator-trig">
+            <button id="sin"><math><mo>sin</mo></math></button>
+            <button id="cos"><math><mo>cos</mo></math></button>
+            <button id="tg"><math><mo>tg</mo></math></button>
+            <button id="arcsin"><math><mo>arcsin</mo></math></button>
+            <button id="arccos"><math><mo>arccos</mo></math></button>
+            <button id="arctg"><math><mo>arctg</mo></math></button>
+            <label for='unitRad'><input type='radio' name='unit' id='unitRad' value='rad'><span class="check"><math><mo style="font-style: italic">rad</mo></math></span></label>
+            <label for='unitGrad'><input type='radio' name='unit' id='unitGrad' value='grad' checked><span class="check"><math><mo style="font-style: italic">grad</mo></math><span></label>
+            <button id="pi"><math><mi>&pi;</mi></math></button>
         </div>
-        <div class="calculator-abs-fact-e">
-            <button id="abs" title='модуль числа'>\(abs\)</button>
-            <button id="factorial" title='Факториал'>\(!\)</button>
-            <button id="euler" title='число Эйлера'>\(e\)</button>
+        <div id="calculator-logarithm">
+            <button id="abs" title='модуль числа'><math><mo>abs</mo></math></button>
+            <button id="logarithm2" title='логарифм по основания 2'><math><msub><mo>log</mo><mn>2</mn></msub></math></button>
+            <button id="factorial" title='Факториал'><math><mo>!</mo></math></button>
+            <button id="logarithmE" title='натуральный логарифм'><math><mo>ln</mo></math></button>
+            <button id="euler" title='число Эйлера'><math><mi>e</mi></math></button>
+            <button id="logarithm10" title='десятичный логарифм'><math><mo>lg</mo></math></button>
         </div>
-        <div class="calculator-logarithm">
-            <button id="logarithm2" title='логарифм по основания 2'>\(\log_{2}\)</button>
-            <button id="logarithmE" title='натуральный логарифм'>\(\ln\)</button>
-            <button id="logarithm10" title='десятичный логарифм'>\(\lg\)</button>
-        </div>
-
-        <div class="filds">
-            <div class="notes-fild">
-              <input type='checkbox' id='tfNote' value='notesContainer'><label class="check-fild withArrows" for='tfNote'>Заметки</label>
+        <div id="fields">
+            <div class="notes-field">
+              <input type='checkbox' id='tfNote' value='notesContainer'><label class="check-field withArrows" for='tfNote'>Заметки</label>
               <div id='notesContainer'>
                 <textarea id='noteWindow'></textarea>
               </div>
             </div>
-            <div class="log-fild">
-              <input type='checkbox' id='tfLog' value='logContainer' checked><label class="check-fild withArrows" for='tfLog'>Лог</label>
+            <div class="log-field">
+              <input type='checkbox' id='tfLog' value='logContainer' checked><label class="check-field withArrows" for='tfLog'>Лог</label>
               <div id='logContainer'>
                 <div id='logWindow'></div>
               </div>
