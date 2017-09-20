@@ -266,7 +266,8 @@ body {
     font-weight: bold;
     color: #830759;
 }
-input:checked+.check-field {
+
+#fields input:checked+label.check-field {
     display: block;
     border: solid 1px #fff5fd;
     border-bottom-right-radius: 0;
@@ -276,7 +277,7 @@ input:checked+.check-field {
     color: #830759;
 }
 
-input+.check-field::after {
+#fields input+label.check-field::after {
     position: absolute;
     content: '';
     top: 9px;
@@ -286,10 +287,10 @@ input+.check-field::after {
     border-left: 3px solid transparent;
     transform: rotate(45deg);
 }
-#tfLog+.check-field::after {
+#tfLog+label.check-field::after {
     left: 221px;
 }
-input:checked+.check-field::after {
+#fields input:checked+label.check-field::after {
     display: none;
 }
 
