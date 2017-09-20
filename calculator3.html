@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Калькулятор</title>
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/calculator3.css">
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -28,7 +29,7 @@
 
     <div id="calculator">
 
-        <input id="display" type="text" class="calculator-display">
+        <input id="display" type="text">
 
         <div id="calculator-ext">
             <button id="lbracket"><math><mo>(</mo></math></button>
@@ -41,7 +42,7 @@
             <button id="memoryRead">MR</button>
         </div>
 
-        <div class="calculator-nums">
+        <div id="calculator-nums">
             <button id="one">1</button>
             <button id="two">2</button>
             <button id="three">3</button>
@@ -75,8 +76,14 @@
             <button id="arcsin"><math><mo>arcsin</mo></math></button>
             <button id="arccos"><math><mo>arccos</mo></math></button>
             <button id="arctg"><math><mo>arctg</mo></math></button>
-            <label for='unitRad'><input type='radio' name='unit' id='unitRad' value='rad'><span class="check"><math><mo style="font-style: italic">rad</mo></math></span></label>
-            <label for='unitGrad'><input type='radio' name='unit' id='unitGrad' value='grad' checked><span class="check"><math><mo style="font-style: italic">grad</mo></math><span></label>
+            <label for='unitRad'>
+                <input type='radio' name='unit' id='unitRad' value='rad'>
+                <span class="check"><math><mo style="font-style: italic">rad</mo></math></span>
+            </label>
+            <label for='unitGrad'>
+                <input type='radio' name='unit' id='unitGrad' value='grad' checked>
+                <span class="check"><math><mo style="font-style: italic">grad</mo></math><span>
+            </label>
             <button id="pi"><math><mi>&pi;</mi></math></button>
         </div>
         <div id="calculator-logarithm">

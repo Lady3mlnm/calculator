@@ -8,11 +8,11 @@ body {
 
 .container {
     margin: 10px auto;
-    width: 436px;
+    width: 340px;
 }
 
 #header {
-    padding: 10px 10px 10px 30px;
+    padding: 6px 10px 7px 25px;
     background: #830759;
     background: linear-gradient(to top, #830759, #ba077d);
     border-radius: 10px 10px 0 0;
@@ -22,7 +22,7 @@ body {
     padding: 0;
     margin: 0;
     color: #ffe8fc;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
     text-shadow: 0 1px 1px #480732;
 }
@@ -33,11 +33,11 @@ body {
 }
 
 #footer {
-    padding: 5px 12px 5px 0;
+    padding: 6px 12px 7px;
     background: #830759;
     background: linear-gradient(to top, #830759, #ba077d);
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     text-align: right;
     border-radius: 0 0 5px 5px;
@@ -45,8 +45,8 @@ body {
 
 #calculator button {
     margin: 1px;
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     border: solid 1px #ff79ce;
     border-radius: 5px;
     background: #ff79ce;
@@ -65,14 +65,14 @@ body {
     float: left;
 }
 
-#calculator .calculator-display {
-    margin: 20px 2px;
-    padding: 7px 10px 8px;
-    width: 390px;
-    height: 30px;
+#display {
+    margin: 3px 2px 13px;
+    padding: 5px 9px 6px;
+    width: 297px;
+    height: 29px;
     background-color: #ffd6f1;
     color: #830759;
-    font-size: 24px;
+    font-size: 23px;
     font-weight: bold;
     text-align: right;
     border: solid 1px #830759;
@@ -81,27 +81,27 @@ body {
 
 #calculator-ext {
     float: left;
-    width: 134px;
+    width: 90px;
 }
 
-#calculator-ext button {
-    height: 50px;
-    width: 65px;
+#calculator #calculator-ext button {
+    height: 40px;
+    width: 43px;
 }
 
-#calculator .calculator-nums {
+#calculator-nums {
     float: left;
-    width: 156px;
+    width: 126px;
     margin: 0 10px;
 }
 
 #calculator .calculator-ops {
     float: left;
-    width: 52px;
+    width: 42px;
 }
 
 #calculator .calculator-ops #equality {
-    height: 102px;
+    height: 82px;
 }
 
 #logContainer > h3, #notesContainer > h3 {
@@ -111,7 +111,7 @@ body {
     color: dimgray;
 }
 #calculator-trig {
-    width: 246px;
+    width: 186px;
     float: left;
     margin-top:10px;
     margin-right: 10px;
@@ -121,14 +121,17 @@ body {
     position: relative;
     display: block;
     float: left;
-    width: 80px;
-    height: 49px;
+    /* width: 80px; */
+    height: 39px; /* ширина коробки под переключателем */
     margin:2px;
     text-align: center;
-    line-height: 48px;
-    background: #ffc8ed;
+    line-height: 37px; /* налаживание высоты надписей rad и grad */
+/*     background: #ffc8ed;
     border-color: #ffc8ed;
-    color: white;
+    color: white; */
+    background: #ffe6fb;
+    border-color: #ffe6fb;
+    color: #fe94d6;
 }
 #calculator-trig label input:checked+.check {
     color: #b7087d;
@@ -139,28 +142,26 @@ body {
 #calculator-trig label:first-of-type {
     border-radius: 5px 0 0 5px;
     margin-right: 0;
-    padding-right: 10px;
-    width: 70px;
+    padding-right: 20px; /* позволяет отладить центрирование переключателя */
+    width: 42px;   /* ширина левой половины фона под переключателем */
 }
 #calculator-trig label:last-of-type {
     border-radius: 0 5px 5px 0 ;
     margin-left: 0;
-    padding-left: 10px;
-    width: 70px;
+    padding-left: 18px;
+    width: 40px;   /* ширина правой половины фона под переключателем */
 }
 
 /*----radiobutton_3---*/
-#calculator-trig label {
-    background: #ffe6fb;
-    border-color: #ffe6fb;
-    color: #fe94d6;
-}
+/* #calculator-trig label {
+
+} */
 #unitGrad+.check::before {
     content: '';
     position: absolute;
-    top: 15px;
+    top: 10px;   /* вертикальный отступ правой половины фона над переключателем */
     left: -3px;
-    width: 23px;
+    width: 21px;  /* удлинение правой части фона под переключателем */
     height: 20px;
     background-color: #fe94d6;
     border-radius: 0 10px 10px 0;
@@ -169,9 +170,9 @@ body {
 #unitRad+.check::before {/*элемент добавлен для увеличения кликабельной области*/
     content: '';
     position: absolute;
-    top: 15px;
-    left: 57px;
-    width: 43px;
+    top: 10px;   /* вертикальный отступ левой половины фона над переключателем */
+    left: 41px;  /* удлинение левой части фона под переключателем */
+    width: 40px;
     height: 20px;
     background-color: #fe94d6;
     border-radius: 10px;
@@ -180,12 +181,12 @@ body {
 #unitGrad+.check::after {
     content: '';
     position: absolute;
-    top: 16px;
-    left: -22px;
-    width: 21px;
+    top: 11px;     /* вертикальный отступ над переключателем */
+    left: -20px;  /* отступ отъезда ползунка влева  */
+    width: 18px;  /* длина овала ползунка */
     height: 18px;
     background-color: #89085F;
-    border-radius: 10px;
+    border-radius: 9px; /* степень закруглённости ползунка */
     box-shadow: inset 0 2px 6px rgb(199, 140, 180);
     transition: .2s ease-out;
 }
@@ -195,23 +196,22 @@ body {
 }
 /*---end radiobutton_3 ---*/
 #calculator-trig button {
-    width: 80px ;
+    width: 60px ;
 }
 
 #calculator-logarithm {
-    width: 158px;
+    width: 124px;
     float: left;
     margin-top: 10px;
-    margin-right: 2px;
 }
 
 #calculator-logarithm button {
-    width: 77px;
+    width: 60px;
 }
 
 #fields {
     margin-top: 6px;
-    width: 413px;
+    width: 320px;
     float: left;
 }
 
@@ -224,14 +224,13 @@ body {
 }
 
 #logWindow, #noteWindow {
-    max-width: 394px;
     border: solid 1px #fff5fd;
     border-radius: 3px;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
     padding: 0 3px;
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     color: #830759;
     overflow-y: auto;
     resize: vertical;
@@ -245,8 +244,9 @@ body {
 #noteWindow {
     background-color:  #fff5fd;
     height: 84px;
-    width: 390px;
+    width: 298px;
     margin-bottom: -2px;
+    margin-top: -1px;
 }
 
 #tfNote, #tfLog {
@@ -256,15 +256,15 @@ body {
 #fields label {
   position: relative;
     display: block;
-    height: 30px;
+    height: 22px;
     text-align: center;
-    line-height: 30px;
+    line-height: 22px;
     border: solid 1px #ff79ce;
     border-radius: 5px;
     background: #ff79ce;
     background: linear-gradient(to top, #ff79ce, #ffc0e0);
-    font-weight: bold;
     color: #830759;
+    font-size: 11px;
 }
 
 #fields input:checked+label.check-field {
@@ -280,8 +280,8 @@ body {
 #fields input+label.check-field::after {
     position: absolute;
     content: '';
-    top: 9px;
-    left: 236px;
+    top: 7px;
+    left: 183px;
     border: 3px solid #830759;
     border-top: 3px solid transparent;
     border-left: 3px solid transparent;
