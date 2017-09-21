@@ -12,6 +12,7 @@
         </Folder>
         <Folder name="css">
             <File name="css\calculator3.css" />
+            <File name="css\calculator3-480.css" />
         </Folder>
     </Project>
 </NotepadPlus>

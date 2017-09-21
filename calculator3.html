@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Калькулятор</title>
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/calculator3.css">
+    <link rel="stylesheet" media="all and (min-width: 479px)" href="css/calculator3-480.css">
+    <link rel="stylesheet" media="all and (max-width: 479px)" href="css/calculator3.css">
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
             jax: ["input/MathML", "output/CommonHTML"],
@@ -69,6 +70,7 @@
             <button id="clear">C</button>
             <button id="equality">=</button>
         </div>
+        
         <div id="calculator-trig">
             <button id="sin"><math><mo>sin</mo></math></button>
             <button id="cos"><math><mo>cos</mo></math></button>
@@ -86,6 +88,7 @@
             </label>
             <button id="pi"><math><mi>&pi;</mi></math></button>
         </div>
+        
         <div id="calculator-logarithm">
             <button id="abs" title='модуль числа'><math><mo>abs</mo></math></button>
             <button id="logarithm2" title='логарифм по основания 2'><math><msub><mo>log</mo><mn>2</mn></msub></math></button>
@@ -94,6 +97,7 @@
             <button id="euler" title='число Эйлера'><math><mi>e</mi></math></button>
             <button id="logarithm10" title='десятичный логарифм'><math><mo>lg</mo></math></button>
         </div>
+        
         <div id="fields">
             <div class="notes-field">
               <input type='checkbox' id='tfNote' value='notesContainer'><label class="check-field withArrows" for='tfNote'>Заметки</label>
@@ -108,12 +112,15 @@
               </div>
             </div>
         </div>
+        
         <div class="clearfix"></div>
-      </div>
-      <div id="footer">
-            Copyright &copy; 2017
-      </div>
-  </div>
+        
+    </div>
+    
+    <div id="footer">
+        Copyright &copy; 2017
+    </div>
+</div>
 
 </body>
 </html>
