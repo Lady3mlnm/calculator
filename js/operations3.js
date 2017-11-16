@@ -93,7 +93,7 @@ function fTg(angle, isGrad) {
     if (isGrad)
         angle = gradRad(angle);
     if (!toFloat(fCos(angle,false)))
-        throw 'Недопустимая мат.операция: попадание тангенса на асимтоту';
+        throw 'Недопустимая мат.операция: попадание тангенса на асимптоту';
     return Math.tan(angle);
 }
 
