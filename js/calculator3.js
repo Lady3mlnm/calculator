@@ -62,6 +62,7 @@ let calculatorBinds = {
 
 /**
  * Изменение знака числа, которого касается каретка
+ * (О работе регулярных выражений здесь смотреть doc/RegExp_explanation.js)
  */
 function fPlusMinus() {
 
@@ -71,25 +72,23 @@ function fPlusMinus() {
         
     // Определяем, соприкасается ли каретка с цифрой.
     // Если нет, то завершаем функцию.
-    if (!/[0-9\.,ep]$/.test(str1) && !/pi$/.test(str1) && !/^[0-9\.,e]/.test(str2) && !/^pi/.test(str2)) {
+    if ( !/[0-9\.,e]$/.test(str1) && !/^[0-9\.,e]/.test(str2) && !/pi$/.test(str1) && !/^pi/.test(str2) && !(/p$/.test(str1) && /^i/.test(str2)) ) {
         logWindowOut('<br><span style="color: blue">Каретка не на цифре, операция смены знака не может быть применена</span>');
         display.focus();
         return; }
 
-    // Смена знака.
-    // Вначале отдельно обрабатывается случай, когда изменяется отрицательное число,
-    // стоящее в начале строки
+    // Смена знака
     let newRegExp = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)(\\d*[\\.,ep]?\\d*)$','');
     let newRegExpPi = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)pi$','');
-    if (/^\s*-\s*[0-9\.,ep]*$/.test(str1))
+    if (/^\s*-\s*[0-9\.,ep]*$/.test(str1))         // отрицательное число в начале строки меняется на положительное
         str1 = str1.replace(/^\s*-\s*([0-9\.,ep]*)$/, '$1');
-    else if (/^\s*-\s*pi$/.test(str1))
-        str1 = str1.replace(/^\s*-\s*pi$/, 'pi');      // случаи с pi приходится разбирать отдельно
-    else if (newRegExp.test(str1))
+    else if (/^\s*-\s*pi$/.test(str1))             // отрицательное 'pi' в начале строки (обрабатываем отдельно)
+        str1 = str1.replace(/^\s*-\s*pi$/, 'pi');
+    else if (newRegExp.test(str1))                 // отрицательное число в середине строки (или в её конце)
         str1 = str1.replace(newRegExp, '$1$2$4');
-    else if (newRegExpPi.test(str1))                      
+    else if (newRegExpPi.test(str1))               // отрицательное 'pi' в середине строки
         str1 = str1.replace(newRegExpPi, '$1$2pi');
-    else
+    else                                           // положительное число
         str1 = str1.replace((/([0-9\.,ep]*|pi)$/), '-$1');
 
     display.value = str1+str2;
@@ -151,7 +150,7 @@ function equality() {
 
     // Прикрепление к кнопкам функций-обработчиков,
     // прописанных нами в объекте calculatorBinds.
-    // Обращаю внимание, что в отличие от Нэнсиного кода,
+    // Обращу внимание, что в отличие от Нэнсиного кода,
     // этот выполняется уже после загрузки всего документа
     for (i in calculatorBinds) 
         document.getElementById(i).addEventListener('click', calculatorBinds[i]);
