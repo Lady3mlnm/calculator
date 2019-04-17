@@ -38,8 +38,8 @@ let calculatorBinds = {
     'rbracket': () => displayInput(')'),
     'power2': () => displayInput('^2'),
     'powerX': () => displayInput('^'),
-    'root2': () => displayInput('^0.5'),
-    'root3': () => displayInput('^(1/3)'),
+    'root2': () => displayInput('^½'),
+    'root3': () => displayInput('^⅓'),
     'memoryState': fMemoryState,
     'memoryRead': fMemoryRead,
     'equality' : equality,
@@ -53,7 +53,7 @@ let calculatorBinds = {
     'logarithmE': () => displayInput('ln '),
     'logarithm10': () => displayInput('lg '),
     'factorial': () => displayInput('!'),
-    'pi': () => displayInput('pi'),
+    'pi': () => displayInput('π'),
     'euler': () => displayInput('e'),
     'abs': () => displayInput('abs '),
     'plusMinus': fPlusMinus,
@@ -72,16 +72,16 @@ function fPlusMinus() {
         
     // Определяем, соприкасается ли каретка с цифрой.
     // Если нет, то завершаем функцию.
-    if ( !/[0-9\.,e]$/.test(str1) && !/^[0-9\.,e]/.test(str2) && !/pi$/.test(str1) && !/^pi/.test(str2) && !(/p$/.test(str1) && /^i/.test(str2)) ) {
+    if ( !/[0-9\.,e½⅓π]$/.test(str1) && !/^[0-9\.,e½⅓π]/.test(str2) && !/pi$/.test(str1) && !/^pi/.test(str2) && !(/p$/.test(str1) && /^i/.test(str2)) ) {
         logWindowOut('<br><span style="color: blue">Каретка не на цифре, операция смены знака не может быть применена</span>');
         display.focus();
         return; }
 
     // Смена знака
-    let newRegExp = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)(\\d*[\\.,ep]?\\d*)$','');
+    let newRegExp = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)(\\d*[\\.,e½⅓πp]?\\d*)$','');
     let newRegExpPi = new RegExp('(' + shieldedOperators.join('|') + '|\\()(\\s*)-(\\s*)pi$','');
-    if (/^\s*-\s*[0-9\.,ep]*$/.test(str1))         // отрицательное число в начале строки меняется на положительное
-        str1 = str1.replace(/^\s*-\s*([0-9\.,ep]*)$/, '$1');
+    if (/^\s*-\s*[0-9\.,e½⅓πp]*$/.test(str1))         // отрицательное число в начале строки меняется на положительное
+        str1 = str1.replace(/^\s*-\s*([0-9\.,e½⅓πp]*)$/, '$1');
     else if (/^\s*-\s*pi$/.test(str1))             // отрицательное 'pi' в начале строки (обрабатываем отдельно)
         str1 = str1.replace(/^\s*-\s*pi$/, 'pi');
     else if (newRegExp.test(str1))                 // отрицательное число в середине строки (или в её конце)
@@ -89,7 +89,7 @@ function fPlusMinus() {
     else if (newRegExpPi.test(str1))               // отрицательное 'pi' в середине строки
         str1 = str1.replace(newRegExpPi, '$1$2pi');
     else                                           // положительное число
-        str1 = str1.replace((/([0-9\.,ep]*|pi)$/), '-$1');
+        str1 = str1.replace((/([0-9\.,e½⅓πp]*|pi)$/), '-$1');
 
     display.value = str1+str2;
     display.selectionEnd = str1.length;
